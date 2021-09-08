@@ -1,0 +1,27 @@
+[stats]
+str = 100
+dex = 25
+int = 100
+
+[skills] 700
+inscription = 100
+magery = 100
+lumberjacking = 100
+mining = 100
+evalint = 60
+tracking = 80
+magic resist = 80
+wrestling = 100
+
+[skills] 720
+inscription = 120
+magery = 100
+lumberjacking = 120
+mining = 120
+tracking = 80
+magic resist = 80
+wrestling = 100
+
+[notes]
+- this is a weird fun build
+- powerful mage pvper

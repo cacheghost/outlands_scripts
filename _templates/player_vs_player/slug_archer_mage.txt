@@ -1,0 +1,30 @@
+[stats]
+str = 100
+dex = 25
+int = 100
+
+[skills] - 700 CAP
+animal lore = 75
+animal taming = 75
+magery = 100
+archery = 100
+tactics = 100
+evalint = 100
+magicresist = 80
+med = 70
+
+[skills] - 720 CAP
+animal lore = 75
+animal taming = 75
+magery = 100
+archery = 100
+tactics = 100
+evalint = 100
+magicresist = 90
+med = 80
+
+[notes]
+- drop down to 70 med and 80 magicresist until 720 skill capped.
+- pets
+    - 2 colossal swamp slugs
+    - 1 giant swamp slug

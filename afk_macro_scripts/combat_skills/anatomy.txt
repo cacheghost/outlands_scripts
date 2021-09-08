@@ -1,0 +1,6 @@
+skill 'anatomy'
+waitfortarget
+target 0x125F69
+waitforgump 3280914284
+wait 4000
+replay

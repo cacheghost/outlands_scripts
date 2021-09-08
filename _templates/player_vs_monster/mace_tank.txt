@@ -1,0 +1,22 @@
+[name]
+Mace Tank PvM
+
+[stats]
+str = 100
+dex = 100
+int = 25
+
+[skills] - 720 CAP
+Alchemy             40
+Anatomy             80
+Arms Lore           80
+Camping             60
+Healing             80
+Mace Fighting       100
+Parrying            80
+Resisting Spells    100
+Tactics             100
+
+[notes]
+- dont go to 60 camping until you have 720 cap, leave at 40 camping.
+- great farming build

@@ -1,0 +1,49 @@
+if skill 'Magery' < 100
+    if skill 'Meditation' = 80
+        setskill 'Meditation' lock
+    endif
+    
+    if skill 'Magery' < 80
+        if mana < 30
+            hotkey 'Meditation'
+            wait 8500
+        else
+            if count 'Blood moss' < 5 or count 'Nightshade' < 5
+                restock 1
+                wft
+                hotkey 'Target Self'
+                wait 500
+            endif
+            if mana > 30
+                overhead "Invis" 88
+                hotkey 'Invisibility'
+                wft
+                hotkey 'Target Self'
+                wait 1000
+            endif
+        endif
+    elseif skill 'Magery' < 100
+        if mana < 40
+            hotkey 'Meditation'
+            wait 9000
+        else
+            if findtype 'a water elemental' true
+                say 'a water elemental release'
+                pause 200
+            endif
+            if count 'Blood moss' < 10 or count "Spider's Silk" < 10 or count "Mandrake Root" < 10
+                restock 1
+                wft
+                hotkey 'Target Self'
+                wait 500
+            endif
+            if mana > 40
+                hotkey "Water Elemental"
+                wait 5000
+            endif
+        endif    
+    endif
+    loop
+else
+    overhead 'We did it!' 88
+endif

@@ -1,0 +1,9 @@
+if skill 'healing' < 100
+    dclicktype '5912'
+    lifttype '5912' 1
+    drop backpack
+    hotkey 'Bandage Self'
+    wait 11000
+endif
+
+replay

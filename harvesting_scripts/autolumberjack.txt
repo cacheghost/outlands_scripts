@@ -1,0 +1,40 @@
+#simple lumberjacking macro | captcha resilient
+#equip a hatchet
+if lhandempty
+    dclicktype '3908'
+wait 500
+endif
+#use hatchet for the first time
+hotkey 'use item in hand'
+waitfortarget 
+target 'self'
+#begin captcha resilient loop
+while not dead
+    #world save pause
+    if insysmsg 'world is saving'
+        wait 4000
+    endif
+    #stop if over weight | best to adjust to (maxweight - 10)
+    if weight >= 580
+        overhead 'You are over weight!' 55
+        stop
+    endif
+    #captcha resilient use of pickaxe
+    if insysmsg 'you chop some'
+        wait 333
+        hotkey 'use item in hand'
+        waitfortarget 
+        target 'self'
+        elseif insysmsg 'you hack at the tree'
+        wait 333
+        hotkey 'use item in hand'
+        waitfortarget 
+        target 'self'
+    elseif insysmsg "You do not see"
+        overhead 'No wood here! Move! Move! Move!' 55
+        wait 3000
+        hotkey 'use item in hand'
+        waitfortarget 
+        target 'self'
+    endif
+endwhile

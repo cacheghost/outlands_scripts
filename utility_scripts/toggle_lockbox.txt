@@ -1,0 +1,9 @@
+# Find any copper key in backpack, even in a trapped pouch
+dclicktype 4110 'backpack'
+wft 500
+# If a wooden box is found, try to lock or unlock it
+if findtype 3709 'backpack'
+    targettype 3709 'backpack'
+else
+    targettype 2474 'backpack'
+endif

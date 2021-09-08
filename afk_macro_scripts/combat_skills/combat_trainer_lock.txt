@@ -1,0 +1,23 @@
+if skill 'Anatomy' = 80 and skill 'Arms Lore' = 80 and skill 'Mace Fighting' = 100 and skill 'Tactics' = 100
+    if skill 'Hiding' = 90
+        setskill 'Hiding' lock
+        stop
+    else
+        warmode off
+        # Turn off warmode and work on hiding.
+        hotkey 'Hiding'
+        pause 13000
+    endif
+    
+else
+    # Wait to lock skills.
+    if skill 'Anatomy' = 80
+        setskill 'Anatomy' lock
+    endif
+
+    if skill 'Arms Lore' = 80
+        setskill 'ArmsLore' lock
+    endif
+endif
+
+replay

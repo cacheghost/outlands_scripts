@@ -1,0 +1,17 @@
+[stats]
+str = 100
+dex = 25
+int = 100
+
+[skills] - 700 CAP
+hiding = 100
+stealth = 100
+snooping = 100
+stealing = 100
+remove trap = 100
+magery = 80
+magic resist = 80
+camping = 60
+
+[notes]
+- if you wanna be a glass cannon, you can drop magic resist and lower magery to 60 to pickup 100 lockpicking.

@@ -1,0 +1,23 @@
+[stats]
+str = 100
+dex = 25
+int = 100
+
+[skills] - 720 CAP
+animal taming = 120
+animal lore = 120
+herding = 120
+taste id = 120
+magery = 100
+med = 80
+camping = 60
+
+[notes]
+- keep camping 100 until you get gains in herding/taste/lore/taming past 100.
+- need wizard grimoire
+    - 2 points in lightning for hinder
+    - max out gheal
+    - max out res
+    - max out mana drain
+    - max out flamestrike
+- need taming bestiary

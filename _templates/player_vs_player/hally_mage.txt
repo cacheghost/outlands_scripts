@@ -1,0 +1,17 @@
+[stats]
+str = 100
+dex = 25
+int = 100
+
+[skills] - 700 CAP
+magery = 100
+swords = 100
+wrestling = 100
+evalint = 80
+magicresist = 80
+tactics = 80
+tracking = 80
+med = 80
+
+[notes]
+cost = "Low cost to macro to GM, magery is the only real cost ~20-50k in reg cost to GM."
