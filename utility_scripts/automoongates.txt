@@ -1,3 +1,10 @@
+# Handle blue gates
+if findtype 3948 'ground' 0 1 2 as 'bluegate'
+    dclick 'bluegate'
+    waitforgump 3899019871
+    gumpresponse 2
+endif
+
 # Handle red moongates
 if findtype 3948 'ground' 2820 1 2 as 'redmoongate'
     # Goto Outpost
