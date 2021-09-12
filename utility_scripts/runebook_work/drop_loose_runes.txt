@@ -1,0 +1,13 @@
+# Uncomment to ask each time
+unsetvar 'dropbag'
+
+# Ask which runetome/runebook to use.
+if not varexist 'dropbag'
+    overhead 'Select bag to drop loose runes in'
+    setvar! 'dropbag'
+endif
+
+while findtype 7956 'backpack' 0 as 'marked_rune'
+    lift 'marked_rune' 1
+    drop 'dropbag' -1 -1 0
+endwhile

@@ -176,5 +176,6 @@ while not dead
         endfor
         clearignore
         overhead 'Loop Finished' 68
+        settimer 'looptimeout' 0
     endif
 endwhile
