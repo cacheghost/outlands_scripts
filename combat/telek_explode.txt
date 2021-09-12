@@ -1,7 +1,10 @@
+unsetvar 'myexplotarget'
 hotkey 'Telekinesis'
 waitfortarget
 setvar! 'myexplotarget'
-target 'myexplotarget'
-dclicktype 3853 'backpack'
-waitfortarget
-target 'myexplotarget'
+if varexist 'myexplotarget'
+    target 'myexplotarget'
+    dclicktype 3853 'backpack'
+    waitfortarget
+    target 'myexplotarget'
+endif
