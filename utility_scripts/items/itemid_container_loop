@@ -10,6 +10,7 @@ setvar! 'idbag'
 while not dead
     if timer 'looptimeout' > 10000
         overhead 'New Loop' 68
+        say 'Starting ID Loop'
         # Setup itemtypes to item id
         createlist 'ItemTypes'
         //martial manual
@@ -152,7 +153,8 @@ while not dead
         pushlist 'ItemTypes' 0x13d2 //leatherleggings
         pushlist 'ItemTypes' 0x1409 //closehelm
         pushlist 'ItemTypes' 0x13d4 //studdedarms
-
+        pushlist 'ItemTypes' 3834 //Spellbooks
+        
         clearignore
         foreach 'itemtype' in 'ItemTypes'
 
@@ -176,6 +178,7 @@ while not dead
         endfor
         clearignore
         overhead 'Loop Finished' 68
+        say 'Finished ID Loop'
         settimer 'looptimeout' 0
     endif
 endwhile
