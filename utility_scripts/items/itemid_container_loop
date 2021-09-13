@@ -9,8 +9,43 @@ setvar! 'idbag'
 
 while not dead
     if timer 'looptimeout' > 10000
+        # Start Loop
         overhead 'New Loop' 68
         say 'Starting ID Loop'
+        
+        clearignore
+        # Open idbag
+        dclick 'idbag'
+        wait 500
+
+        # Open wooden boxes
+        while findtype 2474 'idbag' 0 1 as 'openbag'
+            dclick 'openbag'
+            wait 500
+            ignore 'openbag'
+        endwhile
+        
+        # Open pouches
+        while findtype 3705 'idbag' 0 1 as 'openbag'
+            dclick 'openbag'
+            wait 500
+            ignore 'openbag'
+        endwhile
+
+        # Open bags
+        while findtype 3702 'idbag' 0 1 as 'openbag'
+            dclick 'openbag'
+            wait 500
+            ignore 'openbag'
+        endwhile
+        
+        # Open backpack
+        while findtype 3701 'idbag' 0 1 as 'openbag'
+            dclick 'openbag'
+            wait 500
+            ignore 'openbag'
+        endwhile
+        
         # Setup itemtypes to item id
         createlist 'ItemTypes'
         //martial manual
@@ -155,7 +190,6 @@ while not dead
         pushlist 'ItemTypes' 0x13d4 //studdedarms
         pushlist 'ItemTypes' 3834 //Spellbooks
         
-        clearignore
         foreach 'itemtype' in 'ItemTypes'
 
             if findtype 'itemtype' 'idbag' as 'found_item'
@@ -177,6 +211,10 @@ while not dead
 
         endfor
         clearignore
+        hotkey 'Detecting Hidden'
+        waitfortarget
+        target 0x4254907C
+        wait 5000
         overhead 'Loop Finished' 68
         say 'Finished ID Loop'
         settimer 'looptimeout' 0
