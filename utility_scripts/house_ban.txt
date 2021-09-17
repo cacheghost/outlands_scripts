@@ -15,7 +15,7 @@ while not dead
     hotkey 'Next Non-Friendly Humanoid Target'
     if not insysmsg "No one matching that was found"
         hotkey 'Cancel Current Target'
-        say "Remove Thyself"
+        say "i ban thee"
         pause 250
         lasttarget
     endif

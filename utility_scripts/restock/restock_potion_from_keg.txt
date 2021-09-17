@@ -1,0 +1,42 @@
+unsetvar 'restock_shelf'
+overhead 'Select restock shelf'
+setvar! 'restock_shelf'
+
+unsetvar 'keg'
+overhead 'Select keg'
+setvar! 'keg'
+
+dclick 'restock_shelf'
+
+while not dead
+    getlabel 'keg' 'keg_label'
+    if 'is empty' in 'keg_label'
+        overhead 'Keg is empty'
+        stop
+    endif
+    
+    # Restock from backpack
+    gumpresponse 4
+    waitfortarget
+    target 'backpack'
+    waitforgump 3232825965
+    wait 600
+    
+    # Resupply
+    gumpresponse 7
+    waitforgump 3232825965
+    wait 600
+    
+    # Pour potion
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+endwhile
+
