@@ -18,12 +18,14 @@ createtimer 'curepot recovery'
 createtimer 'healpot recovery'
 createtimer 'potion recovery'
 createtimer 'castspell recovery'
+createtimer 'low mana'
 
 # Setup tank variable
 if not varexist 'tank'
     overhead 'Select your tank pet'
     setvar! 'tank'
-    hotkey 'All Follow'
+    menu 'tank' 5
+    wait 150
 endif
 
 # Skip waiting the full cycle before starting
@@ -35,6 +37,7 @@ settimer 'curepot recovery' 20000
 settimer 'castspell recovery' 20000
 settimer 'healpot recovery' 20000
 settimer 'potion recovery' 20000
+settimer 'low mana' 20000
 
 # Main Loop
 while not dead
@@ -107,7 +110,7 @@ while not dead
         #  Aegis Minion
         pushlist 'petarray' '776'
         #  or Sphinx
-        pushlist 'petarray' '293'
+        #pushlist 'petarray' '293'
         
     # 115-120
     elseif skill 'Taming' < 120 and skill 'Taming' >= 115
@@ -128,7 +131,8 @@ while not dead
     # If hurt, send pet to aggro then heal self
     if hits < maxhits and timer 'hurt reaction' > 5000
         # Have pet guard to grab all aggro
-        hotkey 'All Guard'
+        menu 'tank' 4
+        wait 150
 
         # Healing Survival
         if skill 'Healing' >= 50
@@ -193,7 +197,8 @@ while not dead
 
         # pause a few seconds to aggro
         pause 5000
-        hotkey 'All Follow'
+        menu 'tank' 5
+        wait 150
         warmode off
         settimer 'hurt reaction' 0
     endif
@@ -208,61 +213,57 @@ while not dead
             script recall
         endif
         
+        # Vet Healing
+        if skill 'Veterinary' >= 50
+            if find 'tank' 'ground' -1 1 5
+                if timer 'bandage timer' > 15000
+                    interrupt
+                    hotkey 'Cancel Current Target'
+                    hotkey 'Clear Target Queue'
+                    hotkey 'Use Bandage (No Timer)'
+                    target 'tank'
+                    if insysmsg 'not damaged'
+                        settimer 'bandage timer' 4000
+                    else
+                        settimer 'bandage timer' 0
+                    endif
+                endif
+            else
+                    overhead 'Cannot heal tank, too far away!' 33
+                    pause 3000
+            endif
+        elseif skill 'Magery' >= 60
+            # Magery Healing
+            if find 'tank' 'ground' -1 1 12
+                if timer 'tank magery heal' > 30000
+                    interrupt    
+                    hotkey 'Cancel Current Target'
+                    hotkey 'Clear Target Queue'
+                    hotkey 'Greater Heal'
+                    waitfortarget 1500
+                    target 'tank'
+                    pause 500
+                    settimer 'tank magery heal' 0
+                endif
+            else
+                    overhead 'Cannot heal tank, too far away!' 33
+                    pause 3000
+            endif
+        endif
+        
         # Attempt to tame pet
         if findtype pettarget 'ground' -1 1 4 as 'mypettarget'
-            # Vet Healing
-            if skill 'Veterinary' >= 50
-                if find 'tank' 'ground' -1 1 5
-                    if timer 'bandage timer' > 15000
-                        interrupt
-                        hotkey 'Cancel Current Target'
-                        hotkey 'Clear Target Queue'
-                        hotkey 'Use Bandage (No Timer)'
-                        target 'tank'
-                        if insysmsg 'not damaged'
-                            settimer 'bandage timer' 4000
-                        else
-                            settimer 'bandage timer' 0
-                        endif
-                    endif
-                else
-                        overhead 'Cannot heal tank, too far away!' 33
-                        pause 3000
-                endif
-            elseif skill 'Magery' >= 60
-                # Magery Healing
-                if find 'tank' 'ground' -1 1 12
-                    if timer 'tank magery heal' > 30000
-                        if counttype 'garlic' < 2 or counttype "spider's silk" < 2 or counttype "ginseng" < 2 or counttype "Mandrake Root%s%" < 2
-                            overhead "Not enough regs to heal" 33
-                            hotkey 'All Follow'
-                            script recall
-                        endif
-                        interrupt    
-                        hotkey 'Cancel Current Target'
-                        hotkey 'Clear Target Queue'
-                        hotkey 'Greater Heal'
-                        waitfortarget 1500
-                        target 'tank'
-                        pause 500
-                        settimer 'tank magery heal' 0
-                    endif
-                else
-                        overhead 'Cannot heal tank, too far away!' 33
-                        pause 3000
-                endif
-            endif
-
             # If we tamed the target pet already, kill it.
             if noto 'mypettarget' = friend and 'mypettarget' != 'tank'
                 interrupt
                 hotkey 'Cancel Current Target'
                 hotkey 'Clear Target Queue'
-                hotkey 'All Kill'
+                menu 'tank' 2
                 wft 250
                 target 'mypettarget'
                 pause 10000
-                hotkey 'All Follow'
+                menu 'tank' 5
+                wait 150
             else
                 # Otherwise tame it.
                 warmode off
@@ -279,7 +280,10 @@ while not dead
         else
             # If no taming target, work up Animal Lore on tank.
             overhead 'No taming target found' 33
-            hotkey 'All Guard'
+            wait 150
+            menu 'tank' 4
+            wait 150
+            wait 500
             interrupt
             hotkey 'Cancel Current Target'
             hotkey 'Clear Target Queue'
@@ -287,7 +291,8 @@ while not dead
             wft 500
             target 'tank'
             pause 6000
-            hotkey 'All Follow'
+            menu 'tank' 5
+            wait 150
         endif
         poplist petarray pettarget
     endfor
