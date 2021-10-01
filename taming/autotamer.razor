@@ -1,0 +1,52 @@
+# Setup timers
+createtimer 'taming timer'
+createtimer 'rangecheck spam'
+
+# Unset any previous pets
+if varexist 'pet'
+    unsetvar 'pet'
+endif
+
+# Skip waiting the full cycle before Starting
+settimer 'taming timer' 20000
+settimer 'rangecheck spam' 20000
+
+# Main Loop
+while not dead 
+    # Setup target
+    if not varexist 'pet'
+        overhead 'Select the pet to tame'
+        setvar! 'pet'
+    endif
+    
+    # Attempt to tame pet
+    if find 'pet' 'ground' -1 1 3
+        # If notoriety of pet is green, its tamed!
+        if noto 'pet' = friend
+            overhead 'Pet has been tamed!'
+            stop
+        endif
+        # Attempt to tame
+        if timer 'taming timer' > 13000
+            interrupt    
+            hotkey 'Cancel Current Target'
+            hotkey 'Clear Target Queue'
+            useskill 'Taming'
+            wft 500
+            target 'pet'
+            settimer 'taming timer' 0
+        endif
+    else
+        # Pet found but out of range
+        if timer 'rangecheck spam' > 5000
+            overhead 'Pet is not in range!' 33
+            settimer 'rangecheck spam' 0
+        endif
+    endif
+endwhile
+
+# Dead exit
+if dead
+    unsetvar 'tank'
+    stop
+endif

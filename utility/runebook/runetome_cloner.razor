@@ -1,0 +1,21 @@
+# Setup recall rune
+unsetvar! 'recall_rune'
+overhead 'Select recall rune'
+setvar! 'recall_rune'
+
+# Setup runebook serial
+unsetvar! 'runetome_old'
+overhead 'Select runetome to clone from'
+setvar! 'runetome_old'
+
+# Setup runebook serial
+unsetvar! 'runetome_new'
+overhead 'Select the new runetome'
+setvar! 'runetome_new'
+
+######################
+while mana < 32
+    if skill 'Meditation' > 1
+        hotkey 'Meditation'
+    endif
+endwhile

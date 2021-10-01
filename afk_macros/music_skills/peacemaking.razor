@@ -1,0 +1,13 @@
+clearsysmsg
+dclicktype '3762'
+if skill 'Peacemaking'
+    if insysmsg 'instrument shall you play'
+        dclicktype 'lute'
+    endif
+
+    skill 'peacemaking'
+    wait 1000
+    target 'self'
+    wait 5000
+    replay
+endif

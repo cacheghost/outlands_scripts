@@ -1,0 +1,44 @@
+# Unset packy variable
+unsetvar 'mypacky'
+
+# Setup packy variable
+overhead 'Select packy'
+setvar! 'mypacky'
+
+while not dead 
+    if skill 'Stealing' < 100 and skill 'Snooping' < 100
+        overhead 'Congrats on your new thief!'
+        stop
+    endif
+    
+    # If Snooping isnt GM, GM it before stealing.
+    while skill 'Snooping' < 100
+        # Snoop packy
+        dclick 'mypacky'
+        wait 3000
+    endwhile
+    
+    # Snoop packy
+    dclick 'mypacky'
+    wait 3000
+    
+    # Look for kindling
+    while findtype 7154 'mypacky' as 'stealitem'
+        # Steal kindling
+        overhead 'Attempting steal'
+        hotkey 'Stealing'
+        wait 500
+        target 'stealitem'
+        wait 10000
+    endwhile
+    
+    # Drop stolen kindling
+    while findtype 7154 'backpack' as 'myitem'
+        hotkey 'Drop What You are Currently Holding'
+        overhead 'Dropping on ground'
+        lift 'myitem' 250
+        wait 500
+        droprelloc 0 0
+        wait 500
+    endwhile
+endwhile

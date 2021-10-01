@@ -1,0 +1,23 @@
+# Handle red moongates
+if findtype 3948 'ground' 2820 1 2 as 'redmoongate'
+    # Goto Outpost
+    dclick 'redmoongate'
+endif
+
+# Handle blue moongates
+if findtype 3948 'ground' 2821 1 2 as 'bluemoongate'
+    # Goto Shelter Island
+    dclick 'bluemoongate'
+endif
+
+# Handle yellow moongates
+if findtype 3948 'ground' 2822 1 2 as 'yellowmoongate'
+    # Goto Outpost
+    dclick 'yellowmoongate'
+endif
+
+# Handle gray moongates
+if findtype 8148 'ground' -1 1 2 as 'graymoongate'
+    # Confirm
+    dclick 'graymoongate'
+endif

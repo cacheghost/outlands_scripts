@@ -1,0 +1,9 @@
+unsetvar 'myexplotarget'
+hotkey 'Telekinesis'
+waitfortarget
+setvar! 'myexplotarget'
+if varexist 'myexplotarget'
+    dclicktype 3853 'backpack'
+    waitfortarget 
+    target 'myexplotarget'
+endif

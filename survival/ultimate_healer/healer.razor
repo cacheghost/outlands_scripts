@@ -1,0 +1,507 @@
+# Starting message
+overhead 'Ultima Healer Started' 125
+
+#removelist 'partymembers'
+
+# Script Logic:
+#   1.  Setup Party
+#       -   Setup each players role
+#       -   Setup each players healing item
+#   2.  Loop Execution
+#       1.  Self-survival (modified stay alive script)
+#       2.  Looking for item
+#           -   Found:
+#               1.   
+#               2.  Cast heal on respective player
+#               3.  If out of range, warn player in message
+#           -   Not Found:
+#               -   Do nothing
+#       3.  Coordination
+#           -   Message party
+#           -   Lost Item Replacemen
+
+# Two Roles:
+# - Healer = Garlic (targettype garlic = healer role)
+# - Healee = Blessed Dagger (targettype blessed dagger = healee)
+
+# Healee - will have a healing item they have to initialize.
+# Healer - will have a healing item they have to initialize and will private message to coordinate heals.
+
+# Run party check
+if not listexists 'partymembers'
+    # Create party list
+    createlist 'partymembers'
+    
+    # Start party check
+    overhead 'Performing Party Check' 44
+    clearsysmsg 
+    say '[party'
+    wait 1000
+
+    # Party Member 1 Check
+    clearsysmsg
+    gumpresponse 20 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send'
+        # setup party member serial
+        promptresponse 'You are party member 1'
+        overhead 'Select party member 1' 68
+        setvar! 'partymember1'
+        pushlist 'partymembers' 'partymember1'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm1role'
+        getlabel 'pm1role' 'pm1rolelabel'
+        if 'dagger' in 'pm1rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm1healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+        
+        # setup healing item
+        overhead 'Select party member 1 - item' 88
+        setvar! 'pm1item'
+        
+        # setup timer
+        createtimer 'partymember1heal timer'
+    else
+        overhead 'Player 1 doesnt exist' 33
+    endif
+    
+    # Party Member 2 Check
+    clearsysmsg
+    gumpresponse 21 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 2'
+        overhead 'Select party member 2' 68
+        setvar! 'partymember2'
+        pushlist 'partymembers' 'partymember2'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm2role'
+        getlabel 'pm2role' 'pm2rolelabel'
+        if 'dagger' in 'pm2rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm2healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 2 - item' 88
+        setvar! 'pm2item'
+        
+        # setup timer
+        createtimer 'partymember2heal timer'
+    else
+        overhead 'Player 2 doesnt exist' 33
+    endif
+
+    # Party Member 3 Check
+    clearsysmsg
+    gumpresponse 22 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 3'
+        overhead 'Select party member 3' 68
+        setvar! 'partymember3'
+        pushlist 'partymembers' 'partymember3'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm3role'
+        getlabel 'pm3role' 'pm3rolelabel'
+        if 'dagger' in 'pm3rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm3healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 3 - item' 88
+        setvar! 'pm3item'
+
+        # setup timer
+        createtimer 'partymember3heal timer'
+    else
+        overhead 'Player 3 doesnt exist' 33
+    endif
+
+    # Party Member 4 Check
+    clearsysmsg
+    gumpresponse 23 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 4'
+        overhead 'Select party member 4' 68
+        setvar! 'partymember4'
+        pushlist 'partymembers' 'partymember4'
+
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm4role'
+        getlabel 'pm4role' 'pm4rolelabel'
+        if 'dagger' in 'pm4rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm4healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 4 - item' 88
+        setvar! 'pm4item'
+
+        # setup timer
+        createtimer 'partymember4heal timer'
+    else
+        overhead 'Player 4 doesnt exist' 33
+    endif
+
+    # Party Member 5 Check
+    clearsysmsg
+    gumpresponse 24 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 5'
+        overhead 'Select party member 5' 68
+        setvar! 'partymember5'
+        pushlist 'partymembers' 'partymember5'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm5role'
+        getlabel 'pm5role' 'pm5rolelabel'
+        if 'dagger' in 'pm5rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm5healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 5 - item' 88
+        setvar! 'pm5item'
+
+        # create timer
+        createtimer 'partymember5heal timer'
+    else
+        overhead 'Player 5 doesnt exist' 33
+    endif
+
+    # Party Member 6 Check
+    clearsysmsg
+    gumpresponse 25 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send'
+        # setup party member serial
+        promptresponse 'You are party member 6'
+        overhead 'Select party member 6' 68
+        setvar! 'partymember6'
+        pushlist 'partymembers' 'partymember6'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm6role'
+        getlabel 'pm6role' 'pm6rolelabel'
+        if 'dagger' in 'pm6rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm6healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 6 - item' 88
+        setvar! 'pm6item'
+
+        # create timer
+        createtimer 'partymember6heal timer'
+    else
+        overhead 'Player 6 doesnt exist' 33
+    endif
+
+    # Party Member 7 Check
+    clearsysmsg
+    gumpresponse 26 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 7'
+        overhead 'Select party member 7' 68
+        setvar! 'partymember7'
+        pushlist 'partymembers' 'partymember7'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm7role'
+        getlabel 'pm7role' 'pm7rolelabel'
+        if 'dagger' in 'pm7rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm7healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 7 - item' 88
+        setvar! 'pm7item'
+
+        # create timer
+        createtimer 'partymember7heal timer'
+    else
+        overhead 'Player 7 doesnt exist' 33
+    endif
+
+    # Party Member 8 Check
+    clearsysmsg
+    gumpresponse 27 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 8'
+        overhead 'Select party member 8' 68
+        setvar! 'partymember8'
+        pushlist 'partymembers' 'partymember8'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm8role'
+        getlabel 'pm8role' 'pm8rolelabel'
+        if 'dagger' in 'pm8rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm8healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 8 - item' 88
+        setvar! 'pm8item'
+
+        # create timer
+        createtimer 'partymember8heal timer'
+    else
+        overhead 'Player 8 doesnt exist' 33
+    endif
+
+    # Party Member 9 Check
+    clearsysmsg
+    gumpresponse 28 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 9'
+        overhead 'Select party member 2' 68
+        setvar! 'partymember9'
+        pushlist 'partymembers' 'partymember9'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm9role'
+        getlabel 'pm9role' 'pm9rolelabel'
+        if 'dagger' in 'pm9rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm9healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 9 - item' 88
+        setvar! 'pm9item'
+
+        # create timer
+        createtimer 'partymember9heal timer'
+    else
+        overhead 'Player 9 doesnt exist' 33
+    endif
+
+    # Party Member 10 Check
+    clearsysmsg
+    gumpresponse 29 3527489586
+    waitforgump 3527489586
+    if insysmsg 'message will you send this player'
+        # setup party member serial
+        promptresponse 'You are party member 10'
+        overhead 'Select party member 10' 68
+        setvar! 'partymember10'
+        pushlist 'partymembers' 'partymember10'
+        
+        # setup role
+        overhead 'Select dagger for healer!' 44
+        setvar! 'pm10role'
+        getlabel 'pm10role' 'pm10rolelabel'
+        if 'dagger' in 'pm10rolelabel'
+            overhead "You selected healer"
+            setvar! 'pm10healer' 'dagger'
+        else
+            overhead "You selected healee"
+        endif
+
+        # setup item
+        overhead 'Select party member 10 - item' 88
+        setvar! 'pm10item'
+
+        # create timer
+        createtimer 'partymember10heal timer'
+    else
+        overhead 'Player 10 doesnt exist' 33
+    endif
+
+    # Close Party Gump
+    gumpclose 3527489586
+
+    # Setup complete
+    overhead 'Setup complete, starting loop' 55
+endif
+
+while not dead 
+    foreach 'partymember' in 'partymembers'
+        # Handle PM1 Actions
+        if 'partymember' = 'partymember1'
+            #overhead "PM1 SEARCHING"
+            # Look for healing item within 12 tiles
+            if find 'pm1item' 'ground' -1 1 12
+                # Determine role of player
+                if varexist 'pm1healer'
+                    overhead 'PM1 ROLE HEALER'
+                else
+                    overhead 'PM1 ROLE HEALEE'
+                endif
+            
+                # Attempt to heal
+                clearsysmsg
+                overhead 'Found PM1 item!'
+                hotkey 'Greater Heal'
+                wft 1300
+                target 'partymember'
+                
+                # If out of range, send a message.
+                if insysmsg 'That is too far away'
+                    clearsysmsg 
+                    say '[party'
+                    waitforgump 3527489586
+                    clearsysmsg
+                    gumpresponse 20 3527489586
+                    waitforgump 3527489586
+                    if insysmsg 'message will you send'
+                        promptresponse 'PM1 OUTOFRANGE HEAL'
+                    endif
+                    gumpclose 3527489586
+                endif
+            endif
+            
+        # Handle PM2 Actions
+        elseif 'partymember' = 'partymember2'
+            #overhead "PM2 SEARCHING"
+            # Look for healing item within 12 tiles
+            if find 'pm2item' 'ground' -1 1 12
+                # Determine role of player
+                if varexist 'pm2healer'
+                    overhead 'PM2 ROLE HEALER'
+                else
+                    overhead 'PM2 ROLE HEALEE'
+                endif
+                
+                # Attempt to heal
+                clearsysmsg
+                overhead 'Found PM2 item!'
+                hotkey 'Greater Heal'
+                wft 1300
+                target 'partymember'
+                
+                # If out of range, send a message.
+                if insysmsg 'That is too far away'
+                    clearsysmsg 
+                    say '[party'
+                    waitforgump 3527489586
+                    clearsysmsg
+                    gumpresponse 21 3527489586
+                    waitforgump 3527489586
+                    if insysmsg 'message will you send'
+                        promptresponse 'PM2 OUTOFRANGE HEAL'
+                    endif
+                    gumpclose 3527489586
+                endif
+            endif
+            
+        # Party Member 3
+        elseif 'partymember' = 'partymember3'
+            #overhead "PM3 SEARCHING"
+            # Look for healing item within 12 tiles
+            if find 'pm3item' 'ground' -1 1 12
+                # Determine role of player
+                if varexist 'pm3healer'
+                    overhead 'PM3 ROLE HEALER'
+                else
+                    overhead 'PM3 ROLE HEALEE'
+                endif
+                
+                # Attempt to heal
+                clearsysmsg
+                overhead 'Found PM3 item!'
+                hotkey 'Greater Heal'
+                wft 1300
+                target 'partymember'
+                
+                # If out of range, send a message.
+                if insysmsg 'That is too far away'
+                    clearsysmsg 
+                    say '[party'
+                    waitforgump 3527489586
+                    clearsysmsg
+                    gumpresponse 21 3527489586
+                    waitforgump 3527489586
+                    if insysmsg 'message will you send'
+                        promptresponse 'PM3 OUTOFRANGE HEAL'
+                    endif
+                    gumpclose 3527489586
+                endif
+            endif
+        
+        elseif 'partymember' = 'partymember4'
+            # Party Member 4
+            overhead 'Looking for PM 4' 55
+        
+        elseif 'partymember' = 'partymember5'
+            # Party Member 5
+            overhead 'Looking for PM 5' 55
+        
+        elseif 'partymember' = 'partymember6'
+            # Party Member 6
+            overhead 'Looking for party member 6' 55
+        
+        elseif 'partymember' = 'partymember7'
+            # Party Member 7
+            overhead 'Looking for party member 7' 55
+        
+        elseif 'partymember' = 'partymember8'
+            # Party Member 8
+            overhead 'Looking for party member 8' 55
+            
+        elseif 'partymember' = 'partymember9'
+            # Party Member 9
+            overhead 'Looking for party member 9' 55
+        
+        elseif 'partymember' = 'partymember10'
+            # Party Member 10
+            overhead 'Looking for party member 10' 55
+            
+        endif
+        pause 1000
+    endfor
+endwhile
+
+if dead
+    replay
+endif

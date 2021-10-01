@@ -1,0 +1,33 @@
+# Uncomment to ask each time
+# unsetvar 'runebook_new'
+
+# Ask which runetome/runebook to use.
+if not varexist 'runebook_new'
+    overhead 'Select your new runebook'
+    setvar! 'runebook_new'
+endif
+
+clearignore
+while findtype 7956 'backpack' 0 as 'marked_rune'
+    ignore 'marked_rune'
+endwhile
+
+
+if findtype 7956 'backpack' 2882 as 'blank_rune'
+    hotkey 'Mark'
+    waitfortarget
+    target 'blank_rune'
+    wait 500
+    if findtype 7956 'backpack' 0 as 'new_marked_rune'
+        getlabel 'new_marked_rune' 'rune_label'
+        if 'unknown location' in 'rune_label'
+            overhead '5 seconds to enter new rune name'
+            dclick 'new_marked_rune'
+            waitforprompt 'any'
+            wait 5000
+        endif
+        lift 'new_marked_rune' 1
+        drop 'runebook_new' -1 -1 0
+    endif
+endif
+clearignore

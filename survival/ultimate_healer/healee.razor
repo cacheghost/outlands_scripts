@@ -1,0 +1,143 @@
+# Clear
+clearall 
+
+# Tmp unset
+unsetvar 'myhealingitem'
+
+# Setup timers
+createtimer 'healpot time'
+createtimer 'anti pot spam'
+createtimer 'scavenge spam'
+createtimer 'anti heal spam'
+createtimer 'spam run'
+createtimer 'already casting'
+createtimer 'aid time'
+createtimer 'miniheal'
+createtimer 'gheal'
+# If pickup timer is above 300,000 (5 minutes) then attempt to pickup the item.
+createtimer 'pickup item'
+
+# Set timers
+settimer 'anti heal spam' 20000
+settimer 'anti pickup spam' 20000
+settimer 'anti pot spam' 20000
+settimer 'healpot time' 20000
+settimer 'scavenge spam' 20000
+settimer 'spam run' 20000
+settimer 'already casting' 20000
+settimer 'aid time' 20000
+settimer 'pickup item' 300001
+settimer 'miniheal' 20000
+settimer 'gheal' 20000
+
+# If healing item isnt set, set it.
+if not varexist 'myhealingitem'
+    overhead 'Select the item given to you from the healer' 44
+    setvar! 'myhealingitem'
+endif
+
+# Main Execution Loop
+while not dead
+    # If item is on the ground and pickup timer is past 5 minutes, attempt to pickup item.
+    while find 'myhealingitem' 'ground' and timer 'pickup item' > 300000
+        # Prevent scavenge message spam
+        if timer 'scavenge spam' > 5000
+            overhead 'Attempting to grab item' 44
+            settimer 'scavenge spam' 0
+        endif
+        
+        if hits = maxhits
+            if find 'myhealingitem' 'ground' -1 1 2
+                hotkey 'Clear Drag/Drop Queue'
+                overhead 'Lifting item'
+                lift 'myhealingitem' 1
+                wait 500
+                drop 'backpack'
+            else
+                if timer 'spam run' > 2000
+                    overhead 'Run nearby item' 33
+                    settimer 'spam run' 0
+                endif
+            endif
+        endif
+    endwhile
+    
+    # If hurt, drop item and reset pickup timer to 0.
+    if hits < maxhits
+        # Drop item to alert nearby healers
+        if find 'myhealingitem' 'backpack'
+            hotkey 'Clear Drag/Drop Queue' 
+            # Drop item
+            lift 'myhealingitem' 1
+            wait 1000
+            droprelloc 1 1 0
+        endif
+        
+        # Bandage self if you can
+        if skill 'Healing' > 50
+            if insysmsg 'You begin applying the bandages'
+                settimer 'aid time' 0
+            endif
+            if hits < maxhits and timer 'aid time' > 10250 
+                hotkey 'bandage self'
+                settimer 'aid time' 0
+            endif
+        endif
+        
+        # Magery Survival
+        if skill 'Magery' > 59 and timer 'anti heal spam' > 2000 
+            # Spell interrupt warnings, pause to give a chance to run away
+            if insysmsg 'concentration is disturbed'
+                settimer 'anti heal spam' 0
+            endif
+
+            # If hurt, attempt to heal
+            if hits < 55 and timer 'already casting' > 2000
+                # If casting something already, wait before attempting to heal.
+                if insysmsg 'already casting' or insysmsg 'frozen and cannot move'
+                    settimer 'already casting' 0
+                endif
+
+                # If under 35 HP and we cant heal pot, quick heal and reset heal timer
+                # Interrupt and clearall targets before attempting to self-cast to avoid harming self
+                if hits < 35 and timer 'miniheal' > 500 and timer 'healpot time' < 10000 and timer 'anti pot spam' < 1000
+                    interrupt
+                    clearall
+                    hotkey '> Mini-Heal/Cure Self'
+                    settimer 'miniheal' 0
+                elseif hits < maxhits and timer 'gheal' > 1250
+                    # Otherwise just use greater heal to heal up. 
+                    interrupt
+                    clearall
+                    hotkey '> Greater Heal/Cure Self'
+                    settimer 'gheal' 0
+                endif
+            endif
+        endif
+        
+        # Reset pickup timer to leave item on ground.
+        settimer 'pickup item' 0
+    else
+        # If full health, keep pickup item timer past 5 minutes.
+        settimer 'pickup item' 300001
+    endif
+    
+    # Cure Survival
+    if poisoned 'self' and timer 'anti pot spam' > 1000
+        overhead 'Used: Cure Potion' 33
+        hotkey 'Drink Cure' 
+        settimer 'anti pot spam' 0
+    endif
+
+    # Heal Potion
+    if hits < 35 and timer 'healpot time' > 10000 and timer 'anti pot spam' > 1000
+        overhead 'Used: Heal Potion' 33
+        hotkey 'Drink Heal'
+        settimer 'healpot time' 0
+        settimer 'anti pot spam' 0
+    endif 
+endwhile
+
+if dead
+    stop
+endif
