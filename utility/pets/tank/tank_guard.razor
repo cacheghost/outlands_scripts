@@ -1,0 +1,9 @@
+wait 150
+if not varexist 'tank1'
+    overhead 'Select tank pet 1'
+    setvar! 'tank1'
+endif
+
+# Follow
+menu 'tank1' 4
+wait 150

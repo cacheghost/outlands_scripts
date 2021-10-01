@@ -1,0 +1,8 @@
+createtimer 'hiding'
+settimer 'hiding' 20000
+while not hidden
+    if timer 'hiding' > 10000
+        hotkey 'Hiding'
+        settimer 'hiding' 0
+    endif
+endwhile

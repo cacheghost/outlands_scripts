@@ -1,0 +1,84 @@
+#simple mining macro | captcha resilient
+
+# pack horse = 291
+# pack llama = 292
+
+# Setup packy
+# overhead 'Select your packy'
+# organizer 5 'set'
+
+# Equip a pickaxe
+if rhandempty
+dclicktype '3718'
+wait 1000
+endif
+
+# Use pickaxe for the first time
+hotkey 'use item in hand'
+wait 500
+
+# Begin captcha resilient loop
+while not dead
+    # Tracking
+    if insysmsg 'Now tracking:'
+        overhead 'Tracking Found!' 33
+        overhead 'Recalling' 33
+        say 'all follow me'
+        ################################################
+        # CHANGE THIS SECTION TO YOUR RECALL MACRO
+        ################################################
+        hotkey 'Recall'
+        waitfortarget
+        target 0x4372BA6C
+        ################################################
+    endif
+
+    # World save pause
+    if insysmsg 'world is saving'
+        wait 4000
+    endif
+    
+    # Stop if over weight | best to adjust to (maxweight - 10)
+    if weight >= 380
+        # Check if there is a friendly packy nearby
+        if findtype 291 'ground' -1 1 3 as 'mypackhorse'
+            if noto 'mypackhorse' = friend
+                if findtype 6585 'backpack'
+                    overhead 'Moving ore to packy!' 55
+                    organizer 5
+                    pause 1000
+                endif
+            else
+                overhead 'You are over weight!' 55
+                stop
+            endif
+        elseif findtype 292 'ground' -1 1 3 as 'mypackllama'
+            if noto 'mypackllama' = friend
+                if findtype 6585 'backpack'
+                    overhead 'Moving ore to packy!' 55
+                    organizer 5
+                    pause 1000
+                endif
+            else
+                overhead 'You are over weight!' 55
+                stop
+            endif
+        else
+                overhead 'You are over weight!' 55
+                stop
+        endif
+    endif
+    
+    # Captcha resilient use of pickaxe
+    if insysmsg 'dig some'
+        hotkey 'use item in hand'
+    elseif insysmsg 'fail'
+        hotkey 'use item in hand'
+    elseif insysmsg "You do not see"
+        overhead 'No ore here! Move!' 55
+        hotkey 'use item in hand'
+    endif
+    
+    # Quick pause
+    wait 500
+endwhile

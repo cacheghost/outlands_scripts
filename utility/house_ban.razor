@@ -1,0 +1,31 @@
+while not dead
+    if not timerexists "skill timer"
+        createtimer "skill timer"
+    endif
+
+    if timer "skill timer" > 10100
+        hotkey 'Cancel Current Target'
+        skill 'detectinghidden'
+        waitfortarget 5000
+        target 'self'
+        settimer "skill timer" 0
+        pause 100
+    endif
+
+    hotkey 'Next Grey Humanoid Target'
+    if not insysmsg "No one matching that was found"
+        hotkey 'Cancel Current Target'
+        say "Remove Thyself"
+        pause 250
+        lasttarget
+    endif
+    
+    hotkey 'Next Murderer Humanoid Target'
+    if not insysmsg "No one matching that was found"
+        hotkey 'Cancel Current Target'
+        say "Remove Thyself"
+        pause 250
+        lasttarget
+    endif
+    pause 500
+endwhile

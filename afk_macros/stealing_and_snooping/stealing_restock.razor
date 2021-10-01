@@ -1,0 +1,18 @@
+# Setup packy
+overhead 'Select packy'
+organizer 9 'set'
+
+while not dead
+    # While there is kindling on the ground, pick it up.
+    while findtype 7154 'ground' as 'myitem'
+        overhead 'Picking up'
+        lift 'myitem' 250
+        wait 500
+        overhead 'Dropping kindling into backpack'
+        drop 'backpack'
+        wait 500
+        overhead 'Running organizer to transfer kindling to packy'
+        organizer 9
+        wait 1000
+    endwhile
+endwhile

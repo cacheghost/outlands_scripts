@@ -1,0 +1,32 @@
+clearsysmsg
+
+createtimer 'refresh'
+createtimer 'cast pause'
+
+unsetvar 'loretarget'
+
+overhead 'Select lore target'
+setvar! 'loretarget'
+
+settimer 'refresh' 10000
+settimer 'cast pause' 10000
+
+while not dead
+    if find 'loretarget' 'ground' -1 1 -1
+        
+        if insysmsg 'concentration is disturbed'
+            settimer 'cast pause' 0
+            clearsysmsg
+        endif
+        
+        if timer 'refresh' > 5000 and timer 'cast pause' > 10000
+            interrupt
+            hotkey 'Cancel Current Target'
+            hotkey 'Clear Target Queue'
+            hotkey 'Animal Lore'
+            waitfortarget 500
+            target 'loretarget'
+            settimer 'refresh' 0
+        endif
+    endif
+endwhile

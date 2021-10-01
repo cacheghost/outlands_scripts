@@ -1,0 +1,41 @@
+unsetvar 'restock_shelf'
+overhead 'Select restock shelf'
+setvar! 'restock_shelf'
+
+wait 600
+
+unsetvar 'keg'
+overhead 'Select keg'
+setvar! 'keg'
+
+dclick 'restock_shelf'
+
+while not dead 
+    
+    # Restock from backpack
+    overhead 'Restocking from backpack'
+    gumpresponse 4
+    #waitfortarget
+    target 'backpack'
+    #waitforgump 3232825965
+    wait 600
+    
+    # Resupply
+    overhead 'Resupplying'
+    gumpresponse 7
+    #waitforgump 3232825965
+    wait 600
+    
+    overhead 'Pouring potions'
+    # Pour potion
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+    dclick 'keg'
+    wait 600
+endwhile

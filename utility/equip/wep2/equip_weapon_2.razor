@@ -1,0 +1,16 @@
+if varexist 'weapon_2'
+    if findlayer self lefthand as 'myweapon'
+        lift 'myweapon'
+        drop 'backpack'
+        lift 'weapon_2'
+        drop self LeftHand      
+    elseif findlayer self righthand as 'myweapon'
+        lift 'myweapon'
+        drop 'backpack'
+        lift 'weapon_2'
+        drop self RightHand
+    else
+        lift 'weapon_2'
+        drop self LeftHand
+    endif
+endif

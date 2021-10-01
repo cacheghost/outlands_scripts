@@ -1,0 +1,79 @@
+hotkey 'Recall'
+waitfortarget
+target 0x40F706DE
+# Start party check
+clearsysmsg 
+say '[party'
+wait 500
+# Party Member Message
+clearsysmsg
+gumpresponse 20 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 21 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 22 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 23 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 24 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 25 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 26 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 27 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 28 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+clearsysmsg
+gumpresponse 29 3527489586
+waitforgump 3527489586
+if insysmsg 'message will you send'
+    # setup party member serial
+    promptresponse 'Recalling'
+endif
+gumpclose 3527489586
