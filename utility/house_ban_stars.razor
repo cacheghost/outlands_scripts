@@ -19,8 +19,8 @@ while not dead
         if noto 'lastserial' = friend
         overhead "Ignore Guildmate" 33
         else
-            if "***" in 'seriallabel'
-            overhead "Ignore Red Guildmate" 33
+            if ", ***]" in 'seriallabel'
+                overhead "Ignore Red Guildmate" 33
             else
                 hotkey 'Cancel Current Target'
                 say "i ban thee"
