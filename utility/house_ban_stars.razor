@@ -1,0 +1,33 @@
+while not dead
+    if not timerexists "skill timer"
+        createtimer "skill timer"
+    endif
+
+    if timer "skill timer" > 10100
+        hotkey 'Cancel Current Target'
+        skill 'detectinghidden'
+        waitfortarget 5000
+        target 'self'
+        settimer "skill timer" 0
+        pause 100
+    endif
+
+    hotkey 'Next Humanoid Target'
+    setvar! 'lastserial' lasttarget
+    getlabel 'lastserial' 'seriallabel'
+    if not insysmsg "No one matching that was found"
+        if noto 'lastserial' = friend
+        overhead "Ignore Guildmate" 33
+        else
+            if "***" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            else
+                hotkey 'Cancel Current Target'
+                say "i ban thee"
+                pause 250
+                target 'lastserial'
+                pause 500
+            endif
+        endif
+    endif
+endwhile
