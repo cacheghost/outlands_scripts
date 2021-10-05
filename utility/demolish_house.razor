@@ -1,9 +1,9 @@
 if not varexist 'myhouse_sign'
     overhead 'Select sign'
-    setvar! 'sign'
+    setvar! 'myhouse_sign'
 endif
     
-dclick 'sign'
+dclick 'myhouse_sign'
 waitforgump 2490201206
 gumpresponse 6
 waitforgump 2490201206
