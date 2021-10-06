@@ -29,6 +29,12 @@ while not dead
             continue
         endif
         
+        # If the target is in *** guild, skip.
+        if "[***]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
         # Attempt to ban the target.
         hotkey 'Cancel Current Target'
         say "i ban thee"

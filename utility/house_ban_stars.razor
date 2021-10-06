@@ -22,8 +22,19 @@ while not dead
             continue
         endif
         
+        if noto 'lastserial' = invulnerable
+            overhead "Ignore NPC" 33
+            continue
+        endif
+        
         # If the target is in *** guild, skip.
         if ", ***]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
+        # If the target is in *** guild, skip.
+        if "[***]" in 'seriallabel'
             overhead "Ignore Red Guildmate" 33
             continue
         endif
