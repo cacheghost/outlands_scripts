@@ -12,12 +12,11 @@ overhead 'Restocking/Resupplying'
 
 dclick 'resupply_shelf'
 waitforgump 3232825965
-gumpresponse 4
-wait 500
+gumpresponse 4 3232825965
+wait 150
 target 'mybackpack'
 waitforgump 3232825965
-gumpresponse 7
+gumpresponse 7 3232825965
 waitforgump 3232825965
-gumpclose
-
-overhead 'Finished Restocking/Resupplying'
+gumpclose 
+script main
