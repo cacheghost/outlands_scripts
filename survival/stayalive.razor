@@ -86,7 +86,7 @@ while not dead
     endif
 
     # Cure Survival
-    if poisoned 'self' and timer 'curepot recovery' > 8000 and timer 'potion recovery' > 1000
+    if poisoned 'self' and timer 'potion recovery' > 1000
         overhead 'Used: Cure Potion' 33
         hotkey 'Drink Cure' 
         settimer 'potion recovery' 0

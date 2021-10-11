@@ -1,0 +1,20 @@
+if not timerexists 'cast recovery'
+    createtimer 'cast recovery'
+    settimer 'cast recovery' 1500
+endif 
+
+if not varexist 'target_2'
+    overhead '[Select target 2]' 66
+    @setvar! 'target_2'
+endif
+
+if timer 'cast recovery' > 1500
+    hotkey 'Cure'
+    wait 800
+    target 'target_2'
+    wait 150
+    if insysmsg 'That is too far away'
+        overhead '[Target Too Far!]' 33
+    endif
+endif
+script main

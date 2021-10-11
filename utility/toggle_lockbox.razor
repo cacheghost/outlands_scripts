@@ -2,8 +2,23 @@
 dclicktype 4110 'backpack'
 wft 500
 # If a wooden box is found, try to lock or unlock it
-if findtype 3709 'backpack'
-    targettype 3709 'backpack'
-else
-    targettype 2474 'backpack'
+if findtype 3709 'backpack' as 'mylockbox'
+    target 'mylockbox' 'backpack'
+    wait 150
+    getlabel 'mylockbox' 'lockbox_label'
+    if 'stones' in 'lockbox_label'
+        overhead '[Unlocked]' 33
+    else
+        overhead '[Locked]' 68
+    endif
+elseif findtype 2474 'backpack' as 'mylockbox'
+    target 'mylockbox' 'backpack'
+    wait 150
+    getlabel 'mylockbox' 'lockbox_label'
+    if 'stones' in 'lockbox_label'
+        overhead '[Unlocked]' 33
+    else
+        overhead '[Locked]' 68
+    endif
 endif
+script main

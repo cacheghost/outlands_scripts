@@ -1,16 +1,25 @@
-if varexist 'weapon_2'
-    if findlayer self lefthand as 'myweapon'
-        lift 'myweapon'
-        drop 'backpack'
-        lift 'weapon_2'
-        drop self LeftHand      
-    elseif findlayer self righthand as 'myweapon'
-        lift 'myweapon'
-        drop 'backpack'
-        lift 'weapon_2'
-        drop self RightHand
-    else
-        lift 'weapon_2'
-        drop self LeftHand
-    endif
+if targetexists 'beneficial'
+    target self
 endif
+
+if not varexist 'weapon_2'
+    overhead '[Select Wep 2]'
+    setvar! 'weapon_2'
+endif
+
+overhead '[Equip Wep 2]'
+if findlayer self lefthand as 'myweapon'
+    lift 'myweapon'
+    drop 'backpack'
+    lift 'weapon_2'
+    drop self LeftHand      
+elseif findlayer self righthand as 'myweapon'
+    lift 'myweapon'
+    drop 'backpack'
+    lift 'weapon_2'
+    drop self RightHand
+else
+    lift 'weapon_2'
+    drop self LeftHand
+endif
+script main
