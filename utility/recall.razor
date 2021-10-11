@@ -1,10 +1,36 @@
-hotkey 'Recall'
-waitfortarget
-target 0x40F706DE
+# Determine what character is using script.
+if findtype 3922 'backpack' as 'mydagger'
+    getlabel 'mydagger' 'daggerlabel'
+    if 'blessed' in 'daggerlabel'
+        dclick 'mydagger'
+        waitfortarget
+        target 'self'
+        wait 350
+        @setvar! 'lastserial' lasttarget
+    endif
+endif
+
+if 'lastserial' = '0x64772'
+    # CacheMine
+    overhead "CacheMine Recall"
+    hotkey 'Recall'
+    waitfortarget
+    target 0x402C3F91
+    wait 500
+    walk 'North'
+    walk 'North'
+    walk 'North'
+    dclick 0x44419874
+    dclick 0x44419873
+else
+    overhead "Invalid"
+endif
+
+
 # Start party check
 clearsysmsg 
 say '[party'
-wait 500
+wait 150
 # Party Member Message
 clearsysmsg
 gumpresponse 20 3527489586
