@@ -70,16 +70,18 @@ while not dead
     # TODO
     
     # Target Lock Status
-    if timer 'target_lock_spam' > 5000
-        setvar! 'lastserial' lasttarget
-        if 'lastserial' = 'target_lock'
-            overhead '[Target Locked]'
-        else
-            overhead '[Target Unlocked]' 33
+    if varexist 'target_lock'
+        if timer 'target_lock_spam' > 5000
+            setvar! 'lastserial' lasttarget
+            if 'lastserial' = 'target_lock'
+                overhead '[Target Locked]'
+            else
+                overhead '[Target Unlocked]' 33
+            endif
+            settimer 'target_lock_spam' 0
         endif
-        settimer 'target_lock_spam' 0
     endif
-    
+        
     # Setup weapon to reequip
     if findlayer self lefthand as 'reequip_weapon_left_serial'
         @setvar 'reequip_weapon_left' 'reequip_weapon_left_serial'
