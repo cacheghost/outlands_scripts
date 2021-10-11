@@ -1,4 +1,5 @@
 while not dead
+    clearsysmsg
     if not timerexists "skill timer"
         createtimer "skill timer"
     endif
@@ -13,9 +14,9 @@ while not dead
     unsetvar 'lastserial'
     hotkey 'Next Humanoid Target'
     pause 350
-    setvar! 'lastserial' lasttarget
-    getlabel 'lastserial' 'seriallabel'
     if not insysmsg "No one matching that was found"
+        setvar! 'lastserial' lasttarget
+        getlabel 'lastserial' 'seriallabel'
         # If the target is green, skip.
         if noto 'lastserial' = friend
             overhead "Ignore Guildmate" 33

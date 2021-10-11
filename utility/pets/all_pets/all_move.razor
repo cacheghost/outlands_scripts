@@ -1,14 +1,9 @@
 overhead 'All Move' 44
 wait 150
-# Tank 1 - 2
+# Tank 1
 if not varexist 'tank1'
     overhead 'Select tank pet 1'
     setvar! 'tank1'
-endif
-
-if not varexist 'tank2'
-    overhead 'Select tank pet 2'
-    setvar! 'tank2'
 endif
 
 # DPS 1 - 4
@@ -45,3 +40,4 @@ menu 'dpspet3' 7
 wait 150
 menu 'dpspet4' 7
 wait 150
+script main

@@ -1,0 +1,48 @@
+removelist 'IgnoreSerials'
+createlist 'IgnoreSerials'
+while not dead
+    if not timerexists "skill timer"
+        createtimer "skill timer"
+    endif
+
+    if timer "skill timer" > 10100
+        hotkey 'Cancel Current Target'
+        skill 'detectinghidden'
+        waitfortarget 5000
+        target 'self'
+        settimer "skill timer" 0
+    endif
+    unsetvar 'lastserial'
+    hotkey 'Next Humanoid Target'
+    pause 150
+    setvar! 'lastserial' lasttarget
+    getlabel 'lastserial' 'seriallabel'
+    if not insysmsg "No one matching that was found"
+        # If the target is green, skip.
+        if noto 'lastserial' = friend
+            overhead "Ignore Guildmate" 33
+            continue
+        endif
+        
+        # If the target is in *** guild, skip.
+        if ", ***]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
+        # Check if we are ignoring this serial
+        if not inlist 'IgnoreSerials' 'lastserial'
+            # Attempt to ban the target.
+            hotkey 'Cancel Current Target'
+            say "i ban thee"
+            pause 250
+            target 'lastserial'
+            pause 500
+            if insysmsg "cannot eject a friend"
+                overhead "Ignore Friend"
+                pushlist 'IgnoreSerials' 'lastserial'
+            endif
+        endif
+        
+    endif
+endwhile

@@ -1,0 +1,271 @@
+
+# Check timer initialization
+if not timerexists 'bandage time'
+    createtimer 'bandage time'
+    settimer 'bandage time' 20000
+endif
+
+if not timerexists 'curepot recovery'
+    createtimer 'curepot recovery'
+    settimer 'curepot recovery' 20000
+endif
+
+if not timerexists 'healpot recovery'
+    createtimer 'healpot recovery'
+    settimer 'healpot recovery' 20000
+endif
+
+if not timerexists 'potion recovery'
+    createtimer 'potion recovery'
+    settimer 'potion recovery' 20000
+endif
+
+if not timerexists 'castspell recovery'
+    createtimer 'castspell recovery'
+    settimer 'castspell recovery' 20000
+endif
+
+if not timerexists 'stayalive text'
+    createtimer 'stayalive text'
+endif
+
+if not timerexists 'low mana'
+    createtimer 'low mana'
+endif
+
+if not timerexists 'next free cure'
+    createtimer 'next free cure'
+endif
+
+if not timerexists 'target_lock_spam'
+    createtimer 'target_lock_spam'
+    settimer 'target_lock_spam' 20000
+endif
+
+# Main Loop
+while not dead
+    ####################################################
+    # Overhead Messages and Global Timers
+    ####################################################
+    # Display script running every 30 seconds. 
+    if timer 'stayalive text' > 30000
+        overhead 'Stay Alive Running!' 66
+        settimer 'stayalive text' 0
+    endif
+    
+    # Free Cure Potion Alert
+    if timer 'next free cure' > 30000
+        if timer 'next free cure' > 60000
+            #
+        else
+            overhead '[Free Cure Ready]'
+            settimer 'next free cure' 60001
+        endif
+    endif
+    
+    # World Save timer and warning
+    # TODO
+    
+    # Explosion Pot Timer
+    # TODO
+    
+    # Target Lock Status
+    if timer 'target_lock_spam' > 5000
+        setvar! 'lastserial' lasttarget
+        if 'lastserial' = 'target_lock'
+            overhead '[Target Locked]'
+        else
+            overhead '[Target Unlocked]' 33
+        endif
+        settimer 'target_lock_spam' 0
+    endif
+    
+    # Setup weapon to reequip
+    if findlayer self lefthand as 'reequip_weapon_left_serial'
+        @setvar 'reequip_weapon_left' 'reequip_weapon_left_serial'
+    elseif findlayer self righthand as 'reequip_weapon_right_serial'
+        @setvar 'reequip_weapon_right' 'reequip_weapon_right_serial'
+    endif
+    
+    # Disarm Reequip Timer
+    if insysmsg 'Their attack disarms you'
+        overhead '[Disarmed!]' 33
+        clearsysmsg 
+    endif
+    
+    if insysmsg 'no longer disarmed'
+        overhead '[Reequip]' 44
+        if varexist 'reequip_weapon_left'
+            lift 'reequip_weapon_left' 'backpack'
+            drop self LeftHand      
+        elseif varexist 'reequip_weapon_right'
+            lift 'myweapon'
+            drop self RightHand
+        endif
+        clearsysmsg
+    endif
+    
+    # Unset weapon so that its fresh each run.
+    if varexist 'reequip_weapon_left'
+        #@unsetvar 'reequip_weapon_left'
+    endif
+    if varexist 'reequip_weapon_right'
+        #@unsetvar 'reequip_weapon_right'
+    endif
+    
+    # Hamstring
+    if insysmsg 'will now attempt to hamstring'
+        overhead '[Hamstring: On]' 68
+        clearsysmsg
+    elseif insysmsg 'refrain from making hamstring'
+        overhead '[Hamstring: Off]' 33
+        clearsysmsg
+    elseif insysmsg 'fail to hamstring'
+        overhead '[Hamstring Fail]' 33
+        clearsysmsg
+    endif
+    
+    # Disarm
+    if insysmsg 'will now attempt to disarm'
+        overhead '[Disarm: On]' 68
+        clearsysmsg
+    elseif insysmsg 'refrain from making disarm'
+        overhead '[Disarm: Off]' 33
+        clearsysmsg
+    elseif insysmsg 'fail to disarm'
+        overhead '[Disarm Fail]' 33
+        clearsysmsg 
+    endif
+    
+    # Interrupt
+    if insysmsg 'concentration is disturbed'
+        overhead '[Interrupted]' 125
+        clearsysmsg
+    endif
+    
+    # Already Casting
+    if insysmsg 'You are already casting'
+        overhead '[Already Casting]' 88
+        clearsysmsg
+    endif
+    
+    # Ranover
+    if insysmsg 'you shove them out of the way'
+        overhead '[Ranover Somebody]' 44
+        clearsysmsg
+    endif
+    
+    # Ranover Invis
+    if insysmsg 'you shove something invisible'
+        overhead '[Ranover Invis]' 44
+        clearsysmsg
+    endif
+    
+    # Resist Poison
+    if insysmsg 'You resist a poison effect'
+        overhead '[Resist Poison]' 68
+        clearsysmsg
+    endif
+    
+    # Resist Disease
+    if insysmsg 'You resist a disease effect'
+        overhead '[Resist Disease]' 68
+        clearsysmsg
+    endif
+    
+    # Resist Bleed
+    if insysmsg 'You resist a bleed effect'
+        overhead '[Resist Bleed]' 68
+        clearsysmsg
+    endif
+    
+    # Stealth Refresh
+    if insysmsg 'ready to continue stealthing'
+        overhead '[Stealth Refresh]' 68
+        clearsysmsg
+    endif
+    
+    # Hinder Target
+    if insysmsg 'hinders your target'
+        overhead '[Hindered Target]' 68
+        clearsysmsg
+    endif
+    
+    # Mana Refund
+    if insysmsg 'spellbook generates mana'
+        overhead '[Mana Refund]' 88
+        clearsysmsg
+    endif
+    
+    # Charged Spell
+    if insysmsg 'charge your spell'
+        overhead '[Charged Spell]' 125
+        clearsysmsg
+    endif
+    
+    # Wizardry Hinder Ready
+    if insysmsg 'cast a wizardry lightning spell again'
+        overhead '[Lightning Hinder Ready]' 44
+        clearsysmsg
+    endif
+    
+    ####################################################
+    # Bandage Survival and non-revealing actions.
+    ####################################################
+    if skill 'Healing' >= 50
+        if insysmsg 'You begin applying the bandages'
+            settimer 'bandage time' 0
+            clearsysmsg
+        endif
+        if hits < maxhits and timer 'bandage time' > 11000 
+            hotkey 'bandage self'
+            settimer 'bandage time' 0
+        endif
+    endif
+    
+    # If paralyzed, attempt to pouch.
+    if insysmsg 'you cannot move!'
+        overhead '[POUCH]' 88
+        say [pouch
+    endif
+    
+    # Food Buff
+    # TODO
+    
+    # Disarm check and rearm
+    # TODO
+    
+    ####################################################################
+    # Hidden check, will avoid any actions below this marker if hidden.
+    ####################################################################
+    if hidden
+        continue
+    endif
+    
+    # Cure Survival
+    if poisoned 'self' and timer 'curepot recovery' > 8000 and timer 'potion recovery' > 1000
+        overhead 'Used: Cure Potion' 33
+        hotkey 'Drink Cure' 
+        if insysmsg 'receive a free cure potion'
+            settimer 'next free cure' 0
+        endif
+        if insysmsg 'feel cured of poison'
+            settimer 'curepot recovery' 0
+        endif
+        settimer 'potion recovery' 0
+    endif
+
+    # Heal Potion
+    if hits < 35 and timer 'healpot recovery' > 10000 and timer 'potion recovery' > 1000
+        overhead 'Used: Heal Potion' 33
+        hotkey 'Drink Heal'
+        settimer 'healpot recovery' 0
+        settimer 'potion recovery' 0
+    endif 
+
+endwhile
+
+if dead
+    overhead 'Stay Alive Failed!'
+    stop
+endif

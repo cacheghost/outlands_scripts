@@ -4,7 +4,7 @@ createtimer 'rangecheck spam'
 
 # Unset any previous pets
 if varexist 'pet'
-    unsetvar 'pet'
+    @unsetvar 'pet'
 endif
 
 # Skip waiting the full cycle before Starting
@@ -16,7 +16,7 @@ while not dead
     # Setup target
     if not varexist 'pet'
         overhead 'Select the pet to tame'
-        setvar! 'pet'
+        @setvar! 'pet'
     endif
     
     # Attempt to tame pet

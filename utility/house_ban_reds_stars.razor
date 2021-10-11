@@ -13,13 +13,17 @@ while not dead
     unsetvar 'lastserial'
     hotkey 'Next Murderer Humanoid Target'
     pause 350
-    setvar! 'lastserial' lasttarget
     if not insysmsg "No one matching that was found"
+        setvar! 'lastserial' lasttarget
         getlabel 'lastserial' 'seriallabel'
-    
         # If the target is green, skip.
         if noto 'lastserial' = friend
             overhead "Ignore Guildmate" 33
+            continue
+        endif
+        
+        if noto 'lastserial' = invulnerable
+            overhead "Ignore NPC" 33
             continue
         endif
         
