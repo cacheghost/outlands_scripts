@@ -42,13 +42,18 @@ if not timerexists 'target_lock_spam'
     settimer 'target_lock_spam' 20000
 endif
 
+if not timerexists 'explo_pot_spam'
+    createtimer 'explo_pot_spam'
+    settimer 'explo_pot_spam' 20000
+endif
+
 # Main Loop
 while not dead
     ####################################################
     # Overhead Messages and Global Timers
     ####################################################
     # Display script running every 30 seconds. 
-    if timer 'stayalive text' > 30000
+    if timer 'stayalive text' > 15000
         overhead 'Stay Alive Running!' 66
         settimer 'stayalive text' 0
     endif
@@ -67,14 +72,36 @@ while not dead
     # TODO
     
     # Explosion Pot Timer
-    # TODO
+    if timerexists 'explo pot'
+        if timer 'explo pot' >= 35000 and timer 'explo_pot_spam' > 5000
+            #
+        elseif timer 'explo pot' >= 30000 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot Ready]' 68
+            settimer 'explo_pot_spam' 0
+        elseif timer 'explo pot' >= 25000 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot - 5 sec]' 55
+            settimer 'explo_pot_spam' 0
+        elseif timer 'explo pot' >= 20000 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot - 10 sec]' 55
+            settimer 'explo_pot_spam' 0
+        elseif timer 'explo pot' >= 15000 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot - 15 sec]' 55
+            settimer 'explo_pot_spam' 0
+        elseif timer 'explo pot' >= 10000 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot - 20 sec]' 55
+            settimer 'explo_pot_spam' 0
+        elseif timer 'explo pot' >= 5000 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot - 25 sec]' 55
+            settimer 'explo_pot_spam' 0
+        endif
+    endif
     
     # Target Lock Status
     if varexist 'target_lock'
         if timer 'target_lock_spam' > 5000
             setvar! 'lastserial' lasttarget
             if 'lastserial' = 'target_lock'
-                overhead '[Target Locked]'
+                overhead '[Target Locked]' 44
             else
                 overhead '[Target Unlocked]' 33
             endif

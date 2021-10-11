@@ -1,9 +1,15 @@
-unsetvar 'myexplotarget'
-hotkey 'Telekinesis'
-waitfortarget
-setvar! 'myexplotarget'
-if varexist 'myexplotarget'
-    dclicktype 3853 'backpack'
-    waitfortarget 
-    target 'myexplotarget'
+if varexist 'target_lock'
+    hotkey 'Telekinesis'
+    wait 1100
+    target 'target_lock'
+    dclicktype 3853 'backpack' 
+    wait 150
+    target 'target_lock'
+    if not timerexists 'explo pot'
+        createtimer 'explo pot'
+    endif
+    if timerexists 'explo pot'
+        settimer 'explo pot' 0
+    endif
 endif
+script main
