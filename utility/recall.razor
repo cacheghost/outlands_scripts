@@ -3,7 +3,7 @@ if findtype 3922 'backpack' as 'mydagger'
     getlabel 'mydagger' 'daggerlabel'
     if 'blessed' in 'daggerlabel'
         dclick 'mydagger'
-        waitfortarget
+        wait 500
         target 'self'
         wait 350
         @setvar! 'lastserial' lasttarget
@@ -14,14 +14,40 @@ if 'lastserial' = '0x64772'
     # CacheMine
     overhead "CacheMine Recall"
     hotkey 'Recall'
-    waitfortarget
+    wait 2100
     target 0x402C3F91
-    wait 500
-    walk 'North'
-    walk 'North'
-    walk 'North'
-    dclick 0x44419874
-    dclick 0x44419873
+    
+    # Enter Crew Fortress
+    while not position 4052 937 9
+        walk 'North'
+        wait 150
+    endwhile
+    # Close first doors
+    while findtype 1654 'ground' -1 -1 4 or findtype 1656 'ground' -1 -1 4
+        dclicktype 1654 'ground'
+        dclicktype 1656 'ground'
+        wait 150
+    endwhile
+    # Move further into house
+    while not position 4052 933 9
+        walk 'North'
+        wait 150
+    endwhile
+    # Close second doors
+    while findtype 1654 'ground' -1 -1 4 or findtype 1656 'ground' -1 -1 4
+        dclicktype 1654 'ground'
+        dclicktype 1656 'ground'
+        wait 150
+    endwhile
+    # Go to corner
+    while not position 4054 933 9
+        walk 'East'
+        wait 150
+    endwhile
+    while not position 4054 937 9
+        walk 'South'
+        wait 150
+    endwhile
 else
     overhead "Invalid"
 endif
