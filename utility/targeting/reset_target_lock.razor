@@ -1,12 +1,12 @@
-while not dead
-    if varexist 'target_lock'
-        hotkey 'Next Humanoid Target'
-        wait 150
-        @setvar! 'current_target_serial' lasttarget 
-        if 'current_target_serial' = 'target_lock'
-            overhead '[Target Lock Reset]' 68
-            script main
-        endif
-    endif
-endwhile
+if varexist 'target_lock'
+    while not dead
+            hotkey 'Next Humanoid Target'
+            wait 150
+            @setvar! 'current_target_serial' lasttarget 
+            if 'current_target_serial' = 'target_lock'
+                overhead '[Target Lock Reset]' 68
+                script main
+            endif
+    endwhile
+endif
 script main
