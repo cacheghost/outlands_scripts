@@ -2,7 +2,7 @@
 #equip a hatchet
 if lhandempty
     dclicktype '3908'
-wait 500
+    wait 500
 endif
 #use hatchet for the first time
 hotkey 'use item in hand'
@@ -18,9 +18,7 @@ while not dead
         ################################################
         # CHANGE THIS SECTION TO YOUR RECALL MACRO
         ################################################
-        hotkey 'Recall'
-        waitfortarget
-        target 0x4372BA6C
+        script recall
         ################################################
     endif
 
@@ -37,18 +35,18 @@ while not dead
     if insysmsg 'you chop some'
         wait 333
         hotkey 'use item in hand'
-        waitfortarget 
+        wft 333 
         target 'self'
-        elseif insysmsg 'you hack at the tree'
+    elseif insysmsg 'you hack at the tree'
         wait 333
         hotkey 'use item in hand'
-        waitfortarget 
+        wft 333 
         target 'self'
     elseif insysmsg "You do not see"
         overhead 'No wood here! Move! Move! Move!' 55
-wait 3000
+        wait 3000
         hotkey 'use item in hand'
-        waitfortarget 
+        wft 333 
         target 'self'
     endif
 endwhile
