@@ -270,7 +270,7 @@ while not dead
     
     # Cure Survival
     if poisoned 'self' and timer 'curepot recovery' > 8000 and timer 'potion recovery' > 1000
-        overhead 'Used: Cure Potion' 33
+        overhead '[Cure Pot]' 68
         hotkey 'Drink Cure' 
         if insysmsg 'receive a free cure potion'
             settimer 'next free cure' 0
@@ -283,7 +283,7 @@ while not dead
 
     # Heal Potion
     if hits < 35 and timer 'healpot recovery' > 10000 and timer 'potion recovery' > 1000
-        overhead 'Used: Heal Potion' 33
+        overhead '[GHeal Pot]' 68
         hotkey 'Drink Heal'
         settimer 'healpot recovery' 0
         settimer 'potion recovery' 0
