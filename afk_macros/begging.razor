@@ -1,0 +1,33 @@
+clearignore
+removelist 'IgnoreNPC'
+wait 350
+createlist 'IgnoreNPC'
+while not dead 
+    hotkey 'Next Humanoid Target'
+    wait 350
+    @setvar! 'lastserial' lasttarget
+    if noto 'lastserial' = invulnerable and not inlist 'IgnoreNPC' 'lastserial'
+        if not findlayer lasttarget backpack
+            if findtype 3922 'backpack' as 'mydagger'
+                getlabel 'mydagger' 'daggerlabel'
+                if 'blessed' in 'daggerlabel'
+                    dclick 'mydagger'
+                    wait 500
+                    target 'lastserial'
+                    wait 350
+                endif
+            endif
+            
+            if insysmsg 'use a bladed item on that'
+                # Close to NPC
+                hotkey 'Begging'
+                wait 800
+                target 'lastserial'
+                wait 350
+                overhead 'Ignoring NPC'
+                pushlist 'IgnoreNPC' 'lastserial'
+            endif
+        endif
+    endif
+endwhile
+
