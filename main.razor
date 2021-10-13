@@ -99,7 +99,7 @@ while not dead
     # Target Lock Status
     if varexist 'target_lock'
         if timer 'target_lock_spam' > 5000
-            setvar! 'lastserial' lasttarget
+            @setvar! 'lastserial' lasttarget
             if 'lastserial' = 'target_lock'
                 overhead '[Target Locked]' 44
             else
@@ -110,10 +110,18 @@ while not dead
     endif
         
     # Setup weapon to reequip
-    if findlayer self lefthand as 'reequip_weapon_left_serial'
-        @setvar 'reequip_weapon_left' 'reequip_weapon_left_serial'
-    elseif findlayer self righthand as 'reequip_weapon_right_serial'
-        @setvar 'reequip_weapon_right' 'reequip_weapon_right_serial'
+    if not varexist 'reequip_weapon_left'
+        if findlayer self lefthand as 'reequip_weapon_left_serial'
+            overhead '[Setup Weapon Left]'
+            @setvar! 'reequip_weapon_left' 'reequip_weapon_left_serial'
+        endif
+    endif
+    
+    if not varexist 'reequip_weapon_right'
+        if findlayer self righthand as 'reequip_weapon_right_serial'
+            overhead '[Setup Weapon Right]'
+            @setvar! 'reequip_weapon_right' 'reequip_weapon_right_serial'
+        endif
     endif
     
     # Disarm Reequip Timer
@@ -123,7 +131,7 @@ while not dead
     endif
     
     if insysmsg 'no longer disarmed'
-        overhead '[Reequip]' 44
+        overhead '[Reequip Weapon]' 44
         if varexist 'reequip_weapon_left'
             lift 'reequip_weapon_left' 'backpack'
             drop self LeftHand      
@@ -136,10 +144,43 @@ while not dead
     
     # Unset weapon so that its fresh each run.
     if varexist 'reequip_weapon_left'
-        #@unsetvar 'reequip_weapon_left'
+        if findlayer self lefthand as 'reequip_weapon_left_serial'
+            if 'reequip_weapon_left' = 'reequip_weapon_left_serial'
+                # Wearing the setup weapon
+            else
+                # Wearing a new weapon, setup.
+            overhead '[Setup Weapon Left]'
+                @setvar! 'reequip_weapon_left' 'reequip_weapon_left_serial'
+            endif
+        else
+            if find 'reequip_weapon_left' 'backpack'
+                # Weapon is in backpack.
+            else
+                # Unset weapon, not in backpack or wearing.
+                overhead '[Removed Weapon Left]'
+                @unsetvar 'reequip_weapon_left'
+            endif
+        endif
     endif
+    
     if varexist 'reequip_weapon_right'
-        #@unsetvar 'reequip_weapon_right'
+        if findlayer self righthand as 'reequip_weapon_right_serial'
+            if 'reequip_weapon_right' = 'reequip_weapon_right_serial'
+                # Wearing the setup weapon
+            else
+                # Wearing a new weapon, setup.
+                overhead '[Setup Weapon Right]'
+                @setvar! 'reequip_weapon_right' 'reequip_weapon_right_serial'
+            endif
+        else
+            if find 'reequip_weapon_right' 'backpack'
+                # Weapon is in backpack.
+            else
+                # Unset weapon, not in backpack or wearing.
+                overhead '[Removed Weapon Right]'
+                @unsetvar 'reequip_weapon_right'
+            endif
+        endif
     endif
     
     # Hamstring
