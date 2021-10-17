@@ -1,0 +1,19 @@
+if not timerexists 'tracking'
+    createtimer 'tracking'
+    settimer 'tracking' 10001
+endif
+if timer 'tracking' > 10000
+    gumpclose 4267467659
+    hotkey 'Tracking'
+    wait 150
+    gumpresponse 2 4267467659
+    waitforgump 4267467659
+    for 20
+        gumpresponse 3 4267467659
+        waitforgump 4267467659
+        if ingump 'daemon' 4267467659
+            overhead '[Daemon Found]' 55
+        endif
+    endfor
+    gumpclose 4267467659
+endif
