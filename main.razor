@@ -20,13 +20,14 @@ if not timerexists 'potion recovery'
     settimer 'potion recovery' 20000
 endif
 
-if not timerexists 'castspell recovery'
-    createtimer 'castspell recovery'
-    settimer 'castspell recovery' 20000
+if not timerexists 'cast recovery'
+    createtimer 'cast recovery'
+    settimer 'cast recovery' 20000
 endif
 
 if not timerexists 'stayalive text'
     createtimer 'stayalive text'
+    overhead 'Stay Alive Starting!' 66
 endif
 
 if not timerexists 'low mana'
@@ -35,6 +36,12 @@ endif
 
 if not timerexists 'next free cure'
     createtimer 'next free cure'
+    settimer 'next free cure' 60001
+endif
+
+if not timerexists 'queued_action_spam'
+    createtimer 'queued_action_spam'
+    settimer 'queued_action_spam' 20000
 endif
 
 if not timerexists 'target_lock_spam'
@@ -53,7 +60,7 @@ while not dead
     # Overhead Messages and Global Timers
     ####################################################
     # Display script running every 30 seconds. 
-    if timer 'stayalive text' > 15000
+    if timer 'stayalive text' > 30000
         overhead 'Stay Alive Running!' 66
         settimer 'stayalive text' 0
     endif
@@ -67,6 +74,12 @@ while not dead
             settimer 'next free cure' 60001
         endif
     endif
+    
+    #if queued and timer 'queued_action_spam' >= 1000
+    #    overhead '[Queued Actions]' 33
+    #    settimer 'queued_action_spam' 0
+    #endif
+    
     
     # World Save timer and warning
     # TODO
@@ -112,14 +125,14 @@ while not dead
     # Setup weapon to reequip
     if not varexist 'reequip_weapon_left'
         if findlayer self lefthand as 'reequip_weapon_left_serial'
-            overhead '[Setup Weapon Left]'
+            #overhead '[Setup Weapon Left]' 55
             @setvar! 'reequip_weapon_left' 'reequip_weapon_left_serial'
         endif
     endif
     
     if not varexist 'reequip_weapon_right'
         if findlayer self righthand as 'reequip_weapon_right_serial'
-            overhead '[Setup Weapon Right]'
+            #overhead '[Setup Weapon Right]' 55
             @setvar! 'reequip_weapon_right' 'reequip_weapon_right_serial'
         endif
     endif
@@ -136,7 +149,7 @@ while not dead
             lift 'reequip_weapon_left' 'backpack'
             drop self LeftHand      
         elseif varexist 'reequip_weapon_right'
-            lift 'myweapon'
+            lift 'reequip_weapon_right'
             drop self RightHand
         endif
         clearsysmsg
@@ -149,7 +162,7 @@ while not dead
                 # Wearing the setup weapon
             else
                 # Wearing a new weapon, setup.
-            overhead '[Setup Weapon Left]'
+                #overhead '[Setup Weapon Left]' 55
                 @setvar! 'reequip_weapon_left' 'reequip_weapon_left_serial'
             endif
         else
@@ -157,19 +170,18 @@ while not dead
                 # Weapon is in backpack.
             else
                 # Unset weapon, not in backpack or wearing.
-                overhead '[Removed Weapon Left]'
+                #overhead '[Removed Weapon Left]' 33
                 @unsetvar 'reequip_weapon_left'
             endif
         endif
     endif
-    
     if varexist 'reequip_weapon_right'
         if findlayer self righthand as 'reequip_weapon_right_serial'
             if 'reequip_weapon_right' = 'reequip_weapon_right_serial'
                 # Wearing the setup weapon
             else
                 # Wearing a new weapon, setup.
-                overhead '[Setup Weapon Right]'
+                #overhead '[Setup Weapon Right]' 55
                 @setvar! 'reequip_weapon_right' 'reequip_weapon_right_serial'
             endif
         else
@@ -177,7 +189,7 @@ while not dead
                 # Weapon is in backpack.
             else
                 # Unset weapon, not in backpack or wearing.
-                overhead '[Removed Weapon Right]'
+                #overhead '[Removed Weapon Right]' 33
                 @unsetvar 'reequip_weapon_right'
             endif
         endif
@@ -263,7 +275,7 @@ while not dead
     
     # Mana Refund
     if insysmsg 'spellbook generates mana'
-        overhead '[Mana Refund]' 88
+        overhead '[Mana Refund]' 125
         clearsysmsg
     endif
     
@@ -310,11 +322,16 @@ while not dead
     endif
     
     # Cure Survival
-    if poisoned 'self' and timer 'curepot recovery' > 8000 and timer 'potion recovery' > 1000
+    if poisoned 'self' and timer 'curepot recovery' >= 8000 and timer 'potion recovery' > 1000
         overhead '[Cure Pot]' 68
-        hotkey 'Drink Cure' 
+        hotkey 'Drink Cure'
+        # Set timer for free cure
         if insysmsg 'receive a free cure potion'
             settimer 'next free cure' 0
+        endif
+        wait 150
+        if insysmsg 'was not strong enough to cure your ailment'
+            settimer 'curepot recovery' 8000
         endif
         if insysmsg 'feel cured of poison'
             settimer 'curepot recovery' 0
@@ -323,7 +340,7 @@ while not dead
     endif
 
     # Heal Potion
-    if hits < 35 and timer 'healpot recovery' > 10000 and timer 'potion recovery' > 1000
+    if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
         overhead '[GHeal Pot]' 68
         hotkey 'Drink Heal'
         settimer 'healpot recovery' 0
