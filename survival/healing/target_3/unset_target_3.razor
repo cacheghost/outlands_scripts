@@ -1,3 +1,5 @@
-overhead '[Unset target 3]'
-@unsetvar 'target_3'
+if varexist 'target_3'
+    overhead '[Unset Target 3]'
+    @unsetvar 'target_3'
+endif
 script main

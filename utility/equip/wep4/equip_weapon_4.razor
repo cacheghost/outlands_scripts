@@ -1,25 +1,90 @@
+if queued
+    hotkey 'Clear Drag/Drop Queue'
+    hotkey 'Drop What You are Currently Holding'
+endif
+# Used in dueling since you cannot precast heal.
 if targetexists 'beneficial'
     target self
 endif
 
+# If we havent set our weapon, set it.
 if not varexist 'weapon_4'
-    overhead '[Select Wep 4]'
+    overhead '[Select Weapon 4]' 
     setvar! 'weapon_4'
 endif
 
-overhead '[Equip Wep 4]'
-if findlayer self lefthand as 'myweapon'
-    lift 'myweapon'
-    drop 'backpack'
-    lift 'weapon_4'
-    drop self LeftHand      
-elseif findlayer self righthand as 'myweapon'
-    lift 'myweapon'
-    drop 'backpack'
-    lift 'weapon_4'
-    drop self RightHand
-else
-    lift 'weapon_4'
-    drop self LeftHand
+# Prevent queue freeze
+if not timerexists 'wep recovery'
+    createtimer 'wep recovery'
+    settimer 'wep recovery' 1000
 endif
+
+# If another script hasnt started cast timer, start it and max it out.
+if not timerexists 'cast recovery'
+    createtimer 'cast recovery'
+    settimer 'cast recovery' 1500
+endif
+
+# Check if we are casting
+if timer 'cast recovery' >= 1500 or timer 'wep recovery' >= 1000
+    # We are not casting and weapon recovery is fine.
+    if find 'weapon_4' 'backpack'
+        # Weapon found in backpack.
+        if findlayer self lefthand as 'myweapon'
+            if 'myweapon' != 'weapon_4'
+                # Weapon we are wearing isnt our weapon, change that.
+        overhead '[Equip Weapon 4]' 55
+                lift 'myweapon'
+                drop 'backpack'
+                lift 'weapon_4'
+                drop self LeftHand
+                settimer 'wep recovery' 0
+            endif
+        elseif findlayer self righthand as 'myweapon'
+            if 'myweapon' != 'weapon_4'
+                # Weapon we are wearing isnt our weapon, change that.
+                overhead '[Equip Weapon 4]' 55
+                lift 'myweapon'
+                drop 'backpack'
+                lift 'weapon_4'
+                drop self RightHand
+                settimer 'wep recovery' 0
+            endif
+        else
+            # Not wearing weapon, equip from backpack
+            overhead '[Equip Weapon 4]' 55
+            lift 'weapon_4'
+            drop self LeftHand
+            settimer 'wep recovery' 0
+        endif
+    else
+        if findlayer self lefthand as 'myweapon'
+            if 'myweapon' != 'weapon_4'
+                overhead '[Unset Weapon 4]' 33
+                @unsetvar 'weapon_4'
+            endif
+        elseif findlayer self righthand as 'myweapon'
+            if 'myweapon' != 'weapon_4'
+                overhead '[Unset Weapon 4]' 33
+                @unsetvar 'weapon_4'
+            endif
+        endif
+    endif
+else
+    # We are casting, dont equip weapon.
+    if not timerexists 'ignore spam'
+        createtimer 'ignore spam'
+        settimer 'ignore spam' 1000
+    endif
+    if timer 'ignore spam' >= 1000
+        if timer 'cast recovery' >= 1500
+            overhead '[Ignore Equip For Cast]' 33
+        elseif timer 'wep recovery' >= 1000
+            overhead '[Ignore Equip For Recovery]' 33
+        endif
+        settimer 'ignore spam' 0
+    endif
+endif
+wait 600
+#overhead '[Equip Finished]' 68
 script main

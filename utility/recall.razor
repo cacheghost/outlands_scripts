@@ -48,6 +48,12 @@ if 'lastserial' = '0x64772'
         walk 'South'
         wait 150
     endwhile
+elseif 'lastserial' = '0x22624'
+    # CacheGhost
+    overhead "CacheGhost Recall"
+    hotkey 'Recall'
+    wait 2100
+    target 0x4BC96FFB
 else
     overhead "Invalid"
 endif

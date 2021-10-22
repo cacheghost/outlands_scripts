@@ -1,6 +1,6 @@
 overhead 'All Kill' 44
 
-unsetvar 'allkill_taget'
+unsetvar 'allkill_target'
 overhead 'Select all kill target'
 setvar! 'allkill_target'
 
@@ -9,11 +9,6 @@ wait 150
 if not varexist 'tank1'
     overhead 'Select tank pet 1'
     setvar! 'tank1'
-endif
-
-if not varexist 'tank2'
-    overhead 'Select tank pet 2'
-    setvar! 'tank2'
 endif
 
 # DPS 1 - 4
@@ -77,5 +72,5 @@ else
     wait 150
     target 'allkill_target'
 endif
-waitfortarget
+wait 150
 script main

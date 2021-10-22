@@ -1,25 +1,63 @@
+# Used in dueling since you cannot precast heal.
 if targetexists 'beneficial'
     target self
 endif
 
+# If we havent set our weapon, set it.
 if not varexist 'weapon_3'
-    overhead '[Select Wep 3]'
+    overhead '[Select Weapon 3]' 
     setvar! 'weapon_3'
 endif
 
-overhead '[Equip Wep 3]'
-if findlayer self lefthand as 'myweapon'
-    lift 'myweapon'
-    drop 'backpack'
-    lift 'weapon_3'
-    drop self LeftHand      
-elseif findlayer self righthand as 'myweapon'
-    lift 'myweapon'
-    drop 'backpack'
-    lift 'weapon_3'
-    drop self RightHand
-else
-    lift 'weapon_3'
-    drop self LeftHand
+# Check if we are casting
+if varexist 'weapon_3'
+    # Ignore weapon equip if we are trying to cast.
+    if timerexists 'cast recovery'
+        if timer 'cast recovery' < 1500
+            overhead '[Ignore Equip For Cast]' 33
+        endif
+    endif
+    
+    # Look for weapon to equip
+    if find 'weapon_3' 'backpack'
+        # Weapon found in backpack.
+        if findlayer self lefthand as 'myweapon'
+            if 'myweapon' != 'weapon_3'
+                # Weapon we are wearing isnt our weapon, change that.
+                overhead '[Equip Weapon 3]' 55
+                lift 'myweapon'
+                drop 'backpack'
+                lift 'weapon_3'
+                drop self LeftHand
+            endif
+        elseif findlayer self righthand as 'myweapon'
+            if 'myweapon' != 'weapon_3'
+                # Weapon we are wearing isnt our weapon, change that.
+                overhead '[Equip Weapon 3]' 55
+                lift 'myweapon'
+                drop 'backpack'
+                lift 'weapon_3'
+                drop self RightHand
+            endif
+        else
+            # Not wearing weapon, equip from backpack
+            overhead '[Equip Weapon 3]' 55
+            lift 'weapon_3'
+            drop self LeftHand
+        endif
+    else
+        # We are not wearing the weapon, and its not in backpack. Unset variable
+        if findlayer self lefthand as 'myweapon'
+            if 'myweapon' != 'weapon_3'
+                overhead '[Unset Weapon 3]' 33
+                @unsetvar 'weapon_3'
+            endif
+        elseif findlayer self righthand as 'myweapon'
+            if 'myweapon' != 'weapon_3'
+                overhead '[Unset Weapon 3]' 33
+                @unsetvar 'weapon_3'
+            endif
+        endif
+    endif
 endif
 script main
