@@ -291,6 +291,18 @@ while not dead
         clearsysmsg
     endif
     
+    # Meditating
+    if insysmsg 'enter a meditative trance'
+        overhead '[Meditating]' 506
+        clearsysmsg
+    endif
+    
+    # Stop Meditating
+    if insysmsg 'stop meditating'
+        overhead '[Stop Meditating]' 33
+        clearsysmsg
+    endif
+    
     ####################################################
     # Bandage Survival and non-revealing actions.
     ####################################################
