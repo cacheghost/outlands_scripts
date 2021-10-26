@@ -1,4 +1,8 @@
-overhead '[Select target lock]' 55
-setlasttarget
-setvar! 'target_lock' lasttarget
+if targetexists any
+    script main
+else
+    overhead '[Select target lock]' 55
+    setlasttarget
+    setvar! 'target_lock' lasttarget
+endif
 script main

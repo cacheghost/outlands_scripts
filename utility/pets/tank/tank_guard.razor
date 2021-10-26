@@ -1,10 +1,13 @@
-wait 150
-if not varexist 'tank1'
-    overhead 'Select tank pet 1'
-    setvar! 'tank1'
+overhead '[Tank Guard]' 44
+if skill 'Herding' >= 50
+    if varexist 'tank1'
+        menu 'tank1' 4
+        wait 50
+    endif
+else
+    if varexist 'tank1'
+        menu 'tank1' 3
+        wait 50
+    endif
 endif
-
-# Follow
-menu 'tank1' 4
-wait 150
 script main

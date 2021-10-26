@@ -1,32 +1,52 @@
-overhead 'DPS Follow'
-wait 150
-if not varexist 'dpspet1'
-    overhead 'Select dps pet 1'
-    setvar! 'dpspet1'
-endif
-
-if not varexist 'dpspet2'
-    overhead 'Select dps pet 2'
-    setvar! 'dpspet2'
-endif
-
-if not varexist 'dpspet3'
-    overhead 'Select dps pet 3'
-    setvar! 'dpspet3'
-endif
-
-if not varexist 'dpspet4'
-    overhead 'Select dps pet 4'
-    setvar! 'dpspet4'
-endif
-
+overhead '[DPS Follow]' 44
 # Follow
-menu 'dpspet1' 5
-wait 150
-menu 'dpspet2' 5
-wait 150
-menu 'dpspet3' 5
-wait 150
-menu 'dpspet4' 5
-wait 150
+if skill 'Herding' >= 50
+    if varexist 'dpspet1'
+        menu 'dpspet1' 5
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet2'
+        menu 'dpspet2' 5
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 5
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 5
+        wait 50
+        target 'allkill_target'
+    endif
+else
+    if varexist 'dpspet1'
+        menu 'dpspet1' 4
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet2'
+        menu 'dpspet2' 4
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 4
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 4
+        wait 50
+        target 'allkill_target'
+    endif
+endif
 script main
