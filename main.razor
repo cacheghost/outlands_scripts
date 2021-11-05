@@ -54,6 +54,7 @@ if not timerexists 'explo_pot_spam'
     settimer 'explo_pot_spam' 20000
 endif
 
+
 # Main Loop
 while not dead
     ####################################################
@@ -61,7 +62,7 @@ while not dead
     ####################################################
     # Display script running every 30 seconds. 
     if timer 'stayalive text' > 30000
-        overhead 'Stay Alive Running!' 66
+        #overhead 'Stay Alive Running!' 66
         settimer 'stayalive text' 0
     endif
     
@@ -108,6 +109,46 @@ while not dead
             settimer 'explo_pot_spam' 0
         endif
     endif
+    
+    # Swing Timers
+    if not timerexists 'swing timer'
+        createtimer 'swing timer'
+        settimer 'swing timer' 20000
+    endif
+    if insysmsg 'ArmsLore skillgain:'
+        settimer 'swing timer' 0
+    endif
+    
+    if timerexists 'swing timer'
+        if not timerexists 'bow spam'
+            createtimer 'bow spam'
+            settimer 'bow spam' 20000
+        endif
+
+        if not timerexists 'xbow spam'
+            createtimer 'xbow spam'
+            settimer 'xbow spam' 20000
+        endif
+
+        if not timerexists 'hally spam'
+            createtimer 'hally spam'
+            settimer 'hally spam' 20000
+        endif
+        if timer 'swing timer' >= 6500
+            #
+        elseif timer 'swing timer' >= 6000 and timer 'xbow spam' > 5000
+            overhead '[Xbow Ready]' 55
+            settimer 'xbow spam' 0
+        elseif timer 'swing timer' >= 4800 and timer 'hally spam' > 5000
+            overhead '[Hally Ready]' 55
+            settimer 'hally spam' 0
+        elseif timer 'swing timer' >= 3520 and timer 'bow spam' > 5000
+            overhead '[Bow Ready]' 55
+            settimer 'bow spam' 0
+        endif    
+    endif
+    
+    
     
     # Target Lock Status
     if varexist 'target_lock'
@@ -318,11 +359,12 @@ while not dead
     endif
     
     # If paralyzed, attempt to pouch.
-    if insysmsg 'you cannot move!'
-        overhead '[POUCH]' 88
-        say [pouch
+    if not targetexists any
+        if insysmsg 'you cannot move!'
+            overhead '[POUCH]' 88
+            say [pouch
+        endif
     endif
-    
     # Food Buff
     # TODO
     
@@ -334,23 +376,25 @@ while not dead
     endif
     
     # Cure Survival
-    if poisoned 'self' and timer 'curepot recovery' >= 8000 and timer 'potion recovery' > 1000
-        overhead '[Cure Pot]' 68
-        hotkey 'Drink Cure'
-        # Set timer for free cure
-        if insysmsg 'receive a free cure potion'
-            settimer 'next free cure' 0
+    if not targetexists any
+        if poisoned 'self' and timer 'curepot recovery' >= 30000 and timer 'potion recovery' > 1000
+            overhead '[Cure Pot]' 68
+            hotkey 'Drink Cure'
+            # Set timer for free cure
+            if insysmsg 'receive a free cure potion'
+                settimer 'next free cure' 0
+            endif
+            wait 150
+            if insysmsg 'was not strong enough to cure your ailment'
+                settimer 'curepot recovery' 8000
+            endif
+            if insysmsg 'feel cured of poison'
+                settimer 'curepot recovery' 0
+            endif
+            settimer 'potion recovery' 0
         endif
-        wait 150
-        if insysmsg 'was not strong enough to cure your ailment'
-            settimer 'curepot recovery' 8000
-        endif
-        if insysmsg 'feel cured of poison'
-            settimer 'curepot recovery' 0
-        endif
-        settimer 'potion recovery' 0
     endif
-
+    
     # Heal Potion
     if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
         overhead '[GHeal Pot]' 68

@@ -1,8 +1,3 @@
-if not timerexists 'cast recovery'
-    createtimer 'cast recovery'
-    settimer 'cast recovery' 1500
-endif 
-
 if not varexist 'target_1'
     overhead '[Select target 1]' 66
     @setvar! 'target_1'
@@ -10,32 +5,8 @@ if not varexist 'target_1'
     script main
 endif
 
-if findlayer 'target_1' backpack
-    overhead '[Target 1]'
-    if targetexists 'beneficial'
-        target 'target_1'
-    else
-        if timer 'cast recovery' > 1500
-            hotkey 'Greater Heal'
-            settimer 'cast recovery' 0
-            wait 1300
-            target 'target_1'
-            wait 150
-            if targetexists 'beneficial'
-                target 'target_1'
-            endif
-            if insysmsg 'That is too far away'
-                overhead '[Target Too Far!]' 33
-            endif
-        endif
-    endif
-else
-    overhead '[Target Not On Screen]' 33
-    if not targetexists 'any'
-        overhead '[Precasting]' 55
-        hotkey 'Greater Heal'
-        settimer 'cast recovery' 0
-        wait 1300
-    endif
+if varexist 'target_1'
+    target 'target_1'
+    wait 75
 endif
 script main

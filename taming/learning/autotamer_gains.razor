@@ -235,7 +235,7 @@ while not dead
         elseif skill 'Magery' >= 60
             # Magery Healing
             if find 'tank' 'ground' -1 1 12
-                if timer 'tank magery heal' > 30000
+                if timer 'tank magery heal' > 10000
                     interrupt    
                     hotkey 'Cancel Current Target'
                     hotkey 'Clear Target Queue'
