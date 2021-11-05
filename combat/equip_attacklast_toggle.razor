@@ -6,14 +6,6 @@ endif
 
 # Check if we are casting
 if varexist 'weapon_1'
-    # Ignore weapon equip if we are trying to cast.
-    if timerexists 'cast recovery'
-        if timer 'cast recovery' < 1500
-            overhead '[Ignore Equip For Cast]' 33
-            script main
-        endif
-    endif
-    
     # Look for weapon to equip
     if find 'weapon_1' 'backpack'
         # Weapon found in backpack.
@@ -25,6 +17,13 @@ if varexist 'weapon_1'
                 drop 'backpack'
                 lift 'weapon_1'
                 drop self LeftHand
+                wait 75
+                attack lasttarget
+            else
+                overhead '[Disarm Weapon 1]' 55
+                lift 'weapon_1'
+                drop 'backpack'
+                warmode off
             endif
         elseif findlayer self righthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
@@ -34,12 +33,21 @@ if varexist 'weapon_1'
                 drop 'backpack'
                 lift 'weapon_1'
                 drop self RightHand
+                wait 75
+                attack lasttarget
+            else
+                overhead '[Disarm Weapon 1]' 55
+                lift 'weapon_1'
+                drop 'backpack'
+                warmode off
             endif
         else
             # Not wearing weapon, equip from backpack
             overhead '[Equip Weapon 1]' 55
             lift 'weapon_1'
             drop self LeftHand
+            wait 75
+            attack lasttarget
         endif
     else
         # We are not wearing the weapon, and its not in backpack. Unset variable
@@ -47,13 +55,25 @@ if varexist 'weapon_1'
             if 'myweapon' != 'weapon_1'
                 overhead '[Unset Weapon 1]' 33
                 @unsetvar 'weapon_1'
+            else
+                overhead '[Disarm Weapon 1]' 55
+                lift 'weapon_1'
+                drop 'backpack'
+                warmode off
             endif
         elseif findlayer self righthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
                 overhead '[Unset Weapon 1]' 33
                 @unsetvar 'weapon_1'
+            else
+                overhead '[Disarm Weapon 1]' 55
+                lift 'weapon_1'
+                drop 'backpack'
+                warmode off
             endif
+        else
+            overhead '[Unset Weapon 1]' 33
+            @unsetvar 'weapon_1'
         endif
     endif
 endif
-script main

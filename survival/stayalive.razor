@@ -85,6 +85,12 @@ while not dead
         endif
     endif
 
+    if not findbuff 'Magic Resist Potion' and timer 'potion recovery' > 1000
+        overhead 'Used: MR Potion' 33
+        hotkey 'Drink Night Sight'
+        settimer 'potion recovery' 0
+    endif
+    
     # Cure Survival
     if poisoned 'self' and timer 'potion recovery' > 1000
         overhead 'Used: Cure Potion' 33
