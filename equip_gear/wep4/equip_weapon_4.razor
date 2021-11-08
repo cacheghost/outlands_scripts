@@ -6,13 +6,6 @@ endif
 
 # Check if we are casting
 if varexist 'weapon_4'
-    # Ignore weapon equip if we are trying to cast.
-    if timerexists 'cast recovery'
-        if timer 'cast recovery' < 1500
-            overhead '[Ignore Equip For Cast]' 33
-        endif
-    endif
-    
     # Look for weapon to equip
     if find 'weapon_4' 'backpack'
         # Weapon found in backpack.
@@ -44,14 +37,17 @@ if varexist 'weapon_4'
         # We are not wearing the weapon, and its not in backpack. Unset variable
         if findlayer self lefthand as 'myweapon'
             if 'myweapon' != 'weapon_4'
-            overhead '[Unset Weapon 4]' 33
-            @unsetvar 'weapon_4'
+                overhead '[Unset Weapon 4]' 33
+                @unsetvar 'weapon_4'
             endif
         elseif findlayer self righthand as 'myweapon'
             if 'myweapon' != 'weapon_4'
+                overhead '[Unset Weapon 4]' 33
+                @unsetvar 'weapon_4'
+            endif
+        else
             overhead '[Unset Weapon 4]' 33
             @unsetvar 'weapon_4'
-            endif
         endif
     endif
 endif
