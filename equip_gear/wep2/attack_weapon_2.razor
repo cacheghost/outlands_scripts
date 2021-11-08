@@ -1,21 +1,21 @@
 # If we havent set our weapon, set it.
-if not varexist 'weapon_1'
-    overhead '[Select Weapon 1]' 
-    setvar! 'weapon_1'
+if not varexist 'weapon_2'
+    overhead '[Select Weapon 2]' 
+    setvar! 'weapon_2'
 endif
 
 # Check if we are casting
-if varexist 'weapon_1'
+if varexist 'weapon_2'
     # Look for weapon to equip
-    if find 'weapon_1' 'backpack'
+    if find 'weapon_2' 'backpack'
         # Weapon found in backpack.
         if findlayer self lefthand as 'myweapon'
-            if 'myweapon' != 'weapon_1'
+            if 'myweapon' != 'weapon_2'
                 # Weapon we are wearing isnt our weapon, change that.
-                overhead '[Attack Weapon 1]' 55
+                overhead '[Attack Weapon 2]' 55
                 lift 'myweapon'
                 drop 'backpack'
-                lift 'weapon_1'
+                lift 'weapon_2'
                 drop self LeftHand
                 wait 75
                 attack lasttarget
@@ -27,12 +27,12 @@ if varexist 'weapon_1'
                 warmode off
             endif
         elseif findlayer self righthand as 'myweapon'
-            if 'myweapon' != 'weapon_1'
+            if 'myweapon' != 'weapon_2'
                 # Weapon we are wearing isnt our weapon, change that.
-                overhead '[Attack Weapon 1]' 55
+                overhead '[Attack Weapon 2]' 55
                 lift 'myweapon'
                 drop 'backpack'
-                lift 'weapon_1'
+                lift 'weapon_2'
                 drop self RightHand
                 wait 75
                 attack lasttarget
@@ -45,8 +45,8 @@ if varexist 'weapon_1'
             endif
         else
             # Not wearing weapon, equip from backpack
-            overhead '[Attack Weapon 1]' 55
-            lift 'weapon_1'
+            overhead '[Attack Weapon 2]' 55
+            lift 'weapon_2'
             drop self LeftHand
             wait 75
             attack lasttarget
@@ -56,26 +56,26 @@ if varexist 'weapon_1'
     else
         # We are not wearing the weapon, and its not in backpack. Unset variable
         if findlayer self lefthand as 'myweapon'
-            if 'myweapon' != 'weapon_1'
-                overhead '[Unset Weapon 1]' 33
-                @unsetvar 'weapon_1'
+            if 'myweapon' != 'weapon_2'
+                overhead '[Unset Weapon 2]' 33
+                @unsetvar 'weapon_2'
             else
                 attack lasttarget
                 wait 150
                 warmode off
             endif
         elseif findlayer self righthand as 'myweapon'
-            if 'myweapon' != 'weapon_1'
-                overhead '[Unset Weapon 1]' 33
-                @unsetvar 'weapon_1'
+            if 'myweapon' != 'weapon_2'
+                overhead '[Unset Weapon 2]' 33
+                @unsetvar 'weapon_2'
             else
                 attack lasttarget
                 wait 150
                 warmode off
             endif
         else
-            overhead '[Unset Weapon 1]' 33
-            @unsetvar 'weapon_1'
+            overhead '[Unset Weapon 2]' 33
+            @unsetvar 'weapon_2'
         endif
     endif
 endif

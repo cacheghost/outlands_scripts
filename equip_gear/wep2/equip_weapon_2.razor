@@ -6,13 +6,6 @@ endif
 
 # Check if we are casting
 if varexist 'weapon_2'
-    # Ignore weapon equip if we are trying to cast.
-    if timerexists 'cast recovery'
-        if timer 'cast recovery' < 1500
-            overhead '[Ignore Equip For Cast]' 33
-        endif
-    endif
-    
     # Look for weapon to equip
     if find 'weapon_2' 'backpack'
         # Weapon found in backpack.
@@ -52,6 +45,9 @@ if varexist 'weapon_2'
                 overhead '[Unset Weapon 2]' 33
                 @unsetvar 'weapon_2'
             endif
+        else
+            overhead '[Unset Weapon 2]' 33
+            @unsetvar 'weapon_2'
         endif
     endif
 endif
