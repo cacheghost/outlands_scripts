@@ -28,18 +28,9 @@ while not dead
         settimer 'stayalive text' 0
     endif
 
-    # If hidden, skip
-    if hidden
-        continue
-    endif
-    
-    # If paralyzed, attempt to pouch.
-    if insysmsg 'you cannot move!'
-        overhead 'Paralyzed, attempting pouch escape' 88
-        say [pouch
-    endif
-
-    # Healing Survival
+    ####################################################
+    # Bandage Survival and non-revealing actions.
+    ####################################################
     if skill 'Healing' >= 50
         if insysmsg 'You begin applying the bandages'
             settimer 'bandage time' 0
@@ -50,7 +41,22 @@ while not dead
             settimer 'bandage time' 0
         endif
     endif
-
+    
+    # If paralyzed, attempt to pouch.
+    if not targetexists any
+        if insysmsg 'you cannot move!'
+            overhead '[POUCH]' 88
+            say [pouch
+        endif
+    endif
+    
+    ####################################################################
+    # Hidden check, will avoid any actions below this marker if hidden.
+    ####################################################################
+    if hidden
+        continue
+    endif
+    
     # Magery Survival
     if skill 'Magery' >= 60
         # Mana warnings
@@ -85,30 +91,43 @@ while not dead
         endif
     endif
 
+    # Magic Resist Potion
     if not findbuff 'Magic Resist Potion' and timer 'potion recovery' > 1000
         if findtype 3846 'backpack'
-            overhead 'Used: MR Potion' 33
+            overhead '[Used: MR Potion]' 68
             hotkey 'Drink Night Sight'
             settimer 'potion recovery' 0
         endif
     endif
     
     # Cure Survival
-    if poisoned 'self' and timer 'potion recovery' > 1000
-        overhead 'Used: Cure Potion' 33
-        hotkey 'Drink Cure' 
-        settimer 'potion recovery' 0
-        settimer 'curepot recovery' 0
+    if not targetexists any
+        if poisoned 'self' and timer 'curepot recovery' >= 6000 and timer 'potion recovery' > 1000
+            overhead '[Used: Cure Pot]' 68
+            hotkey 'Drink Cure'
+            # Set timer for free cure
+            if insysmsg 'receive a free cure potion'
+                settimer 'next free cure' 0
+            endif
+            wait 150
+            if insysmsg 'was not strong enough to cure your ailment'
+                settimer 'curepot recovery' 8000
+            endif
+            if insysmsg 'feel cured of poison'
+                settimer 'curepot recovery' 0
+            endif
+            settimer 'potion recovery' 0
+        endif
     endif
-
+    
     # Heal Potion
-    if hits < 35 and timer 'healpot recovery' > 10000 and timer 'potion recovery' > 1000
-        overhead 'Used: Heal Potion' 33
+    if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
+        overhead '[Used: GHeal Pot]' 68
         hotkey 'Drink Heal'
         settimer 'healpot recovery' 0
         settimer 'potion recovery' 0
-    endif 
-
+    endif
+    
 endwhile
 
 if dead
