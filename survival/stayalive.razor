@@ -4,70 +4,45 @@ clearsysmsg
 # Stay Alive Starting message
 overhead 'Stay Alive Starting!' 44
 
-# Setup some timers
-if not timerexists 'bandage time'
-    createtimer 'bandage time'
-    settimer 'bandage time' 20000
-endif
-if not timerexists 'curepot recovery'
-    createtimer 'curepot recovery'
-    settimer 'curepot recovery' 20000
-endif
-if not timerexists 'healpot recovery'
-    createtimer 'healpot recovery'
-    settimer 'healpot recovery' 20000
-endif
-if not timerexists 'potion recovery'
-    createtimer 'potion recovery'
-    settimer 'potion recovery' 20000
-endif
-if not timerexists 'castspell recovery'
-    createtimer 'castspell recovery'
-    settimer 'castspell recovery' 20000
-endif
-if not timerexists 'stayalive text'
-    createtimer 'stayalive text'
-endif
-if not timerexists 'low mana'
-    createtimer 'low mana'
-endif
-
-if not timerexists 'next free cure'
-    createtimer 'next free cure'
-    settimer 'next free cure' 60001
-endif
-
 # While alive, try to stay alive.
 while not dead
-    # Display script running every 10 seconds. 
+    # Initialize timers
+    if not timerexists 'potion recovery'
+        createtimer 'potion recovery'
+        settimer 'potion recovery' 20000
+    endif
+    
+    if not timerexists 'next free cure'
+        createtimer 'next free cure'
+        settimer 'next free cure' 60000
+    endif
+    
+    # Display script running every 10 seconds.
+    if not timerexists 'stayalive text'
+        createtimer 'stayalive text'
+    endif
+    
     if timer 'stayalive text' > 10000
         overhead 'Stay Alive Running!' 66
         settimer 'stayalive text' 0
     endif
 
-    # Free Cure Potion Alert
-    if timer 'next free cure' > 30000
-        if timer 'next free cure' > 60000
-            #
-        else
-            overhead '[Free Cure Ready]'
-            settimer 'next free cure' 60001
-        endif
-    endif
-
     ####################################################
     # Swing Timers
     ####################################################
+    # Initialize timer
     if not timerexists 'swing timer'
         createtimer 'swing timer'
         settimer 'swing timer' 20000
     endif
 
+    # Look for Arms Lore gain as swing indicator.
     if insysmsg 'ArmsLore skillgain:'
         settimer 'swing timer' 0
     endif
     
     if timerexists 'swing timer'
+        # Setup each weapon spam timer, to avoid spam text
         if not timerexists 'bow spam'
             createtimer 'bow spam'
             settimer 'bow spam' 20000
@@ -82,14 +57,22 @@ while not dead
             createtimer 'hally spam'
             settimer 'hally spam' 20000
         endif
+        
+        # Check global swing timer, handle each weapon at its elapsed time
         if timer 'swing timer' >= 6500
-            #
+            # Do nothing
+        
+        # Handle Heavy Crossbox
         elseif timer 'swing timer' >= 6000 and timer 'xbow spam' > 5000
             overhead '[Xbow Ready]' 55
             settimer 'xbow spam' 0
+        
+        # Handle Halberd
         elseif timer 'swing timer' >= 4800 and timer 'hally spam' > 5000
             overhead '[Hally Ready]' 55
             settimer 'hally spam' 0
+        
+        # Handle Bow
         elseif timer 'swing timer' >= 3520 and timer 'bow spam' > 5000
             overhead '[Bow Ready]' 55
             settimer 'bow spam' 0
@@ -168,9 +151,9 @@ while not dead
     # 85 = 11
     # 100 = 10
     if skill 'Healing' >= 50
-        if not timerexists 'aid cure sync'
-            createtimer 'aid cure sync'
-            settimer 'aid cure sync' 20000
+        if not timerexists 'bandage time'
+            createtimer 'bandage time'
+            settimer 'bandage time' 20000
         endif
     
         if insysmsg 'You begin applying the bandages'
@@ -308,6 +291,10 @@ while not dead
     
     # Magery Survival
     if skill 'Magery' >= 60
+        if not timerexists 'low mana'
+            createtimer 'low mana'
+        endif
+        
         # Mana warnings
         if mana < 22  and timer 'low mana' > 3000 and mana > 10
             overhead '1 GHeal Left' 55
@@ -318,6 +305,10 @@ while not dead
         endif
 
         # If hurt, attempt to heal
+        if not timerexists 'castspell recovery'
+            createtimer 'castspell recovery'
+            settimer 'castspell recovery' 20000
+        endif
         if hits < 65 and timer 'castspell recovery' > 1500
             # If under 35 HP and we cant heal pot, quick heal and reset heal timer
             # Interrupt and clearall targets before attempting to self-cast to avoid harming self
@@ -326,6 +317,16 @@ while not dead
                 interrupt    
                 hotkey 'Cancel Current Target'
                 hotkey 'Clear Target Queue'
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                    wait 200
+                endif
                 hotkey '> Mini-Heal/Cure Self'
                 settimer 'castspell recovery' 0
             elseif hits < maxhits and mana > 10
@@ -334,6 +335,16 @@ while not dead
                 interrupt
                 hotkey 'Cancel Current Target'
                 hotkey 'Clear Target Queue'
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                    wait 200
+                endif
                 hotkey '> Greater Heal/Cure Self'
                 settimer 'castspell recovery' 0
             endif
@@ -355,6 +366,10 @@ while not dead
     endif
 
     # Cure Survival
+    if not timerexists 'curepot recovery'
+        createtimer 'curepot recovery'
+        settimer 'curepot recovery' 20000
+    endif
     if not targetexists any
         if poisoned 'self' and timer 'next free cure' >= 30000 and timer 'potion recovery' > 1000
             overhead '[Used: Cure Pot]' 68
@@ -368,6 +383,10 @@ while not dead
     endif
     
     # Heal Potion
+    if not timerexists 'healpot recovery'
+        createtimer 'healpot recovery'
+        settimer 'healpot recovery' 20000
+    endif
     if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
         overhead '[Used: GHeal Pot]' 68
         hotkey 'Drink Heal'
