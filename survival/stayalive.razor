@@ -291,9 +291,11 @@ while not dead
     
     # If paralyzed, attempt to pouch.
     if not targetexists any
-        if insysmsg 'you cannot move!'
-            overhead '[POUCH]' 88
-            say [pouch
+        if paralyzed
+            if findtype 3705 'backpack' 38
+                overhead '[Used: Pouch]' 33
+                say [pouch
+            endif
         endif
     endif
     

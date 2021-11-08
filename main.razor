@@ -483,9 +483,11 @@ while not dead
     
     # If paralyzed, attempt to pouch.
     if not targetexists any
-        if insysmsg 'you cannot move!'
-        overhead '[Used: Pouch]' 33
-            say [pouch
+        if paralyzed
+            if findtype 3705 'backpack' 38
+                overhead '[Used: Pouch]' 33
+                say [pouch
+            endif
         endif
     endif
     
@@ -502,22 +504,26 @@ while not dead
     # Cure Survival
     if not targetexists any
         if poisoned 'self' and timer 'next free cure' >= 30000 and timer 'potion recovery' > 1000
-            overhead '[Used: Cure Pot]' 68
-            hotkey 'Drink Cure'
-            # Set timer for free cure
-            if insysmsg 'receive a free cure potion'
-                settimer 'next free cure' 0
+            if findtype 3847 'backpack'
+                overhead '[Used: Cure Pot]' 68
+                hotkey 'Drink Cure'
+                # Set timer for free cure
+                if insysmsg 'receive a free cure potion'
+                    settimer 'next free cure' 0
+                endif
+                settimer 'potion recovery' 0
             endif
-            settimer 'potion recovery' 0
         endif
     endif
     
     # Heal Potion
     if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
-        overhead '[Used: GHeal Pot]' 68
-        hotkey 'Drink Heal'
-        settimer 'healpot recovery' 0
-        settimer 'potion recovery' 0
+        if findtype 3852 'backpack'
+            overhead '[Used: GHeal Pot]' 68
+            hotkey 'Drink Heal'
+            settimer 'healpot recovery' 0
+            settimer 'potion recovery' 0
+        endif
     endif 
 
 endwhile
