@@ -1,0 +1,62 @@
+overhead '[All Stay]' 44
+# Follow
+if skill 'Herding' >= 50
+    if varexist 'tank1'
+        menu 'tank1' 8
+        wait 50
+        target 'allkill_target'
+    endif
+    if varexist 'dpspet1'
+        menu 'dpspet1' 8
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet2'
+        menu 'dpspet2' 8
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 8
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 8
+        wait 50
+        target 'allkill_target'
+    endif
+else
+    if varexist 'tank1'
+        menu 'tank1' 7
+        wait 50
+        target 'allkill_target'
+    endif
+    if varexist 'dpspet1'
+        menu 'dpspet1' 7
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet2'
+        menu 'dpspet2' 7
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 7
+        wait 50
+        target 'allkill_target'
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 7
+        wait 50
+        target 'allkill_target'
+    endif
+endif
+script main

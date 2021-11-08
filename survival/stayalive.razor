@@ -86,9 +86,11 @@ while not dead
     endif
 
     if not findbuff 'Magic Resist Potion' and timer 'potion recovery' > 1000
-        overhead 'Used: MR Potion' 33
-        hotkey 'Drink Night Sight'
-        settimer 'potion recovery' 0
+        if findtype 3846 'backpack'
+            overhead 'Used: MR Potion' 33
+            hotkey 'Drink Night Sight'
+            settimer 'potion recovery' 0
+        endif
     endif
     
     # Cure Survival

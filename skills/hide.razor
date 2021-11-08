@@ -1,5 +1,7 @@
-createtimer 'hiding'
-settimer 'hiding' 20000
+if not timerexists 'hiding'
+    createtimer 'hiding'
+    settimer 'hiding' 20000
+endif
 while not hidden
     if timer 'hiding' > 10000
         hotkey 'Hiding'
