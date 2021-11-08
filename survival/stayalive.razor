@@ -32,12 +32,27 @@ if not timerexists 'low mana'
     createtimer 'low mana'
 endif
 
+if not timerexists 'next free cure'
+    createtimer 'next free cure'
+    settimer 'next free cure' 60001
+endif
+
 # While alive, try to stay alive.
 while not dead
     # Display script running every 10 seconds. 
     if timer 'stayalive text' > 10000
         overhead 'Stay Alive Running!' 66
         settimer 'stayalive text' 0
+    endif
+
+    # Free Cure Potion Alert
+    if timer 'next free cure' > 30000
+        if timer 'next free cure' > 60000
+            #
+        else
+            overhead '[Free Cure Ready]'
+            settimer 'next free cure' 60001
+        endif
     endif
 
     ####################################################
@@ -145,14 +160,132 @@ while not dead
     ####################################################
     # Bandage Survival and non-revealing actions.
     ####################################################
+    # Dex = Time to Heal
+    # 25 = 15
+    # 40 = 14
+    # 55 = 13
+    # 70 = 12
+    # 85 = 11
+    # 100 = 10
     if skill 'Healing' >= 50
+        if not timerexists 'aid cure sync'
+            createtimer 'aid cure sync'
+            settimer 'aid cure sync' 20000
+        endif
+    
         if insysmsg 'You begin applying the bandages'
+            # If we manually applied a bandage, reset timer.
             settimer 'bandage time' 0
             clearsysmsg
         endif
-        if hits < maxhits and timer 'bandage time' > 11000 
-            hotkey 'bandage self'
-            settimer 'bandage time' 0
+        if dex <= 40
+            # 15 second timer
+            if hits < maxhits and timer 'bandage time' >= 15000         
+                hotkey 'bandage self'
+                settimer 'bandage time' 0
+            endif
+            # Attempt to last second cure before aid tick, regardless of free cut timer.
+            if timer 'bandage time' < 15000 and timer 'bandage time' >= 14000
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                endif
+            endif
+        elseif dex < 55
+            # 14 second timer
+            if hits < maxhits and timer 'bandage time' >= 14000
+                hotkey 'bandage self'
+                settimer 'bandage time' 0
+            endif
+            # Attempt to last second cure before aid tick, regardless of free cut timer.
+            if timer 'bandage time' < 14000 and timer 'bandage time' >= 13000
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                endif
+            endif
+        elseif dex < 70
+            # 13 second timer
+            if hits < maxhits and timer 'bandage time' >= 13000 
+                hotkey 'bandage self'
+                settimer 'bandage time' 0
+            endif
+            # Attempt to last second cure before aid tick, regardless of free cut timer.
+            if timer 'bandage time' < 13000 and timer 'bandage time' >= 12000
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                endif
+            endif
+        elseif dex < 85
+            # 12 second timer
+            if hits < maxhits and timer 'bandage time' >= 12000 
+                hotkey 'bandage self'
+                settimer 'bandage time' 0
+            endif
+            # Attempt to last second cure before aid tick, regardless of free cut timer.
+            if timer 'bandage time' < 12000 and timer 'bandage time' >= 11000
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                endif
+            endif
+        elseif dex < 100
+            # 11 second timer
+            if hits < maxhits and timer 'bandage time' >= 11000 
+                hotkey 'bandage self'
+                settimer 'bandage time' 0
+            endif
+            # Attempt to last second cure before aid tick, regardless of free cut timer.
+            if timer 'bandage time' < 11000 and timer 'bandage time' >= 10000
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                endif
+            endif
+        else
+            # 10 second timer
+            if hits < maxhits and timer 'bandage time' >= 10000
+                hotkey 'bandage self'
+                settimer 'bandage time' 0
+            endif
+            # Attempt to last second cure before aid tick, regardless of free cut timer.
+            if timer 'bandage time' < 10000 and timer 'bandage time' >= 9000
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    overhead '[Used: Cure Pot]' 68
+                    hotkey 'Drink Cure'
+                    # Set timer for free cure
+                    if insysmsg 'receive a free cure potion'
+                        settimer 'next free cure' 0
+                    endif
+                    settimer 'potion recovery' 0
+                endif
+            endif
         endif
     endif
     
@@ -214,13 +347,20 @@ while not dead
         endif
     endif
     
+    # Monitor for free cure pot
+    if insysmsg 'receive a free cure potion'
+        settimer 'next free cure' 0
+    endif
+
     # Cure Survival
     if not targetexists any
-        if poisoned 'self' and timer 'curepot recovery' >= 15000 and timer 'potion recovery' > 1000
+        if poisoned 'self' and timer 'next free cure' >= 30000 and timer 'potion recovery' > 1000
             overhead '[Used: Cure Pot]' 68
             hotkey 'Drink Cure'
-            wait 150
-            settimer 'curepot recovery' 0
+            # Set timer for free cure
+            if insysmsg 'receive a free cure potion'
+                settimer 'next free cure' 0
+            endif
             settimer 'potion recovery' 0
         endif
     endif
