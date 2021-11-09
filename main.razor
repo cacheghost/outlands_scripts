@@ -86,6 +86,10 @@ while not dead
     # TODO
     
     # Explosion Pot Timer
+    if insysmsg 'next explosion potion thrown at that player'
+        settimer 'explo pot' 0
+    endif
+    
     if timerexists 'explo pot'
         if timer 'explo pot' >= 35000 and timer 'explo_pot_spam' > 5000
             #
