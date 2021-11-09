@@ -1,0 +1,25 @@
+if findtype 5912 'backpack' as 'mywizhat'
+    if findlayer self head as 'myhead_item'
+        if not timerexists 'bandage timer'
+            createtimer 'bandage timer'
+        endif
+        lift 'myhead_item'
+        drop 'backpack'
+        lift 'mywizhat'
+        drop self Head
+        lift 'mywizhat'
+        drop 'backpack'
+        lift 'myhead_item'
+        drop self Head
+        hotkey 'Bandage Self'
+        settimer 'bandage timer' 0
+    else
+        lift 'mywizhat'
+        drop self Head
+        lift 'mywizhat'
+        drop 'backpack'
+        hotkey 'Bandage Self'
+        settimer 'bandage timer' 0
+    endif
+endif
+script main
