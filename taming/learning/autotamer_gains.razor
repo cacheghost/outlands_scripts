@@ -24,7 +24,7 @@ createtimer 'low mana'
 if not varexist 'tank'
     overhead 'Select your tank pet'
     setvar! 'tank'
-    if skill 'Herding' >= 50
+    if skill 'Herding' >= 0
         menu 'tank' 5
     else
         menu 'tank' 4
@@ -135,7 +135,7 @@ while not dead
     # If hurt, send pet to aggro then heal self
     if hits < maxhits and timer 'hurt reaction' > 5000
         # Have pet guard to grab all aggro
-        if skill 'Herding' >= 50
+        if skill 'Herding' >= 0
             menu 'tank' 4
         else
             menu 'tank' 3
@@ -143,7 +143,7 @@ while not dead
         wait 150
 
         # Healing Survival
-        if skill 'Healing' >= 50
+        if skill 'Healing' >= 0
             if insysmsg 'You begin applying the bandages'
                 settimer 'bandage timer' 0
             endif
@@ -205,7 +205,7 @@ while not dead
 
         # pause a few seconds to aggro
         pause 5000
-        if skill 'Herding' >= 50
+        if skill 'Herding' >= 0
             menu 'tank' 5
         else
             menu 'tank' 4
@@ -226,7 +226,7 @@ while not dead
         endif
         
         # Vet Healing
-        if skill 'Veterinary' >= 50
+        if skill 'Veterinary' >= 0
             if find 'tank' 'ground' -1 1 5
                 if timer 'bandage timer' > 15000
                     interrupt
@@ -267,10 +267,17 @@ while not dead
         if findtype pettarget 'ground' -1 1 4 as 'mypettarget'
             # If we tamed the target pet already, kill it.
             if noto 'mypettarget' = friend and 'mypettarget' != 'tank'
+                if followers >= 5
+                    if skill 'Herding' >= 0
+                        menu 'mypettarget' 10
+                    else
+                        menu 'mypettarget' 9
+                    endif
+                endif
                 interrupt
                 hotkey 'Cancel Current Target'
                 hotkey 'Clear Target Queue'
-                if skill 'Herding' >= 50
+                if skill 'Herding' >= 0
                     menu 'tank' 2
                 else
                     menu 'tank' 1
@@ -278,7 +285,7 @@ while not dead
                 wft 250
                 target 'mypettarget'
                 pause 10000
-                if skill 'Herding' >= 50
+                if skill 'Herding' >= 0
                     menu 'tank' 5
                 else
                     menu 'tank' 4
@@ -301,7 +308,7 @@ while not dead
             # If no taming target, work up Animal Lore on tank.
             overhead 'No taming target found' 33
             wait 150
-            if skill 'Herding' >= 50
+            if skill 'Herding' >= 0
                 menu 'tank' 4
             else
                 menu 'tank' 3
@@ -315,7 +322,7 @@ while not dead
             wft 500
             target 'tank'
             pause 6000
-            if skill 'Herding' >= 50
+            if skill 'Herding' >= 0
                 menu 'tank' 5
             else
                 menu 'tank' 4
