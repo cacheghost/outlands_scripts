@@ -24,7 +24,11 @@ createtimer 'low mana'
 if not varexist 'tank'
     overhead 'Select your tank pet'
     setvar! 'tank'
-    menu 'tank' 5
+    if skill 'Herding' >= 50
+        menu 'tank' 5
+    else
+        menu 'tank' 4
+    endif
     wait 150
 endif
 
@@ -131,7 +135,11 @@ while not dead
     # If hurt, send pet to aggro then heal self
     if hits < maxhits and timer 'hurt reaction' > 5000
         # Have pet guard to grab all aggro
-        menu 'tank' 4
+        if skill 'Herding' >= 50
+            menu 'tank' 4
+        else
+            menu 'tank' 3
+        endif
         wait 150
 
         # Healing Survival
@@ -197,7 +205,11 @@ while not dead
 
         # pause a few seconds to aggro
         pause 5000
-        menu 'tank' 5
+        if skill 'Herding' >= 50
+            menu 'tank' 5
+        else
+            menu 'tank' 4
+        endif
         wait 150
         warmode off
         settimer 'hurt reaction' 0
@@ -258,11 +270,19 @@ while not dead
                 interrupt
                 hotkey 'Cancel Current Target'
                 hotkey 'Clear Target Queue'
-                menu 'tank' 2
+                if skill 'Herding' >= 50
+                    menu 'tank' 2
+                else
+                    menu 'tank' 1
+                endif
                 wft 250
                 target 'mypettarget'
                 pause 10000
-                menu 'tank' 5
+                if skill 'Herding' >= 50
+                    menu 'tank' 5
+                else
+                    menu 'tank' 4
+                endif
                 wait 150
             else
                 # Otherwise tame it.
@@ -281,7 +301,11 @@ while not dead
             # If no taming target, work up Animal Lore on tank.
             overhead 'No taming target found' 33
             wait 150
-            menu 'tank' 4
+            if skill 'Herding' >= 50
+                menu 'tank' 4
+            else
+                menu 'tank' 3
+            endif
             wait 150
             wait 500
             interrupt
@@ -291,7 +315,11 @@ while not dead
             wft 500
             target 'tank'
             pause 6000
-            menu 'tank' 5
+            if skill 'Herding' >= 50
+                menu 'tank' 5
+            else
+                menu 'tank' 4
+            endif
             wait 150
         endif
         poplist petarray pettarget
