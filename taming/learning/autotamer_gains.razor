@@ -24,9 +24,11 @@ createtimer 'low mana'
 if not varexist 'tank'
     overhead 'Select your tank pet'
     setvar! 'tank'
-    if skill 'Herding' >= 0
+    if skill 'Herding' >= 1
+        overhead '[Tank Follow]' 44
         menu 'tank' 5
     else
+        overhead '[Tank Follow]' 44
         menu 'tank' 4
     endif
     wait 150
@@ -135,9 +137,11 @@ while not dead
     # If hurt, send pet to aggro then heal self
     if hits < maxhits and timer 'hurt reaction' > 5000
         # Have pet guard to grab all aggro
-        if skill 'Herding' >= 0
+        if skill 'Herding' >= 1
+            overhead '[Tank Guard]' 44
             menu 'tank' 4
         else
+            overhead '[Tank Guard]' 44
             menu 'tank' 3
         endif
         wait 150
@@ -205,9 +209,11 @@ while not dead
 
         # pause a few seconds to aggro
         pause 5000
-        if skill 'Herding' >= 0
+        if skill 'Herding' >= 1
+            overhead '[Tank Follow]' 44
             menu 'tank' 5
         else
+            overhead '[Tank Follow]' 44
             menu 'tank' 4
         endif
         wait 150
@@ -226,7 +232,7 @@ while not dead
         endif
         
         # Vet Healing
-        if skill 'Veterinary' >= 0
+        if skill 'Veterinary' >= 1
             if find 'tank' 'ground' -1 1 5
                 if timer 'bandage timer' > 15000
                     interrupt
@@ -247,7 +253,7 @@ while not dead
         elseif skill 'Magery' >= 60
             # Magery Healing
             if find 'tank' 'ground' -1 1 12
-                if timer 'tank magery heal' > 10000
+                if timer 'tank magery heal' >= 5000
                     interrupt    
                     hotkey 'Cancel Current Target'
                     hotkey 'Clear Target Queue'
@@ -258,8 +264,14 @@ while not dead
                     settimer 'tank magery heal' 0
                 endif
             else
+                if not timerexists 'cant heal spam'
+                    createtimer 'cant heal spam'
+                    settimer 'cant heal spam' 3000
+                endif
+                if timer 'cant heal spam' >= 3000
                     overhead 'Cannot heal tank, too far away!' 33
-                    pause 3000
+                    settimer 'cant heal spam' 0
+                endif
             endif
         endif
         
@@ -268,7 +280,7 @@ while not dead
             # If we tamed the target pet already, kill it.
             if noto 'mypettarget' = friend and 'mypettarget' != 'tank'
                 if followers >= 5
-                    if skill 'Herding' >= 0
+                    if skill 'Herding' >= 1
                         menu 'mypettarget' 10
                     else
                         menu 'mypettarget' 9
@@ -277,17 +289,21 @@ while not dead
                 interrupt
                 hotkey 'Cancel Current Target'
                 hotkey 'Clear Target Queue'
-                if skill 'Herding' >= 0
+                if skill 'Herding' >= 1
+                    overhead '[Tank Kill]' 44
                     menu 'tank' 2
                 else
+                    overhead '[Tank Kill]' 44
                     menu 'tank' 1
                 endif
                 wft 250
                 target 'mypettarget'
                 pause 10000
-                if skill 'Herding' >= 0
+                if skill 'Herding' >= 1
+                    overhead '[Tank Follow]' 44
                     menu 'tank' 5
                 else
+                    overhead '[Tank Follow]' 44
                     menu 'tank' 4
                 endif
                 wait 150
@@ -307,14 +323,6 @@ while not dead
         else
             # If no taming target, work up Animal Lore on tank.
             overhead 'No taming target found' 33
-            wait 150
-            if skill 'Herding' >= 0
-                menu 'tank' 4
-            else
-                menu 'tank' 3
-            endif
-            wait 150
-            wait 500
             interrupt
             hotkey 'Cancel Current Target'
             hotkey 'Clear Target Queue'
@@ -322,12 +330,6 @@ while not dead
             wft 500
             target 'tank'
             pause 6000
-            if skill 'Herding' >= 0
-                menu 'tank' 5
-            else
-                menu 'tank' 4
-            endif
-            wait 150
         endif
         poplist petarray pettarget
     endfor
