@@ -1,0 +1,22 @@
+if not varexist 'restock_packy'
+    overhead '[Select restock packy]'
+    @setvar! 'restock_packy'
+endif
+
+while not dead
+    # Open packy
+    dclick 'restock_packy'
+
+    # Check nightshade supply
+    if not findtype 3976 'backpack' any 4
+        overhead '[Restock Nightshade]'
+        lifttype 3976 'restock_packy' any 4
+        drop 'backpack'
+    endif
+    
+    # Check empty potion supply
+    
+    
+    # Check ground for potions
+   
+endwhile

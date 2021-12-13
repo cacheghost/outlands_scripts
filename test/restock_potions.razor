@@ -1,0 +1,26 @@
+if insysmsg 'Crafting queue complete'
+    if not varexist 'resupply_shelf'
+        overhead 'Select resupply shelf'
+        setvar! 'resupply_shelf'
+    endif
+
+    if not varexist 'mybackpack'
+        overhead 'Select your backpack'
+        setvar! 'mybackpack'
+    endif
+
+    overhead 'Restocking/Resupplying'
+
+    dclick 'resupply_shelf'
+    waitforgump 3232825965
+    gumpresponse 4 3232825965
+    wait 150
+    target 'mybackpack'
+    waitforgump 3232825965
+    gumpresponse 7 3232825965
+    waitforgump 3232825965 
+    wait 150
+    gumpresponse 7 453554062
+    waitforgump 453554062
+endif
+loop

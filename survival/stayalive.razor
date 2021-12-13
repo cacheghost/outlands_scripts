@@ -384,14 +384,71 @@ while not dead
     endif
 
     # Magic Resist Potion
-    if not findbuff 'Magic Resist Potion' and timer 'potion recovery' > 1000
-        if findtype 3846 'backpack'
-            overhead '[Used: MR Potion]' 68
-            hotkey 'Drink Night Sight'
-            settimer 'potion recovery' 0
+    if not targetexists any
+        if not findbuff 'Magic Resist Potion' and timer 'potion recovery' > 1000
+            if findtype 3846 'backpack'
+                overhead '[Used: MR Potion]' 68
+                hotkey 'Drink Night Sight'
+                settimer 'potion recovery' 0
+            endif
         endif
     endif
     
+    # Strength Potion
+    if not timerexists 'strength potion recovery'
+        createtimer 'strength potion recovery'
+        settimer 'strength potion recovery' 10000
+    endif
+    
+    if insysmsg 'before you may use another strength'
+        settimer 'strength potion recovery' 0
+    endif
+    
+    if insysmsg 'You may now use an strength potion'
+        settimer 'strength potion recovery' 10000
+    endif
+    
+    if not targetexists any
+        if timer 'strength potion recovery' >= 10000 and str < 120 and timer 'potion recovery' > 1000
+                if findtype 3849 'backpack'
+                    if str == 100 or str == 111 or str == 109
+                        overhead '[Used: STR Potion]' 68
+                        hotkey 'Drink Strength'
+                        settimer 'strength potion recovery' 0
+                        settimer 'potion recovery' 0
+                    endif
+                endif
+            endif
+        endif
+    endif
+    
+    # Agility Potion
+    if not timerexists 'agility potion recovery'
+        createtimer 'agility potion recovery'
+        settimer 'agility potion recovery' 10000
+    endif
+    
+    if insysmsg 'before you may use another agility'
+        settimer 'agility potion recovery' 0
+    endif
+    
+    if insysmsg 'You may now use an agility potion'
+        settimer 'agility potion recovery' 10000
+    endif
+    
+    if not targetexists any
+        if timer 'agility potion recovery' >= 10000 and dex < 120 and timer 'potion recovery' > 1000
+            if findtype 3848 'backpack'
+                if dex == 25 or dex == 34 or dex == 100 or dex == 109 or dex == 111
+                    overhead '[Used: AGI Potion]' 68
+                    hotkey 'Drink Agility'
+                    settimer 'agility potion recovery' 0
+                    settimer 'potion recovery' 0
+                endif
+            endif
+        endif
+    endif
+        
     # Monitor for free cure pot
     if insysmsg 'receive a free cure potion'
         settimer 'next free cure' 0

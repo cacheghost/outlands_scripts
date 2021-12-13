@@ -1,59 +1,9 @@
 
-# Check timer initialization
-if not timerexists 'bandage time'
-    createtimer 'bandage time'
-    settimer 'bandage time' 20000
-endif
-
-if not timerexists 'curepot recovery'
-    createtimer 'curepot recovery'
-    settimer 'curepot recovery' 20000
-endif
-
-if not timerexists 'healpot recovery'
-    createtimer 'healpot recovery'
-    settimer 'healpot recovery' 20000
-endif
-
+# timer initialization
 if not timerexists 'potion recovery'
     createtimer 'potion recovery'
     settimer 'potion recovery' 20000
 endif
-
-if not timerexists 'cast recovery'
-    createtimer 'cast recovery'
-    settimer 'cast recovery' 20000
-endif
-
-if not timerexists 'stayalive text'
-    createtimer 'stayalive text'
-    overhead 'Stay Alive Starting!' 66
-endif
-
-if not timerexists 'low mana'
-    createtimer 'low mana'
-endif
-
-if not timerexists 'next free cure'
-    createtimer 'next free cure'
-    settimer 'next free cure' 60001
-endif
-
-if not timerexists 'queued_action_spam'
-    createtimer 'queued_action_spam'
-    settimer 'queued_action_spam' 20000
-endif
-
-if not timerexists 'target_lock_spam'
-    createtimer 'target_lock_spam'
-    settimer 'target_lock_spam' 20000
-endif
-
-if not timerexists 'explo_pot_spam'
-    createtimer 'explo_pot_spam'
-    settimer 'explo_pot_spam' 20000
-endif
-
 
 # Main Loop
 while not dead
@@ -61,12 +11,22 @@ while not dead
     # Overhead Messages and Global Timers
     ####################################################
     # Display script running every 30 seconds. 
+    if not timerexists 'stayalive text'
+        createtimer 'stayalive text'
+        overhead 'Stay Alive Starting!' 66
+    endif
+    
     if timer 'stayalive text' > 30000
         #overhead 'Stay Alive Running!' 66
         settimer 'stayalive text' 0
     endif
     
     # Free Cure Potion Alert
+    if not timerexists 'next free cure'
+        createtimer 'next free cure'
+        settimer 'next free cure' 60001
+    endif
+    
     if timer 'next free cure' > 30000
         if timer 'next free cure' > 60000
             #
@@ -75,17 +35,22 @@ while not dead
             settimer 'next free cure' 60001
         endif
     endif
-    
-    #if queued and timer 'queued_action_spam' >= 1000
-    #    overhead '[Queued Actions]' 33
-    #    settimer 'queued_action_spam' 0
-    #endif
-    
-    
+
     # World Save timer and warning
-    # TODO
+    if insysmsg 'world will save in 15 seconds'
+        overhead '[World Save Warning]' 55
+    endif
+    
+    if insysmsg 'world is saving, please wait'
+        overhead '[World Save]' 33
+    endif
     
     # Explosion Pot Timer
+    if not timerexists 'explo_pot_spam'
+        createtimer 'explo_pot_spam'
+        settimer 'explo_pot_spam' 20000
+    endif
+    
     if insysmsg 'next explosion potion thrown at that player'
         settimer 'explo pot' 0
     endif
@@ -155,6 +120,11 @@ while not dead
     
     
     # Target Lock Status
+    if not timerexists 'target_lock_spam'
+        createtimer 'target_lock_spam'
+        settimer 'target_lock_spam' 20000
+    endif
+    
     if varexist 'target_lock'
         if timer 'target_lock_spam' > 5000
             @setvar! 'lastserial' lasttarget
@@ -363,7 +333,12 @@ while not dead
     # 70 = 12
     # 85 = 11
     # 100 = 10
-    if skill 'Healing' >= 50
+    if skill 'Healing' >= 1
+        if not timerexists 'bandage time'
+            createtimer 'bandage time'
+            settimer 'bandage time' 20000
+        endif
+
         if not timerexists 'aid cure sync'
             createtimer 'aid cure sync'
             settimer 'aid cure sync' 20000
@@ -521,12 +496,23 @@ while not dead
     endif
     
     # Heal Potion
+    if not timerexists 'healpot recovery'
+        createtimer 'healpot recovery'
+        settimer 'healpot recovery' 20000
+    endif
+
     if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
         if findtype 3852 'backpack'
-            overhead '[Used: GHeal Pot]' 68
-            hotkey 'Drink Heal'
-            settimer 'healpot recovery' 0
-            settimer 'potion recovery' 0
+            if targetexists 'beneficial'
+                target 'self'
+                wait 50
+            endif
+            if hits < 35
+                overhead '[Used: GHeal Pot]' 68
+                hotkey 'Drink Heal'
+                settimer 'healpot recovery' 0
+                settimer 'potion recovery' 0
+            endif
         endif
     endif 
 

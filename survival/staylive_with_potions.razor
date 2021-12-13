@@ -395,28 +395,22 @@ while not dead
     endif
     
     # Strength Potion
-    if not timerexists 'strength potion recovery'
-        createtimer 'strength potion recovery'
-        settimer 'strength potion recovery' 10000
+    if not timerexists 'strength potion spam'
+        createtimer 'strength potion spam'
+        settimer 'strength potion spam' 240000
     endif
     
-    if insysmsg 'before you may use another strength'
-        settimer 'strength potion recovery' 0
-    endif
-    
-    if insysmsg 'You may now use an strength potion'
-        settimer 'strength potion recovery' 10000
+    if insysmsg 'You may now use a strength potion'
+        settimer 'strength potion recovery' 240000
     endif
     
     if not targetexists any
-        if timer 'strength potion recovery' >= 10000 and str < 120 and timer 'potion recovery' > 1000
+        if timer 'strength potion spam' >= 10000 and str < 120 and str >= 100 and timer 'potion recovery' > 1000
                 if findtype 3849 'backpack'
-                    if str == 100 or str == 111 or str == 109
-                        overhead '[Used: STR Potion]' 68
-                        hotkey 'Drink Strength'
-                        settimer 'strength potion recovery' 0
-                        settimer 'potion recovery' 0
-                    endif
+                    overhead '[Used: STR Potion]' 68
+                    hotkey 'Drink Strength'
+                    settimer 'strength potion spam' 0
+                    settimer 'potion recovery' 0
                 endif
             endif
         endif
@@ -439,7 +433,7 @@ while not dead
     if not targetexists any
         if timer 'agility potion recovery' >= 10000 and dex < 120 and timer 'potion recovery' > 1000
             if findtype 3848 'backpack'
-                if dex == 25 or dex == 34 or dex == 100 or dex == 109 or dex == 111
+                if dex < 45 and dex >= 25 or dex >= 100
                     overhead '[Used: AGI Potion]' 68
                     hotkey 'Drink Agility'
                     settimer 'agility potion recovery' 0
@@ -474,6 +468,7 @@ while not dead
         createtimer 'healpot recovery'
         settimer 'healpot recovery' 20000
     endif
+    
     if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
         if findtype 3852 'backpack'
             overhead '[Used: GHeal Pot]' 68

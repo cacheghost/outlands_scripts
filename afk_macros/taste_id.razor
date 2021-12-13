@@ -1,0 +1,48 @@
+if not timerexists 'tasteid timer'
+    createtimer 'tasteid timer'
+    settimer 'tasteid timer' 11000
+endif
+
+if hp <= 35
+    hotkey 'Greater Heal'
+    wait 1300
+    target self
+    wait 350
+endif
+
+if not varexist 'myshield'
+    overhead '[Select Shield]' 55
+    setvar! 'myshield'
+endif
+
+if not timerexists 'shield equip'
+    createtimer 'shield equip'
+    settimer 'shield equip' 20000
+endif
+
+if timer 'shield equip' >= 5000
+    if findlayer self lefthand as 'lefthand_item'
+        if 'lefthand_item' != 'myshield'
+            lift 'myshield'
+            drop self LeftHand
+        endif
+    else
+        lift 'myshield'
+        drop self LeftHand
+    endif
+    settimer 'shield equip' 0
+endif
+
+if skill 'Taste Identification' < 60
+    if timer 'tasteid timer' >= 11000
+        hotkey 'Taste Identification'
+        waitfortarget 300
+        target 'backpack'
+        settimer 'tasteid timer' 0
+    endif
+else
+    setskill 'Taste Identification' lock
+endif
+
+
+loop
