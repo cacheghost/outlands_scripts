@@ -1,29 +1,8 @@
-if targetexists harmful or targetexists beneficial
-    script main
-endif
-if not timerexists 'cast recovery'
-    createtimer 'cast recovery'
-    settimer 'cast recovery' 350
-endif
 if findtype 1872 'ground' 945 any 10 as 'target_field'
     # Dispel Stone Walls
-    if not targetexists neutral
-        if timer 'cast recovery' >= 350
-            hotkey 'Dispel Field'
-            wait 1550
-            settimer 'cast recovery' 0
-        endif
-    endif
     target 'target_field'
 elseif findtype 10408 'ground' any any 10 as 'target_field'
     # Dispel Fields (Poison, Energy, Paralyze, Fire)
-    if not targetexists neutral
-        if timer 'cast recovery' >= 350
-            hotkey 'Dispel Field'
-            wait 1550
-            settimer 'cast recovery' 0
-        endif
-    endif
     target 'target_field'
 endif
 script main
