@@ -45,6 +45,11 @@ while not dead
         overhead '[World Save]' 33
     endif
     
+    # Spell Detection
+    if insysmsg 'MagicResist skillgain'
+        overhead '[Spell Attack]' 33
+    endif
+    
     # Explosion Pot Timer
     if not timerexists 'explo_pot_spam'
         createtimer 'explo_pot_spam'
