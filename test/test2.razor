@@ -1,7 +1,20 @@
-say '[party'
-waitforgump 3527489586
-gumpresponse 28 3527489586
-waitforprompt 69048 
-waitforgump 3527489586
-promptresponse 'this is arbitary'
-gumpclose
+if mana < 40
+    hotkey 'Meditation'
+    wait 9000
+else
+    if findtype 'a water elemental' true
+        say 'a water elemental release'
+        pause 200
+    endif
+    if count 'Blood moss' < 10 or count "Spider's Silk" < 10 or count "Mandrake Root" < 10
+        restock 1
+        wft
+        hotkey 'Target Self'
+        wait 500
+    endif
+    if mana > 40
+        hotkey "Water Elemental"
+        wait 5000
+    endif
+endif
+loop
