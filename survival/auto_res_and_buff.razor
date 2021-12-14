@@ -60,7 +60,6 @@ while not dead
         
             # Res Rage Player
             overhead '[Res Player]' 68
-            overhead {{seriallabel}}
             
             # Initialize timers
             if not timerexists 'low mana'
@@ -73,7 +72,7 @@ while not dead
             endif
             
             hotkey 'Resurrection'
-            wait 5050
+            wait 5100
             target 'lastserial'
             wait 350
             
@@ -84,7 +83,7 @@ while not dead
             
             # Precat GHeal
             hotkey 'Greater Heal'
-            wait 1300
+            wait 1350
             
             # Wait till they accept Res
             while dead 'lastserial'
@@ -104,25 +103,25 @@ while not dead
             target 'lastserial'
             wait 350
             hotkey 'Greater Heal'
-            wait 1300
+            wait 1350
             target 'lastserial'
             wait 350
             
             # Bless them.
             hotkey 'Bless'
-            wait 1050
+            wait 1100
             target 'lastserial'
             wait 350
             
             # Heal them again.
             hotkey 'Greater Heal'
-            wait 1300
+            wait 1350
             target 'lastserial'
             wait 350
             
             # Protection them.
             hotkey 'Arch Protection'
-            wait 1300
+            wait 1350
             target 'lastserial'
             wait 350
             
