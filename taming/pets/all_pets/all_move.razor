@@ -1,43 +1,52 @@
-overhead 'All Move' 44
-wait 150
-# Tank 1
-if not varexist 'tank1'
-    overhead 'Select tank pet 1'
-    setvar! 'tank1'
-endif
-
-# DPS 1 - 4
-if not varexist 'dpspet1'
-    overhead 'Select dps pet 1'
-    setvar! 'dpspet1'
-endif
-
-if not varexist 'dpspet2'
-    overhead 'Select dps pet 2'
-    setvar! 'dpspet2'
-endif
-
-if not varexist 'dpspet3'
-    overhead 'Select dps pet 3'
-    setvar! 'dpspet3'
-endif
-
-if not varexist 'dpspet4'
-    overhead 'Select dps pet 4'
-    setvar! 'dpspet4'
-endif
-
+overhead '[All Move]' 44
 # Follow
-menu 'tank1' 7
-wait 150
-menu 'tank2' 7
-wait 150
-menu 'dpspet1' 7
-wait 150
-menu 'dpspet2' 7
-wait 150
-menu 'dpspet3' 7
-wait 150
-menu 'dpspet4' 7
-wait 150
+if skill 'Herding' >= 1
+    if varexist 'tank1'
+        menu 'tank1' 7
+        wait 100
+    endif
+    if varexist 'dpspet1'
+        menu 'dpspet1' 7
+        wait 100
+    endif
+
+    if varexist 'dpspet2'
+        menu 'dpspet2' 7
+        wait 100
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 7
+        wait 100
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 7
+        wait 100
+    endif
+else
+    if varexist 'tank1'
+        menu 'tank1' 6
+        wait 100
+    endif
+    if varexist 'dpspet1'
+        menu 'dpspet1' 6
+        wait 100
+    endif
+
+    if varexist 'dpspet2'
+        menu 'dpspet2' 6
+        wait 100
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 6
+        wait 100
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 6
+        wait 100
+    endif
+endif
 script main

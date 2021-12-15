@@ -1,13 +1,14 @@
 overhead '[Tank Guard]' 44
-if skill 'Herding' >= 50
+# Follow
+if skill 'Herding' >= 1
     if varexist 'tank1'
         menu 'tank1' 4
-        wait 50
+        wait 100
     endif
 else
     if varexist 'tank1'
         menu 'tank1' 3
-        wait 50
+        wait 100
     endif
 endif
 script main

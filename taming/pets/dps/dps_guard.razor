@@ -1,32 +1,44 @@
-overhead 'DPS Guard'
-wait 150
-if not varexist 'dpspet1'
-    overhead 'Select dps pet 1'
-    setvar! 'dpspet1'
-endif
+overhead '[DPS Guard]' 44
+# Guard
+if skill 'Herding' >= 1
+    if varexist 'dpspet1'
+        menu 'dpspet1' 4
+        wait 100
+    endif
 
-if not varexist 'dpspet2'
-    overhead 'Select dps pet 2'
-    setvar! 'dpspet2'
-endif
+    if varexist 'dpspet2'
+        menu 'dpspet2' 4
+        wait 100
+    endif
 
-if not varexist 'dpspet3'
-    overhead 'Select dps pet 3'
-    setvar! 'dpspet3'
-endif
+    if varexist 'dpspet3'
+        menu 'dpspet3' 4
+        wait 100
+    endif
 
-if not varexist 'dpspet4'
-    overhead 'Select dps pet 4'
-    setvar! 'dpspet4'
-endif
+    if varexist 'dpspet4'
+        menu 'dpspet4' 4
+        wait 100
+    endif
+else
+    if varexist 'dpspet1'
+        menu 'dpspet1' 3
+        wait 100
+    endif
 
-# Follow
-menu 'dpspet1' 4
-wait 150
-menu 'dpspet2' 4
-wait 150
-menu 'dpspet3' 4
-wait 150
-menu 'dpspet4' 4
-wait 150
+    if varexist 'dpspet2'
+        menu 'dpspet2' 3
+        wait 100
+    endif
+
+    if varexist 'dpspet3'
+        menu 'dpspet3' 3
+        wait 100
+    endif
+
+    if varexist 'dpspet4'
+        menu 'dpspet4' 3
+        wait 100
+    endif
+endif
 script main
