@@ -1,11 +1,11 @@
 while not dead
     if not timerexists 'awareness spam'
         createtimer 'awareness spam'
-        settimer 'awareness spam' 10000
+        settimer 'awareness spam' 30000
     endif
     
-    if timer 'awareness spam' >= 10000
-        say '[Running Res Script]' 68
+    if timer 'awareness spam' >= 30000
+        say '[Running Res Script]' 44
         settimer 'awareness spam' 0
     endif
     
@@ -38,6 +38,8 @@ while not dead
         
         if timer 'meditation' >= 13000
             overhead '[Meditation]' 68
+            say '[Meditating]' 44
+            pause 150
             hotkey 'Meditation'
             settimer 'meditation' 0
         endif
