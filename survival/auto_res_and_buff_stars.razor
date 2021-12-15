@@ -62,7 +62,7 @@ while not dead
         endif
         
         # If the target is in Rage guild, res and buff.
-        if ", Rage]" in 'seriallabel' or "[Rage]" in 'seriallabel' and dead 'lastserial'
+        if ", ***]" in 'seriallabel' or "[***]" in 'seriallabel' and dead 'lastserial'
             if not timerexists 'res timeout'
                 createtimer 'res timeout'
             endif
