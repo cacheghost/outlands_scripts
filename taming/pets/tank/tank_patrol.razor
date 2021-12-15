@@ -1,14 +1,24 @@
 overhead '[Tank Patrol]' 44
-# Follow
+# Patrol
 if skill 'Herding' >= 1
     if varexist 'tank1'
-        menu 'tank1' 3
-        wait 100
+        if dead 'tank1'
+            menu 'tank1' 2
+            wait 100
+        else
+            menu 'tank1' 3
+            wait 100
+        endif
     endif
 else
     if varexist 'tank1'
-        menu 'tank1' 2
-        wait 100
+        if dead 'tank1'
+            menu 'tank1' 1
+            wait 100
+        else
+            menu 'tank1' 2
+            wait 100
+        endif
     endif
 endif
 script main
