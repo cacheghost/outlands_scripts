@@ -1,4 +1,14 @@
 while not dead
+    if not timerexists 'awareness spam'
+        createtimer 'awareness spam'
+        settimer 'awareness spam' 30000
+    endif
+    
+    if timer 'awareness spam' >= 30000
+        say '[Running Ban Bot]' 44
+        settimer 'awareness spam' 0
+    endif
+
     clearsysmsg
     if not timerexists "skill timer"
         createtimer "skill timer"
@@ -33,7 +43,7 @@ while not dead
             overhead "Ignore Red Guildmate" 33
             continue
         endif
-        
+
         # Attempt to ban the target.
         hotkey 'Cancel Current Target'
         say "i ban thee"
