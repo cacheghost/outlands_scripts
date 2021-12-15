@@ -5,51 +5,77 @@ overhead '[DPS Kill]' 44
 # Kill
 if skill 'Herding' >= 1
     if varexist 'dpspet1'
-        menu 'dpspet1' 2
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet1'
+            # Ignore
+        else
+            menu 'dpspet1' 2
+            wait 100
+            target 'allkill_target'
+        endif
     endif
-
     if varexist 'dpspet2'
-        menu 'dpspet2' 2
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet2'
+            # Ignore
+        else
+            menu 'dpspet2' 2
+            wait 100
+            target 'allkill_target'
+        endif
     endif
-
     if varexist 'dpspet3'
-        menu 'dpspet3' 2
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet3'
+            # Ignore
+        else
+            menu 'dpspet3' 2
+            wait 100
+            target 'allkill_target'
+        endif
     endif
-
     if varexist 'dpspet4'
-        menu 'dpspet4' 2
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet4'
+            # Ignore
+        else
+            menu 'dpspet4' 2
+            wait 100
+            target 'allkill_target'
+        endif
     endif
 else
     if varexist 'dpspet1'
-        menu 'dpspet1' 1
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet1'
+            # Ignore
+        else
+            menu 'dpspet1' 1
+            wait 100
+            target 'allkill_target'
+        endif
     endif
-
     if varexist 'dpspet2'
-        menu 'dpspet2' 1
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet2'
+            # Ignore
+        else
+            menu 'dpspet2' 1
+            wait 100
+            target 'allkill_target'
+        endif
     endif
-
     if varexist 'dpspet3'
-        menu 'dpspet3' 1
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet3'
+            # Ignore
+        else
+            menu 'dpspet3' 1
+            wait 100
+            target 'allkill_target'
+        endif
     endif
-
     if varexist 'dpspet4'
-        menu 'dpspet4' 1
-        wait 100
-        target 'allkill_target'
+        if dead 'dpspet4'
+            # Ignore
+        else
+            menu 'dpspet4' 1
+            wait 100
+            target 'allkill_target'
+        endif
     endif
 endif
 script main

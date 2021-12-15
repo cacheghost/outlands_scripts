@@ -1,52 +1,96 @@
 overhead '[All Stop]' 44
-# Follow
+# Stop
 if skill 'Herding' >= 1
     if varexist 'tank1'
-        menu 'tank1' 9
-        wait 100
+        if dead 'tank1'
+            menu 'tank1' 8
+            wait 100
+        else
+            menu 'tank1' 9
+            wait 100
+        endif
     endif
     if varexist 'dpspet1'
-        menu 'dpspet1' 9
-        wait 100
+        if dead 'dpspet1'
+            menu 'dpspet1' 8
+            wait 100
+        else
+            menu 'dpspet1' 9
+            wait 100
+        endif
     endif
-
     if varexist 'dpspet2'
-        menu 'dpspet2' 9
-        wait 100
+        if dead 'dpspet2'
+            menu 'dpspet2' 8
+            wait 100
+        else
+            menu 'dpspet2' 9
+            wait 100
+        endif
     endif
-
     if varexist 'dpspet3'
-        menu 'dpspet3' 9
-        wait 100
+        if dead 'dpspet3'
+            menu 'dpspet3' 8
+            wait 100
+        else
+            menu 'dpspet3' 9
+            wait 100
+        endif
     endif
-
     if varexist 'dpspet4'
-        menu 'dpspet4' 9
-        wait 100
+        if dead 'dpspet4'
+            menu 'dpspet4' 8
+            wait 100
+        else
+            menu 'dpspet4' 9
+            wait 100
+        endif
     endif
 else
     if varexist 'tank1'
-        menu 'tank1' 8
-        wait 100
+        if dead 'tank1'
+            menu 'tank1' 7
+            wait 100
+        else
+            menu 'tank1' 8
+            wait 100
+        endif
     endif
     if varexist 'dpspet1'
-        menu 'dpspet1' 8
-        wait 100
+        if dead 'dpspet1'
+            menu 'dpspet1' 7
+            wait 100
+        else
+            menu 'dpspet1' 8
+            wait 100
+        endif
     endif
-
     if varexist 'dpspet2'
-        menu 'dpspet2' 8
-        wait 100
+        if dead 'dpspet2'
+            menu 'dpspet2' 7
+            wait 100
+        else
+            menu 'dpspet2' 8
+            wait 100
+        endif
     endif
-
     if varexist 'dpspet3'
-        menu 'dpspet3' 8
-        wait 100
+        if dead 'dpspet3'
+            menu 'dpspet3' 7
+            wait 100
+        else
+            menu 'dpspet3' 8
+            wait 100
+        endif
     endif
-
     if varexist 'dpspet4'
-        menu 'dpspet4' 8
-        wait 100
+        if dead 'dpspet4'
+            menu 'dpspet4' 7
+            wait 100
+        else
+            menu 'dpspet4' 8
+            wait 100
+        endif
     endif
 endif
 script main

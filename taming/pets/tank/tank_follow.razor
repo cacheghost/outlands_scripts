@@ -2,13 +2,23 @@ overhead '[Tank Follow]' 44
 # Follow
 if skill 'Herding' >= 1
     if varexist 'tank1'
-        menu 'tank1' 5
-        wait 100
+        if dead 'tank1'
+            menu 'tank1' 4
+            wait 100
+        else
+            menu 'tank1' 5
+            wait 100
+        endif
     endif
 else
     if varexist 'tank1'
-        menu 'tank1' 4
-        wait 100
+        if dead 'tank1'
+            menu 'tank1' 3
+            wait 100
+        else
+            menu 'tank1' 4
+            wait 100
+        endif
     endif
 endif
 script main
