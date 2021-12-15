@@ -1,43 +1,51 @@
-overhead '[DPS Follow]' 44
+overhead '[All Stop]' 44
 # Follow
 if skill 'Herding' >= 1
+    if varexist 'tank1'
+        menu 'tank1' 9
+        wait 100
+    endif
     if varexist 'dpspet1'
-        menu 'dpspet1' 5
+        menu 'dpspet1' 9
         wait 100
     endif
 
     if varexist 'dpspet2'
-        menu 'dpspet2' 5
+        menu 'dpspet2' 9
         wait 100
     endif
 
     if varexist 'dpspet3'
-        menu 'dpspet3' 5
+        menu 'dpspet3' 9
         wait 100
     endif
 
     if varexist 'dpspet4'
-        menu 'dpspet4' 5
+        menu 'dpspet4' 9
         wait 100
     endif
 else
+    if varexist 'tank1'
+        menu 'tank1' 8
+        wait 100
+    endif
     if varexist 'dpspet1'
-        menu 'dpspet1' 4
+        menu 'dpspet1' 8
         wait 100
     endif
 
     if varexist 'dpspet2'
-        menu 'dpspet2' 4
+        menu 'dpspet2' 8
         wait 100
     endif
 
     if varexist 'dpspet3'
-        menu 'dpspet3' 4
+        menu 'dpspet3' 8
         wait 100
     endif
 
     if varexist 'dpspet4'
-        menu 'dpspet4' 4
+        menu 'dpspet4' 8
         wait 100
     endif
 endif

@@ -1,20 +1,13 @@
-if mana < 40
-    hotkey 'Meditation'
-    wait 9000
-else
-    if findtype 'a water elemental' true
-        say 'a water elemental release'
-        pause 200
-    endif
-    if count 'Blood moss' < 10 or count "Spider's Silk" < 10 or count "Mandrake Root" < 10
-        restock 1
-        wft
-        hotkey 'Target Self'
-        wait 500
-    endif
-    if mana > 40
-        hotkey "Water Elemental"
-        wait 5000
-    endif
+if not listexists 'FoundPlayers'
+    createlist 'FoundPlayers'
 endif
+
+if findtypelist 'FoundPlayers' 3853 ground
+    #
+endif
+
+foreach item in 'FoundPlayers'
+    overhead {{item}}
+endfor
+wait 5000
 loop
