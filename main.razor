@@ -239,8 +239,12 @@ while not dead
     endif
     
     if insysmsg 'control points earned'
-        if insysmsg '10 control points earned' or insysmsg '15 control points earned' or insysmsg '20 control points earned'
-            overhead '[CP Earned]' 423
+        if insysmsg '10 control points earned'
+            overhead '[10 CP Earned]' 423
+        elseif insysmsg '15 control points earned'
+            overhead '[15 CP Earned]' 423
+        elseif insysmsg '20 control points earned'
+            overhead '[20 CP Earned]' 423
         endif
         clearsysmsg
         settimer 'cp timer' 0
