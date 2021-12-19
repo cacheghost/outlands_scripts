@@ -108,14 +108,22 @@ while not dead
             createtimer 'hally spam'
             settimer 'hally spam' 20000
         endif
+        
+        if not timerexists 'heavy xbow spam'
+            createtimer 'heavy xbow spam'
+            settimer 'heavy xbow spam' 20000
+        endif
         if timer 'swing timer' >= 6500
             #
-        elseif timer 'swing timer' >= 6000 and timer 'xbow spam' > 5000
-            overhead '[Xbow Ready]' 55
-            settimer 'xbow spam' 0
+        elseif timer 'swing timer' >= 6000 and timer 'heavy xbow spam' > 5000
+            overhead '[Heavy Xbow Ready]' 55
+            settimer 'heavy xbow spam' 0
         elseif timer 'swing timer' >= 4800 and timer 'hally spam' > 5000
             overhead '[Hally Ready]' 55
             settimer 'hally spam' 0
+        elseif timer 'swing timer' >= 4300 and timer 'xbow spam' > 5000
+            overhead '[Xbow Ready]' 55
+            settimer 'xbow spam' 0
         elseif timer 'swing timer' >= 3520 and timer 'bow spam' > 5000
             overhead '[Bow Ready]' 55
             settimer 'bow spam' 0
@@ -213,6 +221,47 @@ while not dead
                 @unsetvar 'reequip_weapon_right'
             endif
         endif
+    endif
+    
+    # PVP Event Messages
+    if insysmsg 'You have been credited with'
+        overhead '[Kill Earned]' 33
+        clearsysmsg 
+    endif
+    if insysmsg 'kill points earned'
+        overhead '[KP Earned]' 423
+        clearsysmsg 
+    endif
+    
+    if not timerexists 'cp timer'
+        createtimer 'cp timer'
+        settimer 'cp timer' 30000
+    endif
+    
+    if insysmsg 'control points earned'
+        if insysmsg '10 control points earned' or insysmsg '15 control points earned' or insysmsg '20 control points earned'
+            overhead '[CP Earned]' 423
+        endif
+        clearsysmsg
+        settimer 'cp timer' 0
+    endif
+    
+    if not timerexists 'cp spam'
+        createtimer 'cp spam'
+        settimer 'cp spam' 5000
+    endif
+    
+    if timer 'cp timer' >= 31000
+        #
+    elseif timer 'cp timer' >= 30000 and timer 'cp spam' >= 5000
+        overhead '[CP Tick Now]'
+        settimer 'cp spam' 0
+    elseif timer 'cp timer' >= 25000 and timer 'cp spam' >= 5000
+        overhead '[CP Tick 5 Sec]'
+        settimer 'cp spam' 0
+    elseif timer 'cp timer' >= 20000 and timer 'cp spam' >= 5000
+        overhead '[CP Tick 10 Sec]'
+        settimer 'cp spam' 0
     endif
     
     # Hamstring
