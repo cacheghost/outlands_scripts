@@ -1,0 +1,63 @@
+say '[party'
+waitforgump 3527489586
+if ingump '0/10' 3527489586
+    # Not in Party
+    if varexist 'in_party'
+        @unsetvar 'in_party'
+    endif
+else
+    # In Party
+    @setvar! 'in_party' 'self'
+endif
+# Close Party Gump
+gumpclose 3527489586
+
+if varexist 'in_party'
+    menu 'self' 4
+    wait 50
+    if gumpexists 3760260628
+        # In House
+        gumpclose 3760260628
+        @setvar! 'in_house' 'self'
+    endif
+    if gumpexists 2786414755
+        # Not in House
+        gumpclose 2786414755
+        if varexist 'in_house'
+            @unsetvar 'in_house'
+        endif
+    endif
+else
+    menu 'self' 3
+    wait 50
+    if gumpexists 3760260628
+        # In House
+        @setvar! 'in_house' 'self'
+    endif
+    if gumpexists 2786414755
+        # Not in House
+        if varexist 'in_house'
+            @unsetvar 'in_house'
+        endif
+    endif
+endif
+# Close Consider Signs Gump
+gumpclose 3760260628
+# Close Hunger Gump
+gumpclose 2786414755
+
+if varexist 'in_house' and varexist 'in_party'
+    overhead '[Invite Nearby]' 44
+    menu 'self' 7
+    wait 50
+elseif not varexist 'in_house' and not varexist 'in_party'
+    overhead '[Invite Nearby]' 44
+    menu 'self' 5
+    wait 50
+else
+    overhead '[Invite Nearby]' 44
+    menu 'self' 6
+    wait 50
+endif
+
+script main
