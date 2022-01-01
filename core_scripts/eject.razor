@@ -1,3 +1,45 @@
-menu 'self' 2
-wait 150
+say '[party'
+waitforgump 3527489586
+if ingump '0/10' 3527489586
+    # Not in Party
+    if varexist 'in_party'
+        @unsetvar 'in_party'
+    endif
+else
+    # In Party
+    @setvar! 'in_party' 'self'
+endif
+gumpclose 3527489586
+
+if varexist 'in_party'
+    #overhead '[In Party]'
+    menu 'self' 4
+    wait 50
+    if gumpexists 3760260628
+        # In House
+        # Eject
+        gumpclose 3760260628
+        overhead '[House Eject]' 44
+        menu 'self' 2
+        wait 50
+    endif
+    if gumpexists 2786414755
+        gumpclose 2786414755
+    endif
+else
+    #overhead '[Not in Party]'
+    menu 'self' 3
+    wait 50
+    if gumpexists 3760260628
+        # In House
+        # Eject
+        gumpclose 3760260628
+        overhead '[House Eject]' 44
+        menu 'self' 2
+        wait 50
+    endif
+    if gumpexists 2786414755
+        gumpclose 2786414755
+    endif
+endif
 script main

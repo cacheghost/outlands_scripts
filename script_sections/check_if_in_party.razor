@@ -1,0 +1,18 @@
+say '[party'
+waitforgump 3527489586
+if ingump '0/10' 3527489586
+    # Not in Party
+    if varexist 'in_party'
+        @unsetvar 'in_party'
+    endif
+else
+    # In Party
+    @setvar! 'in_party' 'self'
+endif
+gumpclose 3527489586
+
+if varexist 'in_party'
+    overhead '[In Party]'
+else
+    overhead '[Not in Party]'
+endif
