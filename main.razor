@@ -1,4 +1,4 @@
-
+#overhead '[M]'
 # timer initialization
 if not timerexists 'potion recovery'
     createtimer 'potion recovery'
@@ -290,6 +290,20 @@ while not dead
     elseif insysmsg 'fail to disarm'
         overhead '[Disarm Fail]' 33
         clearsysmsg 
+    endif
+    
+    # Prevent Criminal Looting
+    if insysmsg 'Criminal looting will now be allowed'
+        overhead '[Allow Crim Loot]' 68
+    elseif insysmsg 'Criminal looting will now be prevented'
+        overhead '[Prevent Crim Loot]' 33
+    endif
+    
+    # Prevent Criminal Healing
+    if insysmsg 'Criminal healing will now be allowed'
+        overhead '[Allow Crim Healing]' 68
+    elseif insysmsg 'Criminal healing will now be prevented'
+        overhead '[Prevent Crim Healing]' 33
     endif
     
     # Interrupt
