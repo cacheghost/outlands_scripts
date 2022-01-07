@@ -1,6 +1,6 @@
 say '[party'
 waitforgump 3527489586
-if ingump '0/10' 3527489586
+if ingump '0/10' 3527489586 and not ingump '10/10' 3527489586
     # Not in Party
     if varexist 'in_party'
         @unsetvar 'in_party'

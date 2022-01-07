@@ -1,11 +1,22 @@
 while not dead
+    if not timerexists 'public message'
+        createtimer 'public message'
+        settimer 'public message' 60000
+    endif
+
+    if timer 'public message' >= 60000
+        say '[House Ban Running]' 44
+        wait 150
+        say '[Ignore ***|Rage|OFP]' 44
+        settimer 'public message' 0
+    endif
+    
     if not timerexists "skill timer"
         createtimer "skill timer"
+        settimer "skill timer" 10100
     endif
 
     if timer "skill timer" > 10100
-        overhead '[House Ban Running]' 44
-        overhead '[Ignore ***|Rage|OFP]' 44
         hotkey 'Cancel Current Target'
         skill 'detectinghidden'
         waitfortarget 5000
