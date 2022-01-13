@@ -1,17 +1,19 @@
 while not dead
-    if not timerexists 'awareness spam'
-        createtimer 'awareness spam'
-        settimer 'awareness spam' 30000
-    endif
-    
-    if timer 'awareness spam' >= 30000
-        say '[Running Ban Bot]' 44
-        settimer 'awareness spam' 0
+    if not timerexists 'public message'
+        createtimer 'public message'
+        settimer 'public message' 60000
     endif
 
-    clearsysmsg
+    if timer 'public message' >= 60000
+        say '[House Ban Running]' 44
+        wait 150
+        say '[Ignore Rage|M|xBu]' 44
+        settimer 'public message' 0
+    endif
+    
     if not timerexists "skill timer"
         createtimer "skill timer"
+        settimer "skill timer" 10100
     endif
 
     if timer "skill timer" > 10100
@@ -43,7 +45,19 @@ while not dead
             overhead "Ignore Red Guildmate" 33
             continue
         endif
-
+        
+        # If the target is in xBu guild, skip.
+        if ", xBu]" in 'seriallabel' or "[xBu]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
+        # If the target is in Majestic guild, skip.
+        if ", M]" in 'seriallabel' or "[M]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
         # Attempt to ban the target.
         hotkey 'Cancel Current Target'
         say "i ban thee"

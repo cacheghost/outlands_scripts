@@ -7,7 +7,7 @@ while not dead
     if timer 'public message' >= 60000
         say '[House Ban Running]' 44
         wait 150
-        say '[Ignore ***|Rage|OFP]' 44
+        say '[Ignore *** | Rage | OFP | M | xBu]' 44
         settimer 'public message' 0
     endif
     
@@ -40,7 +40,7 @@ while not dead
             continue
         endif
 
-        # If the target is in Rage guild, skip.
+        # If the target is in *** guild, skip.
         if ", ***]" in 'seriallabel' or "[***]" in 'seriallabel'
             overhead "Ignore Red Guildmate" 33
             continue
@@ -52,8 +52,20 @@ while not dead
             continue
         endif
         
-        # If the target is in Rage guild, skip.
+        # If the target is in OFP guild, skip.
         if ", OFP]" in 'seriallabel' or "[OFP]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
+        # If the target is in xBu guild, skip.
+        if ", xBu]" in 'seriallabel' or "[xBu]" in 'seriallabel'
+            overhead "Ignore Red Guildmate" 33
+            continue
+        endif
+        
+        # If the target is in Majestic guild, skip.
+        if ", M]" in 'seriallabel' or "[M]" in 'seriallabel'
             overhead "Ignore Red Guildmate" 33
             continue
         endif
