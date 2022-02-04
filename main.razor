@@ -278,6 +278,9 @@ while not dead
     elseif insysmsg 'fail to hamstring'
         overhead '[Hamstring Fail]' 33
         clearsysmsg
+    elseif insysmsg 'your attack hamstrings your target'
+        overhead '[Hamstrung Target]'
+        clearsysmsg
     endif
     
     # Disarm
@@ -574,11 +577,11 @@ while not dead
     endif
 
     if hits < 55 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
+        if targetexists 'beneficial'
+            target 'self'
+            wait 50
+        endif
         if findtype 3852 'backpack'
-            if targetexists 'beneficial'
-                target 'self'
-                wait 50
-            endif
             if hits < 45
                 overhead '[Used: GHeal Pot]' 68
                 hotkey 'Drink Heal'
