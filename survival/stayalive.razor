@@ -324,6 +324,12 @@ while not dead
             settimer 'low mana' 0
         endif
 
+        if not targetexists 'beneficial' and hp <= 99
+            hotkey 'Greater Heal'
+            wait 1300
+            settimer 'castspell recovery' 0
+        endif
+        
         # If hurt, attempt to heal
         if hits < 65 and timer 'castspell recovery' >= 350
             if targetexists 'beneficial'
@@ -474,14 +480,20 @@ while not dead
         createtimer 'healpot recovery'
         settimer 'healpot recovery' 20000
     endif
-    if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
-        if findtype 3852 'backpack'
-            overhead '[Used: GHeal Pot]' 68
-            hotkey 'Drink Heal'
-            settimer 'healpot recovery' 0
-            settimer 'potion recovery' 0
+    if hits < 70 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
+        if targetexists 'beneficial'
+            target 'self'
+            wait 50
         endif
-    endif
+        if findtype 3852 'backpack'
+            if hits < 45
+                overhead '[Used: GHeal Pot]' 68
+                hotkey 'Drink Heal'
+                settimer 'healpot recovery' 0
+                settimer 'potion recovery' 0
+            endif
+        endif
+    endif 
     
 endwhile
 
