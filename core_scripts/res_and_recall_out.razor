@@ -1,0 +1,39 @@
+# Accept Res
+gumpresponse 1 2957810225
+wait 300
+
+# Eat a mushroom
+if findtype 29012 'backpack'
+    overhead '[Eat Mushroom]' 483
+    dclicktype 29012 'backpack'
+    wait 300
+endif
+
+# Recall out
+if skill 'Magery' >= 60
+    if not timerexists 'casting recovery'
+        # Casting recovery time is 0.2 seconds
+        createtimer 'casting recovery'
+        settimer 'casting recovery' 2000
+    endif
+    
+    while mana < 11
+        hotkey 'Meditation'
+        wait 3000
+    endwhile
+    
+    # Recall
+    if timer 'casting recovery' >= 200 and mana >= 11
+        hotkey 'Recall'
+        wait 2100
+        settimer 'casting recovery' 0
+        if findtype 29103 'backpack' as 'runetome'
+            target 'runetome'
+        elseif findtype 8901 'backpack' as 'runebook'
+            target 'runebook'
+        endif
+    endif
+endif
+
+overhead '[Res Recall Done]' 68
+script main
