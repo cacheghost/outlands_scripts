@@ -1,0 +1,108 @@
+# Accept Res
+gumpresponse 1 2957810225
+wait 300
+
+# Eat a mushroom
+if findtype 29012 'backpack'
+    overhead '[Eat Mushroom]' 483
+    dclicktype 29012 'backpack'
+    wait 300
+endif
+
+# Mount up
+if findtype 8438 'backpack' as 'mounttoken'
+    # Llama
+    overhead '[Mount]' 483
+    dclick 'mounttoken' 'backpack'
+    wait 300
+elseif findtype 8484 'backpack' as 'mounttoken'
+    # Horse
+    overhead '[Mount]' 483
+    dclick 'mounttoken' 'backpack'
+    wait 300
+elseif findtype 8502 'backpack' as 'mounttoken'
+    # Frenzied Ostard
+    overhead '[Mount]' 483
+    dclick 'mounttoken' 'backpack'
+    wait 300
+elseif findtype 8503 'backpack' as 'mounttoken'
+    # Forest Ostard
+    overhead '[Mount]' 483
+    dclick 'mounttoken' 'backpack'
+    wait 300
+elseif findtype 8501 'backpack' as 'mounttoken'
+    # Desert Ostard
+    overhead '[Mount]' 483
+    dclick 'mounttoken' 'backpack'
+    wait 300
+endif
+
+# Drink strength potion 
+if findtype 3849 'backpack' 0
+    overhead '[Str Pot]' 483
+    dclicktype 3849 'backpack'
+    wait 300
+endif
+
+# Drink gheal pot
+if findtype 3852 'backpack'
+    overhead '[GHeal Pot]' 483
+    dclicktype 3852 'backpack'
+    wait 300
+endif
+
+# Cast Spells
+if skill 'Magery' >= 60
+    if not timerexists 'casting recovery'
+        # Casting recovery time is 0.2 seconds
+        createtimer 'casting recovery'
+        settimer 'casting recovery' 2000
+    endif
+    
+    # Magic Reflect
+    if timer 'casting recovery' >= 200 and mana >= 14
+        overhead '[Casting Reflect]' 483
+        hotkey 'Magic Reflection'
+        wait 1500
+        settimer 'casting recovery' 0
+    endif
+    
+    # 2 second med
+    wait 1000
+    overhead '[Mediation]' 483
+    hotkey 'Meditation'
+    wait 4500
+    
+    # Energy Bolt
+    if timer 'casting recovery' >= 200 and mana >= 20
+        overhead '[Casting EB]' 483
+        hotkey 'Energy Bolt'
+        wait 1850
+        settimer 'casting recovery' 0
+    endif
+    
+endif
+
+# Equip kit
+overhead '[Dress: Kit]' 483
+dress 'kit'
+
+# Active Aspect
+say '[aspect'
+waitforgump 2424293173
+gumpresponse 8 2424293173
+waitforgump 2424293173
+gumpresponse 8 2424293173
+waitforgump 2424293173
+gumpresponse 13 2424293173
+waitforgump 2424293173
+gumpresponse 13 2424293173
+waitforgump 2424293173
+gumpresponse 17 2424293173
+waitforgump 2424293173
+gumpresponse 17 2424293173
+waitforgump 2424293173
+gumpclose
+
+overhead '[Res Setup Done]' 68
+script main

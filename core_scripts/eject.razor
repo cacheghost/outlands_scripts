@@ -1,3 +1,24 @@
+# 0. Close any existing gumps
+gumpclose 2785326818
+gumpclose 3527489586
+gumpclose 3760260628
+gumpclose 2786414755
+
+# 1. Determine if we have a mastery chain equipped.
+say '[masterychain'
+wait 150
+if insysmsg 'You are not wearing a mastery chain'
+    # Doesnt have chain
+    if varexist 'has_chain'
+        @unsetvar 'has_chain'
+    endif
+else
+    # Has Chain
+    @setvar! 'has_chain' 'self'
+    gumpclose 2785326818
+endif
+
+# 2. Determine if we are in a party.
 say '[party'
 waitforgump 3527489586
 if ingump '0/10' 3527489586 and not ingump '10/10' 3527489586
@@ -11,35 +32,232 @@ else
 endif
 gumpclose 3527489586
 
-if varexist 'in_party'
-    #overhead '[In Party]'
-    menu 'self' 4
-    wait 50
-    if gumpexists 3760260628
-        # In House
-        # Eject
-        gumpclose 3760260628
-        overhead '[House Eject]' 44
-        menu 'self' 2
-        wait 50
-    endif
-    if gumpexists 2786414755
-        gumpclose 2786414755
+# 3. Figure out logic of menu context to House Eject without leaving party.
+if followers >= 1
+    if varexist 'in_party'
+        # We are in a party.
+        if varexist 'has_chain'
+            # We have a mastery chain
+            menu 'self' 5
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        else
+            # No mastery chain
+            menu 'self' 4
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        endif
+    else
+        # We are not in a party.
+        if varexist 'has_chain'
+            # We have a mastery chain
+            menu 'self' 4
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        else
+            # No mastery chain
+            menu 'self' 3
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        endif
     endif
 else
-    #overhead '[Not in Party]'
-    menu 'self' 3
-    wait 50
-    if gumpexists 3760260628
-        # In House
-        # Eject
-        gumpclose 3760260628
-        overhead '[House Eject]' 44
-        menu 'self' 2
-        wait 50
-    endif
-    if gumpexists 2786414755
-        gumpclose 2786414755
+    if varexist 'in_party'
+        # We are in a party.
+        if varexist 'has_chain'
+            # We have a mastery chain
+            menu 'self' 5
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        else
+            # No mastery chain
+            menu 'self' 4
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        endif
+    else
+        # We are not in a party.
+        if varexist 'has_chain'
+            # We have a mastery chain
+            menu 'self' 4
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        else
+            # No mastery chain
+            menu 'self' 3
+            wait 50
+            if gumpexists 3760260628
+                # In House
+                # Eject
+                gumpclose 3760260628
+                overhead '[House Eject]' 44
+                menu 'self' 2
+                wait 50
+            endif
+            if gumpexists 2786414755
+                gumpclose 2786414755
+            endif
+        endif
     endif
 endif
+# 4. Close any existing gumps
+wait 50
+gumpclose 2785326818
+gumpclose 3527489586
+gumpclose 3760260628
+gumpclose 2786414755
+# 5. Back to main
 script main
+
+# Menu Context Overview:
+
+# # In Party, In House, No Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Eject
+# 3: Leave Party
+# 4: Consider Sins
+# 5: Hunger
+# 6: Show Skill Gain Chances
+# 7: Invite Nearby Players
+
+# # In Party, In House, Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Eject
+# 3: Leave Party
+# 4: Mastery Chain
+# 5: Consider Sins
+# 6: Hunger
+# 7: Show Skill Gain Chances
+# 8: Invite Nearby Players
+
+# # In Party, Not in House, No Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Leave Party
+# 3: Consider Sins
+# 4: Hunger
+# 5: Show Skill Gain Chances
+# 6: Invite Nearby Players
+
+# # In Party, Not in House, Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Leave Party
+# 3: Mastery Chain
+# 4: Consider Sins
+# 5: Hunger
+# 6: Show Skill Gain Chances
+# 7: Invite Nearby Players
+
+
+
+# # No Party, In House, No Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Eject
+# 3: Consider Sins
+# 4: Hunger
+# 5: Show Skill Gain Chances
+# 6: Invite Nearby Players
+
+
+# # No Party, In House, Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Eject
+# 3: Mastery Chain
+# 4: Consider Sins
+# 5: Hunger
+# 6: Show Skill Gain Chances
+# 7: Invite Nearby Players
+
+
+# # No Party, Not in House, No Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Consider Sins
+# 3: Hunger
+# 4: Show Skill Gain Chances
+# 5: Invite Nearby Players
+
+
+# # No Party, Not in House, Chain:
+# 0: Open Paperdoll
+# 1: Open Backpack
+# 2: Mastery Chain
+# 3: Consider Sins
+# 4: Hunger
+# 5: Show Skill Gain Chances
+# 6: Invite Nearby Players
