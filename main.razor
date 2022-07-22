@@ -10,17 +10,6 @@ while not dead
     ####################################################
     # Overhead Messages and Global Timers
     ####################################################
-    # Display script running every 30 seconds. 
-    if not timerexists 'stayalive text'
-        createtimer 'stayalive text'
-        overhead 'Stay Alive Starting!' 66
-    endif
-    
-    if timer 'stayalive text' > 30000
-        #overhead 'Stay Alive Running!' 66
-        settimer 'stayalive text' 0
-    endif
-    
     # Free Cure Potion Alert
     if not timerexists 'next free cure'
         createtimer 'next free cure'
@@ -130,26 +119,6 @@ while not dead
         endif    
     endif
     
-    
-    
-    # Target Lock Status
-    if not timerexists 'target_lock_spam'
-        createtimer 'target_lock_spam'
-        settimer 'target_lock_spam' 20000
-    endif
-    
-    if varexist 'target_lock'
-        if timer 'target_lock_spam' > 5000
-            @setvar! 'lastserial' lasttarget
-            if 'lastserial' = 'target_lock'
-                overhead '[Target Locked]' 44
-            else
-                overhead '[Target Unlocked]' 33
-            endif
-            settimer 'target_lock_spam' 0
-        endif
-    endif
-        
     # Setup weapon to reequip
     if not varexist 'reequip_weapon_left'
         if findlayer self lefthand as 'reequip_weapon_left_serial'
@@ -168,7 +137,6 @@ while not dead
     # Disarm Reequip Timer
     if insysmsg 'Their attack disarms you'
         overhead '[Disarmed!]' 33
-        clearsysmsg 
     endif
     
     if insysmsg 'no longer disarmed'
@@ -226,11 +194,9 @@ while not dead
     # PVP Event Messages
     if insysmsg 'You have been credited with'
         overhead '[Kill Earned]' 33
-        clearsysmsg 
     endif
     if insysmsg 'kill points earned'
         overhead '[KP Earned]' 423
-        clearsysmsg 
     endif
     
     if not timerexists 'cp timer'
@@ -246,7 +212,6 @@ while not dead
         elseif insysmsg '20 control points earned'
             overhead '[20 CP Earned]' 423
         endif
-        clearsysmsg
         settimer 'cp timer' 0
     endif
     
@@ -271,28 +236,21 @@ while not dead
     # Hamstring
     if insysmsg 'will now attempt to hamstring'
         overhead '[Hamstring: On]' 68
-        clearsysmsg
     elseif insysmsg 'refrain from making hamstring'
         overhead '[Hamstring: Off]' 33
-        clearsysmsg
     elseif insysmsg 'fail to hamstring'
         overhead '[Hamstring Fail]' 33
-        clearsysmsg
     elseif insysmsg 'your attack hamstrings your target'
         overhead '[Hamstrung Target]'
-        clearsysmsg
     endif
     
     # Disarm
     if insysmsg 'will now attempt to disarm'
         overhead '[Disarm: On]' 68
-        clearsysmsg
     elseif insysmsg 'refrain from making disarm'
         overhead '[Disarm: Off]' 33
-        clearsysmsg
     elseif insysmsg 'fail to disarm'
         overhead '[Disarm Fail]' 33
-        clearsysmsg 
     endif
     
     # Prevent Criminal Looting
@@ -312,37 +270,31 @@ while not dead
     # Interrupt
     if insysmsg 'concentration is disturbed'
         overhead '[Interrupted]' 125
-        clearsysmsg
     endif
     
     # Already Casting
     if insysmsg 'You are already casting'
         overhead '[Already Casting]' 88
-        clearsysmsg
     endif
     
     # Ranover
     if insysmsg 'you shove them out of the way'
         overhead '[Ranover Somebody]' 44
-        clearsysmsg
     endif
     
     # Ranover Invis
     if insysmsg 'you shove something invisible'
         overhead '[Ranover Invis]' 44
-        clearsysmsg
     endif
     
     # Resist Poison
     if insysmsg 'You resist a poison effect'
         overhead '[Resist Poison]' 68
-        clearsysmsg
     endif
     
     # Resist Disease
     if insysmsg 'You resist a disease effect'
         overhead '[Resist Disease]' 68
-        clearsysmsg
     endif
     
     # Resist Bleed
@@ -354,43 +306,36 @@ while not dead
     # Stealth Refresh
     if insysmsg 'ready to continue stealthing'
         overhead '[Stealth Refresh]' 68
-        clearsysmsg
     endif
     
     # Hinder Target
     if insysmsg 'hinders your target'
         overhead '[Hindered Target]' 68
-        clearsysmsg
     endif
     
     # Mana Refund
     if insysmsg 'spellbook generates mana'
         overhead '[Mana Refund]' 125
-        clearsysmsg
     endif
     
     # Charged Spell
     if insysmsg 'charge your spell'
         overhead '[Charged Spell]' 125
-        clearsysmsg
     endif
     
     # Wizardry Hinder Ready
     if insysmsg 'cast a wizardry lightning spell again'
         overhead '[Lightning Hinder Ready]' 44
-        clearsysmsg
     endif
     
     # Meditating
     if insysmsg 'enter a meditative trance'
         overhead '[Meditating]' 506
-        clearsysmsg
     endif
     
     # Stop Meditating
     if insysmsg 'stop meditating'
         overhead '[Stop Meditating]' 33
-        clearsysmsg
     endif
     
     # Monitor for free cure pot
@@ -557,7 +502,7 @@ while not dead
     
     # Cure Survival
     if not targetexists any
-        if poisoned 'self' and timer 'next free cure' >= 30000 and timer 'potion recovery' > 1000
+        if poisoned 'self' and timer 'next free cure' >= 30000
             if findtype 3847 'backpack'
                 overhead '[Used: Cure Pot]' 68
                 hotkey 'Drink Cure'
@@ -565,7 +510,6 @@ while not dead
                 if insysmsg 'receive a free cure potion'
                     settimer 'next free cure' 0
                 endif
-                settimer 'potion recovery' 0
             endif
         endif
     endif
@@ -576,7 +520,7 @@ while not dead
         settimer 'healpot recovery' 20000
     endif
 
-    if hits < 55 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
+    if hits < 55 and timer 'healpot recovery' >= 10000
         if targetexists 'beneficial'
             target 'self'
             wait 50
@@ -586,7 +530,6 @@ while not dead
                 overhead '[Used: GHeal Pot]' 68
                 hotkey 'Drink Heal'
                 settimer 'healpot recovery' 0
-                settimer 'potion recovery' 0
             endif
         endif
     endif 
