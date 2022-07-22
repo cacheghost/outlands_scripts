@@ -1,0 +1,207 @@
+############################################
+#
+#   Script: Training Bot
+#   Difficulty: Hard
+#   Author: CacheGhost   
+#
+############################################
+#
+#   This bot will cast GHeal and hold it. 
+#   When needed it will drop the heal on itself and recast.
+#   If interrupted twice, it will cast mini heal three times and try again.
+#   It will use gheal potions and cure pots.
+#
+############################################
+say '[Bot Activated - Hard]' 68
+wait 600
+# Remove boolean timers
+removetimer 'disturbedonce'
+removetimer 'disturbedtwice'
+while not dead
+    ####################################
+    # Warnings about off limit attacking
+    #----------------------------------#
+    # Out of Mana
+    if mana < 10
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Meding to full]' 33
+        while mana < 100
+            hotkey 'Meditation'
+            wait 5000
+        endwhile
+        if mana = 100
+            say '[Im full mana, attack!]' 68
+        endif
+    endif
+    #----------------------------------#
+    # Out of Regs
+    if not findtype 3974 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of Mandrake]' 33
+        stop
+    elseif not findtype 3973 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of Ginseng]' 33
+        stop
+    elseif not findtype 3972 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of Garlic]' 33
+        stop
+    elseif not findtype 3981 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of Spider Silk]' 33
+        stop
+    endif
+    #----------------------------------#
+    # Out of Pots
+    if not findtype 3852 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of GHeal Pot]' 33
+        stop
+    elseif not findtype 3847 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of Cure Pot]' 33
+        stop
+    elseif not findtype 3849 'backpack' -1 1
+        wait 600
+        say '[DO NOT ATTACK]' 33
+        wait 600
+        say '[Out of Str Pot]' 33
+        stop
+    endif
+    ####################################
+    # Status messages
+    if not timerexists 'weaken spam'
+        createtimer 'weaken spam'
+        settimer 'weaken spam' 5000
+    endif
+    if maxhp = 89 and timer 'weaken spam' >= 5000
+        wait 600    
+        say '[89 max HP]' 33
+        settimer 'weaken spam' 0
+    endif
+    if not timerexists 'normalhp spam'
+        createtimer 'normalhp spam'
+        settimer 'normalhp spam' 5000
+    endif
+    if maxhp = 100 and timer 'normalhp spam' >= 5000
+        wait 600    
+        say '[100 max HP]' 33
+        settimer 'normalhp spam' 0
+    endif
+    ####################################
+    # Cure Pot Survival.
+    #----------------------------------#
+    if not timerexists 'curepot recovery'
+        createtimer 'curepot recovery'
+        settimer 'curepot recovery' 2000
+    endif
+    #----------------------------------#
+    if not targetexists any
+        if poisoned 'self' and timer 'curepot recovery' > 1000
+            if findtype 3847 'backpack'
+                overhead '[Used: Cure Pot]' 68
+                hotkey 'Drink Cure'
+                settimer 'curepot recovery' 0
+            endif
+        endif
+    endif
+    ####################################
+    # Cast GHeal spell.
+    #----------------------------------#
+    if skill 'Magery' >= 60
+        if not timerexists 'casting recovery'
+            createtimer 'casting recovery'
+            settimer 'casting recovery' 2000
+        endif
+        if not targetexists beneficial and timer 'casting recovery' > 300 and mana > 10
+            hotkey 'Greater Heal'
+            settimer 'casting recovery' 0
+        endif
+        if targetexists beneficial
+            removetimer 'disturbedonce'
+            removetimer 'disturbedtwice'
+        endif
+        #----------------------------------#
+        if insysmsg 'concentration is disturbed'
+            if not timerexists 'disturbedonce'
+                createtimer 'disturbedonce'
+                overhead '[First Int]' 68
+                continue
+            endif
+            
+            if timerexists 'disturbedonce' and not timerexists 'disturbedtwice'
+                createtimer 'disturbedtwice'
+                overhead '[Second Int]' 68
+                continue
+            endif
+        
+            if timerexists 'disturbedonce' and timerexists 'disturbedtwice'
+                overhead '[Third Int]' 68
+                if mana > 4
+                    wait 350
+                    hotkey 'Heal'
+                    wait 650
+                    target 'self'
+                    
+                    wait 350
+                    hotkey 'Heal'
+                    wait 650
+                    target 'self'
+                    
+                    wait 350
+                    hotkey 'Heal'
+                    wait 650
+                    target 'self'
+                    
+                    removetimer 'disturbedonce'
+                    removetimer 'disturbedtwice'
+                endif
+            endif
+        endif
+        #----------------------------------#
+    endif
+    ####################################
+    # Heal myself using GHeal and GHeal pot only.
+    #----------------------------------#
+    if not timerexists 'healpot recovery'
+        createtimer 'healpot recovery'
+        settimer 'healpot recovery' 20000
+    endif
+    #----------------------------------#
+    # Low health heal routine.
+    if hits < 65 and timer 'healpot recovery' >= 10000
+        if targetexists 'beneficial'
+            target 'self'
+            wait 50
+        endif
+        if findtype 3852 'backpack'
+            if hits < 45
+                overhead '[Used: GHeal Pot]' 68
+                hotkey 'Drink Heal'
+                settimer 'healpot recovery' 0
+                settimer 'potion recovery' 0
+            endif
+        endif
+    endif
+    ####################################
+endwhile
+
+if dead 
+    warmode on
+    say '[You won!]' 68
+endif
