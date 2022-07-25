@@ -5,15 +5,16 @@
 #   
 #   Sections:
 #   1. Overhead Messages and Global Timers
-#   2. Explosion Potion Timer
-#   3. Swing Timers
-#   4. Rearm from Disarm
-#   5. Bandage Routine
-#   6. Auto-pouch Routine
-#   7. Hidden Check
-#   8. Free Cure Pot Routine
-#   9. GHeal/GHeal Pot Routine
-#   10. You Died!
+#   2. Rope Timer
+#   3. Explosion Potion Timer
+#   4. Swing Timers
+#   5. Rearm from Disarm
+#   6. Bandage Routine
+#   7. Auto-pouch Routine
+#   8. Hidden Check
+#   9. Free Cure Pot Routine
+#   10. GHeal/GHeal Pot Routine
+#   11. You Died!
 #
 ####################################################
 while not dead
@@ -132,6 +133,24 @@ while not dead
         overhead '[Prevent Crim Healing]' 33
     endif
     #--------------------------------------------------#
+    # Aspect returns
+    #--------------------------------------------------#
+    if insysmsg 'Your aspect and other bonuses return'
+        overhead '[Aspect Returned]' 483
+    endif
+    #--------------------------------------------------#
+    # Ate mushroom
+    #--------------------------------------------------#
+    if insysmsg 'You consume a magic mushroom'
+        overhead '[Ate Mushroom]' 68
+    endif
+    #--------------------------------------------------#
+    # Able to eat mushroom
+    #--------------------------------------------------#
+    if insysmsg 'You may now use another magic mushroom'
+        overhead '[Mushroom Ready]' 483
+    endif
+    #--------------------------------------------------#
     # Interrupt
     #--------------------------------------------------#
     if insysmsg 'concentration is disturbed'
@@ -225,42 +244,81 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 2: Explosion Pot Timer
+    # Section 2: Rope/Teleport Timer
+    #--------------------------------------------------#
+    if not timerexists 'rope_spam'
+        createtimer 'rope_spam'
+        settimer 'rope_spam' 200000
+    endif
+    if insysmsg 'rope_timer'
+        settimer 'rope_timer' 0
+    endif
+    if timerexists 'explo pot'
+        if timer 'explo pot' >= 35000 and timer 'explo_pot_spam' > 5000
+            # Leave this comment blank, this is needed.
+        elseif timer 'explo pot' >= 30000 and timer 'rope_spam' > 5000
+            overhead '[Explo Pot Ready]' 68
+            settimer 'rope_spam' 0
+        elseif timer 'explo pot' >= 25000 and timer 'rope_spam' > 5000
+            overhead '[Explo Pot - 5 sec]' 55
+            settimer 'rope_spam' 0
+        elseif timer 'explo pot' >= 20000 and timer 'rope_spam' > 5000
+            overhead '[Explo Pot - 10 sec]' 55
+            settimer 'rope_spam' 0
+        elseif timer 'explo pot' >= 15000 and timer 'rope_spam' > 5000
+            overhead '[Explo Pot - 15 sec]' 55
+            settimer 'rope_spam' 0
+        elseif timer 'explo pot' >= 10000 and timer 'rope_spam' > 5000
+            overhead '[Explo Pot - 20 sec]' 55
+            settimer 'rope_spam' 0
+        elseif timer 'explo pot' >= 5000 and timer 'rope_spam' > 5000
+            overhead '[Explo Pot - 25 sec]' 55
+            settimer 'rope_spam' 0
+        endif
+    endif
+########################################################
+
+########################################################
+    # Section 3: Explosion Pot Timer
     #--------------------------------------------------#
     if not timerexists 'explo_pot_spam'
         createtimer 'explo_pot_spam'
         settimer 'explo_pot_spam' 20000
     endif
-    if insysmsg 'next explosion potion thrown at that player'
-        settimer 'explo pot' 0
+    if not timerexists 'explo_pot'
+        createtimer 'explo_pot'
+        settimer 'explo_pot' 20000
     endif
-    if timerexists 'explo pot'
-        if timer 'explo pot' >= 35000 and timer 'explo_pot_spam' > 5000
+    if insysmsg 'next explosion potion thrown at that player'
+        settimer 'explo_pot' 0
+    endif
+    if timerexists 'explo_pot'
+        if timer 'explo_pot' >= 35000 and timer 'explo_pot_spam' > 5000
             # Leave this comment blank, this is needed.
-        elseif timer 'explo pot' >= 30000 and timer 'explo_pot_spam' > 5000
+        elseif timer 'explo_pot' >= 30000 and timer 'explo_pot_spam' > 5000
             overhead '[Explo Pot Ready]' 68
             settimer 'explo_pot_spam' 0
-        elseif timer 'explo pot' >= 25000 and timer 'explo_pot_spam' > 5000
+        elseif timer 'explo_pot' >= 25000 and timer 'explo_pot_spam' > 5000
             overhead '[Explo Pot - 5 sec]' 55
             settimer 'explo_pot_spam' 0
-        elseif timer 'explo pot' >= 20000 and timer 'explo_pot_spam' > 5000
+        elseif timer 'explo_pot' >= 20000 and timer 'explo_pot_spam' > 5000
             overhead '[Explo Pot - 10 sec]' 55
             settimer 'explo_pot_spam' 0
-        elseif timer 'explo pot' >= 15000 and timer 'explo_pot_spam' > 5000
+        elseif timer 'explo_pot' >= 15000 and timer 'explo_pot_spam' > 5000
             overhead '[Explo Pot - 15 sec]' 55
             settimer 'explo_pot_spam' 0
-        elseif timer 'explo pot' >= 10000 and timer 'explo_pot_spam' > 5000
+        elseif timer 'explo_pot' >= 10000 and timer 'explo_pot_spam' > 5000
             overhead '[Explo Pot - 20 sec]' 55
             settimer 'explo_pot_spam' 0
-        elseif timer 'explo pot' >= 5000 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot - 25 sec]' 55
+        elseif timer 'explo_pot' >= 0 and timer 'explo_pot_spam' > 5000
+            overhead '[Explo Pot - 30 sec]' 55
             settimer 'explo_pot_spam' 0
         endif
     endif
 ########################################################
     
 ########################################################
-    # Section 3: Swing Timers
+    # Section 4: Swing Timers
     #
     #   You need to have less than GM Arms Lore.
     #   Additionally, you need to be max skills so you dont actually gain.
@@ -339,7 +397,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 4: Rearm from Disarm
+    # Section 5: Rearm from Disarm
     #--------------------------------------------------#
     # Setup weapon to reequip
     if not varexist 'reequip_weapon_left'
@@ -413,7 +471,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 5: Bandage Survival
+    # Section 6: Bandage Survival
     #
     #   Dex = Time to Heal
     #   25 = 15
@@ -455,14 +513,14 @@ while not dead
             endif
             # Attempt to last second cure before aid tick, regardless of free cut timer.
             if timer 'bandage time' < 15000 and timer 'bandage time' >= 14000
-                if poisoned 'self' and timer 'potion recovery' > 1000
+                if poisoned 'self' and timer 'aid cure sync' > 1000
                     overhead '[Used: Cure Pot]' 68
                     hotkey 'Drink Cure'
                     # Set timer for free cure
                     if insysmsg 'receive a free cure potion'
                         settimer 'next free cure' 0
                     endif
-                    settimer 'potion recovery' 0
+                    settimer 'aid cure sync' 0
                 endif
             endif
         #--------------------------------------------------#
@@ -476,14 +534,14 @@ while not dead
             endif
             # Attempt to last second cure before aid tick, regardless of free cut timer.
             if timer 'bandage time' < 14000 and timer 'bandage time' >= 13000
-                if poisoned 'self' and timer 'potion recovery' > 1000
+                if poisoned 'self' and timer 'aid cure sync' > 1000
                     overhead '[Used: Cure Pot]' 68
                     hotkey 'Drink Cure'
                     # Set timer for free cure
                     if insysmsg 'receive a free cure potion'
                         settimer 'next free cure' 0
                     endif
-                    settimer 'potion recovery' 0
+                    settimer 'aid cure sync' 0
                 endif
             endif
         #--------------------------------------------------#
@@ -497,14 +555,14 @@ while not dead
             endif
             # Attempt to last second cure before aid tick, regardless of free cut timer.
             if timer 'bandage time' < 13000 and timer 'bandage time' >= 12000
-                if poisoned 'self' and timer 'potion recovery' > 1000
+                if poisoned 'self' and timer 'aid cure sync' > 1000
                     overhead '[Used: Cure Pot]' 68
                     hotkey 'Drink Cure'
                     # Set timer for free cure
                     if insysmsg 'receive a free cure potion'
                         settimer 'next free cure' 0
                     endif
-                    settimer 'potion recovery' 0
+                    settimer 'aid cure sync' 0
                 endif
             endif
         #--------------------------------------------------#
@@ -518,14 +576,14 @@ while not dead
             endif
             # Attempt to last second cure before aid tick, regardless of free cut timer.
             if timer 'bandage time' < 12000 and timer 'bandage time' >= 11000
-                if poisoned 'self' and timer 'potion recovery' > 1000
+                if poisoned 'self' and timer 'aid cure sync' > 1000
                     overhead '[Used: Cure Pot]' 68
                     hotkey 'Drink Cure'
                     # Set timer for free cure
                     if insysmsg 'receive a free cure potion'
                         settimer 'next free cure' 0
                     endif
-                    settimer 'potion recovery' 0
+                    settimer 'aid cure sync' 0
                 endif
             endif
         #--------------------------------------------------#
@@ -539,14 +597,14 @@ while not dead
             endif
             # Attempt to last second cure before aid tick, regardless of free cut timer.
             if timer 'bandage time' < 11000 and timer 'bandage time' >= 10000
-                if poisoned 'self' and timer 'potion recovery' > 1000
+                if poisoned 'self' and timer 'aid cure sync' > 1000
                     overhead '[Used: Cure Pot]' 68
                     hotkey 'Drink Cure'
                     # Set timer for free cure
                     if insysmsg 'receive a free cure potion'
                         settimer 'next free cure' 0
                     endif
-                    settimer 'potion recovery' 0
+                    settimer 'aid cure sync' 0
                 endif
             endif
         #--------------------------------------------------#
@@ -560,14 +618,14 @@ while not dead
             endif
             # Attempt to last second cure before aid tick, regardless of free cut timer.
             if timer 'bandage time' < 10000 and timer 'bandage time' >= 9000
-                if poisoned 'self' and timer 'potion recovery' > 1000
+                if poisoned 'self' and timer 'aid cure sync' > 1000
                     overhead '[Used: Cure Pot]' 68
                     hotkey 'Drink Cure'
                     # Set timer for free cure
                     if insysmsg 'receive a free cure potion'
                         settimer 'next free cure' 0
                     endif
-                    settimer 'potion recovery' 0
+                    settimer 'aid cure sync' 0
                 endif
             endif
         endif
@@ -575,7 +633,7 @@ while not dead
 ########################################################
 
 ########################################################
-    # Section 6: Auto-pouch Routine
+    # Section 7: Auto-pouch Routine
     #--------------------------------------------------#
     # If paralyzed, attempt to pouch.
     if not targetexists any
@@ -589,7 +647,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 7: Hidden Check
+    # Section 8: Hidden Check
     #--------------------------------------------------#
     if hidden
         continue
@@ -597,7 +655,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 8: Free Cure Pot Routine
+    # Section 9: Free Cure Pot Routine
     #--------------------------------------------------#
     if not targetexists any
         if poisoned 'self' and timer 'next free cure' >= 30000
@@ -614,7 +672,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 9: GHeal/GHeal Pot Routine
+    # Section 10: GHeal/GHeal Pot Routine
     #--------------------------------------------------#    
     if not timerexists 'healpot recovery'
         createtimer 'healpot recovery'
@@ -643,7 +701,7 @@ while not dead
 endwhile
 
 ########################################################
-# Section 10: YOU DIED!
+# Section 11: YOU DIED!
 #--------------------------------------------------#
 if dead
     overhead 'You are dead! GJ NOOB!'
