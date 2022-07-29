@@ -678,7 +678,7 @@ while not dead
         createtimer 'healpot recovery'
         settimer 'healpot recovery' 20000
     endif
-    if hits < 55 and timer 'healpot recovery' >= 10000
+    if hits < 55
         #--------------------------------------------------#
         # GHeal/Heal Routine
         #--------------------------------------------------#
@@ -690,7 +690,7 @@ while not dead
         # GHeal Pot Routine
         #--------------------------------------------------#
         if findtype 3852 'backpack'
-            if hits < 45
+            if hits < 45 and timer 'healpot recovery' >= 10000
                 overhead '[Used: GHeal Pot]' 68
                 hotkey 'Drink Heal'
                 settimer 'healpot recovery' 0
