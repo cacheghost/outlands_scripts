@@ -13,25 +13,37 @@ if varexist 'weapon_1'
             if 'myweapon' != 'weapon_1'
                 # Weapon we are wearing isnt our weapon, change that.
                 overhead '[Equip Weapon 1]' 55
-                lift 'myweapon'
-                drop 'backpack'
-                lift 'weapon_1'
-                drop self LeftHand
+                if targetexists any
+                    lift 'myweapon'
+                    drop 'backpack'
+                    lift 'weapon_1'
+                    drop self LeftHand
+                else
+                    dclick 'weapon_1'
+                endif
             endif
         elseif findlayer self righthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
                 # Weapon we are wearing isnt our weapon, change that.
                 overhead '[Equip Weapon 1]' 55
-                lift 'myweapon'
-                drop 'backpack'
-                lift 'weapon_1'
-                drop self RightHand
+                if targetexists any
+                    lift 'myweapon'
+                    drop 'backpack'
+                    lift 'weapon_1'
+                    drop self RightHand
+                else
+                    dclick 'weapon_1'
+                endif
             endif
         else
             # Not wearing weapon, equip from backpack
             overhead '[Equip Weapon 1]' 55
-            lift 'weapon_1'
-            drop self LeftHand
+            if targetexists any
+                lift 'weapon_1'
+                drop self LeftHand
+            else
+                dclick 'weapon_1'
+            endif
         endif
     else
         # We are not wearing the weapon, and its not in backpack. Unset variable
