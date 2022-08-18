@@ -1,0 +1,17 @@
+if findtype 8198 'ground' any any 2 as 'corpse'
+    if findtype 3922 'backpack' any any as 'dagger'
+        overhead '[Cutting Body]' 48
+        dclick 'dagger'
+        wait 150
+        target 'corpse'
+        wait 200
+    endif
+endif
+
+if findtype 7584 'ground' any any 1 as 'head'
+    overhead '[Looting Head]' 48
+    lift 'head'
+    wait 150
+    drop 'backpack'
+endif
+script main
