@@ -93,6 +93,15 @@ while not dead
     elseif timer 'cp timer' >= 20000 and timer 'cp spam' >= 5000
         overhead '[CP Tick 10 Sec]'
         settimer 'cp spam' 0
+    elseif timer 'cp timer' >= 15000 and timer 'cp spam' >= 5000
+        overhead '[CP Tick 15 Sec]'
+        settimer 'cp spam' 0
+    elseif timer 'cp timer' >= 10000 and timer 'cp spam' >= 5000
+        overhead '[CP Tick 20 Sec]'
+        settimer 'cp spam' 0
+    elseif timer 'cp timer' >= 5000 and timer 'cp spam' >= 5000
+        overhead '[CP Tick 25 Sec]'
+        settimer 'cp spam' 0
     endif
     #--------------------------------------------------#
     # Hamstring
@@ -253,26 +262,26 @@ while not dead
     if insysmsg 'rope_timer'
         settimer 'rope_timer' 0
     endif
-    if timerexists 'explo pot'
-        if timer 'explo pot' >= 35000 and timer 'explo_pot_spam' > 5000
+    if timerexists 'rope_timer'
+        if timer 'rope_timer' >= 250000 and timer 'rope_spam' > 5000
             # Leave this comment blank, this is needed.
-        elseif timer 'explo pot' >= 30000 and timer 'rope_spam' > 5000
-            overhead '[Explo Pot Ready]' 68
+        elseif timer 'rope_timer' >= 200000 and timer 'rope_spam' > 5000
+            overhead '[Rope Timer Ready]' 68
             settimer 'rope_spam' 0
-        elseif timer 'explo pot' >= 25000 and timer 'rope_spam' > 5000
-            overhead '[Explo Pot - 5 sec]' 55
+        elseif timer 'rope_timer' >= 150000 and timer 'rope_spam' > 5000
+            overhead '[Rope Timer - 5 sec]' 55
             settimer 'rope_spam' 0
-        elseif timer 'explo pot' >= 20000 and timer 'rope_spam' > 5000
-            overhead '[Explo Pot - 10 sec]' 55
+        elseif timer 'rope_timer' >= 20000 and timer 'rope_spam' > 5000
+            overhead '[Rope Timer - 10 sec]' 55
             settimer 'rope_spam' 0
-        elseif timer 'explo pot' >= 15000 and timer 'rope_spam' > 5000
-            overhead '[Explo Pot - 15 sec]' 55
+        elseif timer 'rope_timer' >= 15000 and timer 'rope_spam' > 5000
+            overhead '[Rope Timer - 15 sec]' 55
             settimer 'rope_spam' 0
-        elseif timer 'explo pot' >= 10000 and timer 'rope_spam' > 5000
-            overhead '[Explo Pot - 20 sec]' 55
+        elseif timer 'rope_timer' >= 10000 and timer 'rope_spam' > 5000
+            overhead '[Rope Timer - 20 sec]' 55
             settimer 'rope_spam' 0
-        elseif timer 'explo pot' >= 5000 and timer 'rope_spam' > 5000
-            overhead '[Explo Pot - 25 sec]' 55
+        elseif timer 'rope_timer' >= 5000 and timer 'rope_spam' > 5000
+            overhead '[Rope Timer - 25 sec]' 55
             settimer 'rope_spam' 0
         endif
     endif
@@ -378,7 +387,7 @@ while not dead
         # Hally Swing Timer
         #--------------------------------------------------#
         elseif timer 'swing timer' >= 4800 and timer 'hally spam' > 5000
-            overhead '[Hally Ready]' 55
+            #overhead '[Hally Ready]' 55
             settimer 'hally spam' 0
         #--------------------------------------------------#
         # Crossbow Swing Timer
