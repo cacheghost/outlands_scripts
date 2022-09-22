@@ -14,10 +14,13 @@ if varexist 'weapon_1'
                 # Weapon we are wearing isnt our weapon, change that.
                 overhead '[Equip Weapon 1]' 55
                 if targetexists any
-                    lift 'myweapon'
-                    drop 'backpack'
-                    lift 'weapon_1'
-                    drop self LeftHand
+                    #lift 'myweapon'
+                    #drop 'backpack'
+                    #lift 'weapon_1'
+                    #drop self LeftHand
+                    hotkey 'Undress Left Hand'
+                    wait 500
+                    dress 'weapon 1'
                 else
                     dclick 'weapon_1'
                 endif
@@ -27,10 +30,13 @@ if varexist 'weapon_1'
                 # Weapon we are wearing isnt our weapon, change that.
                 overhead '[Equip Weapon 1]' 55
                 if targetexists any
-                    lift 'myweapon'
-                    drop 'backpack'
-                    lift 'weapon_1'
-                    drop self RightHand
+                    #lift 'myweapon'
+                    #drop 'backpack'
+                    #lift 'weapon_1'
+                    #drop self RightHand
+                    hotkey 'Undress Right Hand'
+                    wait 500
+                    dress 'weapon 1'
                 else
                     dclick 'weapon_1'
                 endif
@@ -39,8 +45,9 @@ if varexist 'weapon_1'
             # Not wearing weapon, equip from backpack
             overhead '[Equip Weapon 1]' 55
             if targetexists any
-                lift 'weapon_1'
-                drop self LeftHand
+                #lift 'weapon_1'
+                #drop self LeftHand
+                dress 'weapon 1'
             else
                 dclick 'weapon_1'
             endif
@@ -49,17 +56,17 @@ if varexist 'weapon_1'
         # We are not wearing the weapon, and its not in backpack. Unset variable
         if findlayer self lefthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
-                overhead '[Unset Weapon 1]' 33
-                @unsetvar 'weapon_1'
+                #overhead '[Unset Weapon 1]' 33
+                #@unsetvar 'weapon_1'
             endif
         elseif findlayer self righthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
-                overhead '[Unset Weapon 1]' 33
-                @unsetvar 'weapon_1'
+                #overhead '[Unset Weapon 1]' 33
+                #@unsetvar 'weapon_1'
             endif
         else
-            overhead '[Unset Weapon 1]' 33
-            @unsetvar 'weapon_1'
+            #overhead '[Unset Weapon 1]' 33
+            #@unsetvar 'weapon_1'
         endif
     endif
 endif
