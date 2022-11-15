@@ -1,0 +1,225 @@
+#########################################################
+# Determine what character is using script.
+#########################################################
+if findtype 3922 'backpack' as 'mydagger'
+    getlabel 'mydagger' 'daggerlabel'
+    if 'blessed' in 'daggerlabel'
+        dclick 'mydagger'
+        wait 150
+        target 'self'
+        wait 550
+        @setvar! 'lastserial' lasttarget
+    endif
+endif
+
+
+
+#########################################################
+# Check Character and equip unique clothing
+#########################################################
+# Cache is King
+#########################################################
+if 'lastserial' = '0x1A82ED'
+    #overhead '[Cache is King]'
+    # Equip Robe
+    if find 0x41D0D52F backpack as 'robeclothing'
+        dclick 'robeclothing'
+        wait 550
+    endif
+
+    # Equip Head
+    if find 0x40ECAF30 backpack as 'headclothing'
+        dclick 'headclothing'
+        wait 550
+    endif
+    
+    # Equip Shoulders
+    if find 0x44EF5CEB backpack as 'shoulderclothing'
+        dclick 'shoulderclothing'
+        wait 550
+    endif
+    
+    # Equip Gloves
+    if find 0x41D0CA3F backpack as 'glovesclothing'
+        dclick 'glovesclothing'
+        wait 550
+    endif
+    
+    # Equip Boots
+    if find 0x41D0DD2A backpack as 'bootsclothing'
+        dclick 'bootsclothing'
+        wait 550
+    endif
+    
+    # Equip Belt
+    if find 0x40B639B4 backpack as 'beltclothing'
+        dclick 'beltclothing'
+        wait 550
+    endif
+    
+    # Equip Lantern
+    if find 0x4021DCF7 backpack as 'lantern'
+        lift 'lantern'
+        drop 'self' onehandedsecondary
+        dclick 'lantern'
+        wait 550
+    endif
+    
+    # Equip Pipe
+    if find 0x48557EEB backpack as 'pipe'
+        lift 'pipe'
+        drop 'self' talisman
+        wait 550
+    endif
+endif
+#########################################################
+# Cache
+#########################################################
+if 'lastserial' = '0xE03EE'
+    overhead '[Cache]'
+    # Equip Robe
+    if find 0x40E2F345 backpack as 'robeclothing'
+        dclick 'robeclothing'
+        wait 550
+    endif
+
+    # Equip Head
+    if find 0x40E75BE3 backpack as 'headclothing'
+        dclick 'headclothing'
+        wait 550
+    endif
+    
+    # Equip Shoulders
+    if find 0x4EC3CDB8 backpack as 'shoulderclothing'
+        dclick 'shoulderclothing'
+        wait 550
+    endif
+    
+    # Equip Boots
+    if find 0x40E2EB45 backpack as 'bootsclothing'
+        dclick 'bootsclothing'
+        wait 550
+    endif
+    
+    # Equip Belt
+    if find 0x4EC41BB5 backpack as 'beltclothing'
+        dclick 'beltclothing'
+        wait 550
+    endif
+    
+    # Equip Lantern
+    if find 0x405B39CA backpack as 'lantern'
+        lift 'lantern'
+        drop 'self' onehandedsecondary
+        dclick 'lantern'
+        wait 550
+    endif
+    
+    # Equip Pipe
+    if find 0x49202899 backpack as 'pipe'
+        lift 'pipe'
+        drop 'self' talisman
+        wait 550
+    endif
+endif
+#########################################################
+# Cached
+#########################################################
+
+#########################################################
+# CacheMoney
+#########################################################
+
+#########################################################
+# CacheGhost
+#########################################################
+
+#########################################################
+# This Guy Now
+#########################################################
+
+#########################################################
+# Cephalopod
+#########################################################
+
+#########################################################
+# Tess Shades
+#########################################################
+
+
+
+
+
+
+
+
+
+#########################################################
+# Equip Armor
+#########################################################
+# Check Head Piece
+#########################################################
+if not findlayer self head
+    # No headpiece equipped.
+    if findtype 7610 'backpack' as 'headpiece'
+        # Equip leather headpiece
+        dclick 'headpiece'
+        wait 550
+    endif
+endif
+#########################################################
+# Check Neck Piece
+#########################################################
+if not findlayer self neck
+    # No headpiece equipped.
+    if findtype 5063 'backpack' as 'neckpiece'
+        # Equip leather headpiece
+        dclick 'neckpiece'
+        wait 550
+    endif
+endif
+#########################################################
+# Check Chest Piece
+#########################################################
+if not findlayer self middletorso
+    # No headpiece equipped.
+    if findtype 5075 'backpack' as 'chestpiece'
+        # Equip leather headpiece
+        dclick 'chestpiece'
+        wait 550
+    endif
+endif
+#########################################################
+# Check Arm Piece
+#########################################################
+if not findlayer self arms
+    # No headpiece equipped.
+    if findtype 5061 'backpack' as 'armpiece'
+        # Equip leather headpiece
+        dclick 'armpiece'
+        wait 550
+    endif
+endif
+#########################################################
+# Check Gloves Piece
+#########################################################
+if not findlayer self gloves
+    # No headpiece equipped.
+    if findtype 5070 'backpack' as 'glovespiece'
+        # Equip leather headpiece
+        dclick 'glovespiece'
+        wait 550
+    endif
+endif
+#########################################################
+# Check Legs Piece
+#########################################################
+if not findlayer self pants
+    # No headpiece equipped.
+    if findtype 5074 'backpack' as 'legspiece'
+        # Equip leather headpiece
+        dclick 'legspiece'
+        wait 550
+    endif
+endif
+#script chainloop
