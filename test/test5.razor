@@ -1,0 +1,134 @@
+if not timerexists 'shoot'
+    createtimer 'shoot'
+    settimer 'shoot' 10000
+endif
+warmode 'on'
+warmode 'off'
+cast 'Energy Bolt'
+wft
+setlasttarget
+lasttarget
+hotkey 'Last Target'
+if findbuff 'Food Satisfaction'
+    if timer 'shoot' > 5690
+        settimer 'shoot' 0
+        script 'bows\hxbow'
+    elseif timer 'shoot' > 4910
+        if dex > 44
+            settimer 'shoot' 0
+            script 'bows\hxbow'
+        else
+            if timer 'shoot' > 5230 and dex > 35
+                settimer 'shoot' 0
+                script 'bows\hxbow'
+            else
+                settimer 'shoot' 0
+                script 'bows\xbow'
+            endif
+        endif
+    elseif timer 'shoot' > 4080
+        settimer 'shoot' 0
+        script 'bows\xbow'
+    elseif timer 'shoot' > 3500
+        if dex > 44
+            settimer 'shoot' 0
+            script 'bows\xbow'
+        else
+            if timer 'shoot' > 3740 and dex > 35
+                settimer 'shoot' 0
+                script 'bows\xbow'
+            else
+                settimer 'shoot' 0
+                script 'bows\bow'
+            endif
+        endif
+    elseif timer 'shoot' > 3350
+        settimer 'shoot' 0
+        script 'bows\bow'
+    elseif timer 'shoot' > 2890
+        if dex > 44
+            settimer 'shoot' 0
+            script 'bows\bow'
+        else
+            if timer 'shoot' > 3080 and dex > 35
+                settimer 'shoot' 0
+                script 'bows\bow'
+            endif
+        endif
+    endif
+    if timer 'shoot' > 2500
+        overhead '500ms'
+    elseif timer 'shoot' > 2000
+        overhead '1000ms'
+    elseif timer 'shoot' > 1500
+        overhead '1500ms'
+    elseif timer 'shoot' > 1000
+        overhead '2000ms'
+    elseif timer 'shoot' > 500
+        overhead '2500ms'
+    else
+        overhead '3000ms'
+    endif
+else
+    overhead '-- EAT FOOD --' 11
+    overhead '-- EAT FOOD --' 11
+    if timer 'shoot' > 6000
+        settimer 'shoot' 0
+        script 'bows\hxbow'
+    elseif timer 'shoot' > 5170
+        if dex > 44
+            settimer 'shoot' 0
+            script 'bows\hxbow'
+        else
+            if timer 'shoot' > 5510 and dex > 35
+                settimer 'shoot' 0
+                script 'bows\hxbow'
+            else
+                settimer 'shoot' 0
+                script 'bows\xbow'
+            endif
+        endif
+    elseif timer 'shoot' > 4280
+        settimer 'shoot' 0
+        script 'bows\xbow'
+    elseif timer 'shoot' > 3690
+        if dex > 44
+            settimer 'shoot' 0
+            script 'bows\xbow'
+        else
+            if timer 'shoot' > 3930 and dex > 35
+                settimer 'shoot' 0
+                script 'bows\xbow'
+            else
+                settimer 'shoot' 0
+                script 'bows\bow'
+            endif
+        endif
+    elseif timer 'shoot' > 3520
+        settimer 'shoot' 0
+        script 'bows\bow'
+    elseif timer 'shoot' > 3040
+        if dex > 44
+            settimer 'shoot' 0
+            script 'bows\bow'
+        else
+            if timer 'shoot' > 3240 and dex > 35
+                settimer 'shoot' 0
+                script 'bows\bow'
+            endif
+        endif
+    endif
+    if timer 'shoot' > 3000
+        overhead '500ms'
+    elseif timer 'shoot' > 2500
+        overhead '1000ms'
+    elseif timer 'shoot' > 2000
+        overhead '1500ms'
+    elseif timer 'shoot' > 1500
+        overhead '2000ms'
+    elseif timer 'shoot' > 1000
+        overhead '2500ms'
+    else
+        overhead '3000ms'
+    endif
+endif

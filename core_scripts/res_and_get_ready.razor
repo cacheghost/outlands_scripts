@@ -84,25 +84,4 @@ if skill 'Magery' >= 60
 endif
 
 # Equip kit
-overhead '[Dress: Kit]' 483
-dress 'kit'
-
-# Active Aspect
-say '[aspect'
-waitforgump 2424293173
-gumpresponse 8 2424293173
-waitforgump 2424293173
-gumpresponse 8 2424293173
-waitforgump 2424293173
-gumpresponse 13 2424293173
-waitforgump 2424293173
-gumpresponse 13 2424293173
-waitforgump 2424293173
-gumpresponse 17 2424293173
-waitforgump 2424293173
-gumpresponse 17 2424293173
-waitforgump 2424293173
-gumpclose
-
-overhead '[Res Setup Done]' 68
-script main
+script equip_kit

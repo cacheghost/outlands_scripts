@@ -1,0 +1,235 @@
+# Setup Shelf
+if not varexist 'resupply_shelf'
+    overhead 'Select resupply shelf'
+    setvar! 'resupply_shelf'
+endif
+
+if skill 'evaluating intelligence' = 100.0
+    setskill 'evaluating intelligence' lock
+    stop
+endif
+
+if mana < 30
+    hotkey 'Meditation'
+    wait 8500
+endif
+
+# Cast Magic Trap on self
+while hp > 50
+    hotkey 'Magic Arrow'
+    wait 750
+    target 'self'
+    wait 300
+endwhile
+
+# Initialize timers
+if not timerexists 'potion recovery'
+    createtimer 'potion recovery'
+    settimer 'potion recovery' 20000
+endif
+
+if not timerexists 'next free cure'
+    createtimer 'next free cure'
+    settimer 'next free cure' 60000
+endif
+
+# Display script running every 10 seconds.
+if not timerexists 'stayalive text'
+    createtimer 'stayalive text'
+endif
+
+if timer 'stayalive text' > 10000
+    overhead 'Stay Alive Running!' 66
+    settimer 'stayalive text' 0
+endif
+
+# Magery Survival
+if skill 'Magery' >= 60
+    # Initialize timers
+    if not timerexists 'low mana'
+        createtimer 'low mana'
+    endif
+    
+    if not timerexists 'castspell recovery'
+        createtimer 'castspell recovery'
+        settimer 'castspell recovery' 20000
+    endif
+    
+    # Mana warnings
+    if mana < 22  and timer 'low mana' > 3000 and mana > 10
+        overhead '1 GHeal Left' 55
+        settimer 'low mana' 0
+    elseif mana < 11  and timer 'low mana' > 3000
+        overhead '0 GHeals Left' 33
+        settimer 'low mana' 0
+    endif
+
+    if not targetexists beneficial and mana > 10
+        hotkey 'Greater Heal'
+        settimer 'castspell recovery' 0
+    endif
+    
+    # If hurt, attempt to heal
+    if hits <= 50 and timer 'castspell recovery' >= 350
+        say '[Tick]' 68
+        if targetexists 'beneficial'
+            target self
+            settimer 'castspell recovery' 0
+        endif
+        if targetexists 'any'
+            # Do nothing until precast has been used.
+        else
+            # If under 35 HP and we cant heal pot, quick heal and reset heal timer
+            if hits < 35 and timer 'healpot recovery' < 10000 and timer 'potion recovery' < 1000 and mana > 3
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    if findtype 3847 'backpack'
+                        overhead '[Used: Cure Pot]' 68
+                        hotkey 'Drink Cure'
+                        # Set timer for free cure
+                        if insysmsg 'receive a free cure potion'
+                            settimer 'next free cure' 0
+                        endif
+                        settimer 'potion recovery' 0
+                        wait 50
+                    else
+                        hotkey 'Cure'
+                        wait 800
+                        target self
+                        wait 350
+                    endif
+                endif
+                say '[Tock]' 33
+                hotkey 'Heal'
+                wait 550
+                target self
+                settimer 'castspell recovery' 0
+            elseif hits < maxhits and mana > 10
+                if poisoned 'self' and timer 'potion recovery' > 1000
+                    if findtype 3847 'backpack'
+                        overhead '[Used: Cure Pot]' 68
+                        hotkey 'Drink Cure'
+                        # Set timer for free cure
+                        if insysmsg 'receive a free cure potion'
+                            settimer 'next free cure' 0
+                        endif
+                        settimer 'potion recovery' 0
+                        wait 50
+                    else
+                        hotkey 'Cure'
+                        wait 800
+                        target self
+                        wait 350
+                    endif
+                endif
+                say '[Tock]' 33
+                hotkey 'Greater Heal'
+                wait 1300
+                target self
+                settimer 'castspell recovery' 0
+            endif
+        endif
+    endif
+endif
+
+# Magic Resist Potion
+if not targetexists any
+    if not findbuff 'Magic Resist Potion' and timer 'potion recovery' > 1000
+        if findtype 3846 'backpack'
+            overhead '[Used: MR Potion]' 68
+            hotkey 'Drink Night Sight'
+            settimer 'potion recovery' 0
+        endif
+    endif
+endif
+
+# Strength Potion
+if not timerexists 'strength potion spam'
+    createtimer 'strength potion spam'
+    settimer 'strength potion spam' 240000
+endif
+
+if insysmsg 'You may now use a strength potion'
+    settimer 'strength potion recovery' 240000
+endif
+
+if not targetexists any
+    if timer 'strength potion spam' >= 10000 and str < 120 and str >= 100 and timer 'potion recovery' > 1000
+        if findtype 3849 'backpack'
+            overhead '[Used: STR Potion]' 68
+            hotkey 'Drink Strength'
+            settimer 'strength potion spam' 0
+            settimer 'potion recovery' 0
+        endif
+    endif
+endif
+
+# Agility Potion
+if not timerexists 'agility potion recovery'
+    createtimer 'agility potion recovery'
+    settimer 'agility potion recovery' 10000
+endif
+
+if insysmsg 'before you may use another agility'
+    settimer 'agility potion recovery' 0
+endif
+
+if insysmsg 'You may now use an agility potion'
+    settimer 'agility potion recovery' 10000
+endif
+
+if not targetexists any
+    if timer 'agility potion recovery' >= 10000 and dex < 120 and timer 'potion recovery' > 1000
+        if findtype 3848 'backpack'
+            if dex < 45 and dex >= 25 or dex >= 100
+                overhead '[Used: AGI Potion]' 68
+                hotkey 'Drink Agility'
+                settimer 'agility potion recovery' 0
+                settimer 'potion recovery' 0
+            endif
+        endif
+    endif
+endif
+    
+# Monitor for free cure pot
+if insysmsg 'receive a free cure potion'
+    settimer 'next free cure' 0
+endif
+
+# Cure Survival
+if not targetexists any
+    if poisoned 'self' and timer 'next free cure' >= 30000 and timer 'potion recovery' > 1000
+        if findtype 3847 'backpack'
+            overhead '[Used: Cure Pot]' 68
+            hotkey 'Drink Cure'
+            # Set timer for free cure
+            if insysmsg 'receive a free cure potion'
+                settimer 'next free cure' 0
+            endif
+            settimer 'potion recovery' 0
+        endif
+    endif
+endif
+
+# Heal Potion
+if not timerexists 'healpot recovery'
+    createtimer 'healpot recovery'
+    settimer 'healpot recovery' 20000
+endif
+
+if hits < 35 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
+    if findtype 3852 'backpack'
+        overhead '[Used: GHeal Pot]' 68
+        hotkey 'Drink Heal'
+        settimer 'healpot recovery' 0
+        settimer 'potion recovery' 0
+    endif
+endif
+
+# Restock and Resupply
+menu 'resupply_shelf' 0
+wait 150
+hotkey 'Target Self'
+waitforgump 3232825965
+menu 'resupply_shelf' 1
+
+loop

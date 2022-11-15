@@ -1,0 +1,26 @@
+say '[masterychain'
+wait 150
+if insysmsg 'You are not wearing a mastery chain'
+    # Doesnt have chain
+    if varexist 'has_chain'
+        @unsetvar 'has_chain'
+    endif
+else
+    if ingump '0/30' 2785326818 and not ingump '10/30' 2785326818 and not ingump '30/30' 2785326818 and not ingump '30/30' 2785326818
+        # Doesnt have chain
+        if varexist 'has_chain'
+            @unsetvar 'has_chain'
+        endif
+    else
+        # Has Chain
+        @setvar! 'has_chain' 'self'
+    endif
+    gumpclose 2785326818
+endif
+
+
+if varexist 'has_chain'
+    overhead '[Has Chain]'
+else
+    overhead '[No Chain]'
+endif

@@ -1,0 +1,22 @@
+# Setup Shelf
+if not varexist 'resupply_shelf'
+    overhead 'Select resupply shelf'
+    setvar! 'resupply_shelf'
+endif
+
+# Cast Magic Trap on self
+while findtype 3705 'backpack' 0
+    hotkey 'Magic Trap'
+    wait 750
+    target 'self'
+    wait 300
+endwhile
+
+# Restock and Resupply
+menu 'resupply_shelf' 0
+wait 150
+hotkey 'Target Self'
+waitforgump 3232825965
+menu 'resupply_shelf' 1
+
+loop

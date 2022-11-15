@@ -1,0 +1,25 @@
+if not timerexists 'cp timer'
+    createtimer 'cp timer'
+    settimer 'cp timer' 30000
+endif
+
+if not timerexists 'cp spam'
+    createtimer 'cp spam'
+    settimer 'cp spam' 5000
+endif
+
+if timer 'cp timer' >= 30000
+    overhead '[CP RESET]'
+    settimer 'cp timer' 0
+elseif timer 'cp timer' >= 30000 and timer 'cp spam' >= 5000
+    overhead '[CP Tick Now]'
+    settimer 'cp spam' 0
+elseif timer 'cp timer' >= 25000 and timer 'cp spam' >= 5000
+    overhead '[CP Tick 5 Sec]'
+    settimer 'cp spam' 0
+elseif timer 'cp timer' >= 20000 and timer 'cp spam' >= 5000
+    overhead '[CP Tick 10 Sec]'
+    settimer 'cp spam' 0
+endif
+
+loop

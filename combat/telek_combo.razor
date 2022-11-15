@@ -1,0 +1,30 @@
+unsetvar 'lastserial'
+setvar! 'lastserial' lasttarget
+overhead 'serial: {{lastserial}}'
+if 'lastserial' = 'self'
+    overhead "Target Self"
+else
+    overhead '[Drink Pot]'
+    hotkey 'Drink Explosion'
+    wait 3000
+    if targetexists harmful
+        overhead '[Drop Explo]'
+        target 'lastserial'
+        wait 150
+    endif
+    if not targetexists any
+        overhead '[Throw Pot]'
+        hotkey 'Drink Explosion'
+        wait 150
+        target 'lastserial'
+    endif
+    if not targetexists any
+        overhead '[Cast/Drop Ebolt]'
+        hotkey 'Energy Bolt'
+        wait 1950
+        target 'lastserial'
+    endif
+    overhead '[Wep Attack]'
+    hotkey 'Play Script: equip_gear\wep1\equip_weapon_1'
+endif
+loop

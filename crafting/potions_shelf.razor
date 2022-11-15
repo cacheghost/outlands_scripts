@@ -1,26 +1,40 @@
-if insysmsg 'Crafting queue complete'
-    if not varexist 'resupply_shelf'
-        overhead 'Select resupply shelf'
-        setvar! 'resupply_shelf'
-    endif
-
-    overhead 'Restocking/Resupplying'
-    menu 'resupply_shelf' 0
-    waitfortarget
-    target 'self'
-    wait 150
-    waitforgump 3232825965
-    menu 'resupply_shelf' 1
-    wait 150
-    
-    overhead 'Starting crafting queue'
-    say '[CraftingQueue'
-    wait 150
-    waitforgump 453554062
-    gumpresponse 7
-    waitforgump 453554062
+# Setup Shelf
+if not varexist 'resupply_shelf'
+    overhead 'Select resupply shelf'
+    setvar! 'resupply_shelf'
 endif
+
+# Reset timer, in case missed sysmsg.
+if not timerexists 'crafting_queue'
+    createtimer 'crafting_queue'
+    settimer 'crafting_queue' 0
+endif
+
+# Start Crafting Queue
+overhead 'Starting crafting queue'
+say '[CraftingQueue'
+wait 150
+waitforgump 453554062
+gumpresponse 7
+waitforgump 453554062
+
+# Watch for queue finished message
+while not insysmsg 'Crafting queue complete'
+    # If we hit the reset timer limit then break.
+    # We might have missed the sysmsg.
+    if timer 'crafting_queue' >= 5400000
+        settimer 'crafting_queue' 0
+        break
+    endif
+endwhile
+
+# Restock and Resupply
+menu 'resupply_shelf' 0
+wait 150
+hotkey 'Target Self'
+waitforgump 3232825965
+menu 'resupply_shelf' 1
+
+settimer 'crafting_queue' 0
 loop
-
-
 
