@@ -1,0 +1,92 @@
+# Clear sys messaages
+clearsysmsg
+
+# Stay Alive Starting message
+overhead 'Stay Alive Starting!' 44
+
+# While alive, try to stay alive.
+while not dead
+    # Initialize timers
+    if not timerexists 'potion recovery'
+        createtimer 'potion recovery'
+        settimer 'potion recovery' 20000
+    endif
+    
+    if not timerexists 'next free cure'
+        createtimer 'next free cure'
+        settimer 'next free cure' 60000
+    endif
+    
+    # Display script running every 10 seconds.
+    if not timerexists 'stayalive text'
+        createtimer 'stayalive text'
+    endif
+    
+    if timer 'stayalive text' > 10000
+        overhead 'Stay Alive Running!' 66
+        settimer 'stayalive text' 0
+    endif
+    
+    # If paralyzed, attempt to pouch.
+    if not targetexists any
+        if paralyzed
+            if findtype 3705 'backpack' 38
+                overhead '[Used: Pouch]' 33
+                say [pouch
+            endif
+        endif
+    endif
+    
+    ####################################################################
+    # Hidden check, will avoid any actions below this marker if hidden.
+    ####################################################################
+    if hidden
+        continue
+    endif
+    
+    # Monitor for free cure pot
+    if insysmsg 'receive a free cure potion'
+        settimer 'next free cure' 0
+    endif
+
+    # Cure Survival
+    if not targetexists any
+        if poisoned 'self' and timer 'next free cure' >= 30000 and timer 'potion recovery' > 1000
+            if findtype 3847 'backpack'
+                overhead '[Used: Cure Pot]' 68
+                hotkey 'Drink Cure'
+                # Set timer for free cure
+                if insysmsg 'receive a free cure potion'
+                    settimer 'next free cure' 0
+                endif
+                settimer 'potion recovery' 0
+            endif
+        endif
+    endif
+    
+    # Heal Potion
+    if not timerexists 'healpot recovery'
+        createtimer 'healpot recovery'
+        settimer 'healpot recovery' 20000
+    endif
+    if hits < 80 and timer 'healpot recovery' >= 10000 and timer 'potion recovery' > 1000
+        if targetexists 'beneficial'
+            target 'self'
+            wait 50
+        endif
+        if findtype 3852 'backpack'
+            if hits < 60
+                overhead '[Used: GHeal Pot]' 68
+                hotkey 'Drink Heal'
+                settimer 'healpot recovery' 0
+                settimer 'potion recovery' 0
+            endif
+        endif
+    endif 
+    
+endwhile
+
+if dead
+    overhead 'Stay Alive Failed!'
+    stop
+endif

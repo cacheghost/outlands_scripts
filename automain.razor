@@ -642,17 +642,43 @@ while not dead
 ########################################################
 
 ########################################################
-    # Section 7: Auto-pouch Routine
+    # Section 7: Auto-pouch Routine (with delay)
     #--------------------------------------------------#
+    if not timerexists 'pouch latency'
+        createtimer 'pouch latency'
+        settimer 'pouch latency' 2000
+    endif
     # If paralyzed, attempt to pouch.
     if not targetexists any
         if paralyzed
             if findtype 3705 'backpack' 38
+                if timer 'pouch latency' >= 1000
+                    wait 50
+                    settimer 'pouch latency' 0
+                elseif timer 'pouch latency' >= 500
+                    wait 150
+                else
+                    wait 200
+                endif
                 overhead '[Used: Pouch]' 33
                 say [pouch
             endif
         endif
     endif
+########################################################
+
+########################################################
+    # Section 7a: Auto-pouch Routine (no delay)
+    #--------------------------------------------------#
+    # If paralyzed, attempt to pouch.
+    #if not targetexists any
+        #if paralyzed
+            #if findtype 3705 'backpack' 38
+                #overhead '[Used: Pouch]' 33
+                #say [pouch
+            #endif
+        #endif
+    #endif
 ########################################################
     
 ########################################################
@@ -666,6 +692,10 @@ while not dead
 ########################################################
     # Section 9: Free Cure Pot Routine
     #--------------------------------------------------#
+    if not timerexists 'next free cure'
+        createtimer 'next free cure'
+        settimer 'next free cure' 60001
+    endif
     if not targetexists any
         if poisoned 'self' and timer 'next free cure' >= 30000
             if findtype 3847 'backpack'
