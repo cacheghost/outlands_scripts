@@ -3,7 +3,8 @@ if findtype 3948 'ground' 0 1 2 as 'bluegate'
     dclick 'bluegate'
     waitforgump 3899019871
     gumpresponse 2 3899019871
-endif
+    gumpclose 3899019871
+endif 
 
 # Handle red moongates
 if findtype 3948 'ground' 2820 1 2 as 'redmoongate'
@@ -13,6 +14,7 @@ if findtype 3948 'ground' 2820 1 2 as 'redmoongate'
     gumpresponse 17 3773199800
     waitforgump 3773199800
     gumpresponse 2 3773199800
+    gumpclose 3773199800
 endif
 
 # Handle blue moongates
@@ -23,6 +25,7 @@ if findtype 3948 'ground' 2821 1 2 as 'bluemoongate'
     gumpresponse 18 3773199800
     waitforgump 3773199800
     gumpresponse 2 3773199800
+    gumpclose 3773199800
 endif
 
 # Handle yellow moongates
@@ -33,6 +36,7 @@ if findtype 3948 'ground' 2822 1 2 as 'yellowmoongate'
     gumpresponse 17 3773199800
     waitforgump 3773199800
     gumpresponse 2 3773199800
+    gumpclose 3773199800
 endif
 
 # Handle ghost moongates
@@ -44,12 +48,14 @@ if findtype 3948 'ground' 2825 1 2 as 'factionmoongate'
         gumpresponse 2 870750234
         waitforgump 870750234
         gumpresponse 2 870750234
+        gumpclose 870750234
     endif
     if gumpexists 3773199800
         waitforgump 3773199800
         gumpresponse 2 3773199800
         waitforgump 3773199800
         gumpresponse 2 3773199800
+        gumpclose 3773199800
     endif
 endif
 
@@ -59,6 +65,7 @@ if findtype 3948 'ground' 2827 1 2 as 'factionmoongate'
     dclick 'factionmoongate'
     waitforgump 3773199800
     gumpresponse 2 3773199800
+    gumpclose 3773199800
 endif
 
 # Handle gray moongates
@@ -67,5 +74,17 @@ if findtype 8148 'ground' -1 1 2 as 'graymoongate'
     dclick 'graymoongate'
     waitforgump 3899019871
     gumpresponse 2 3899019871
+    gumpclose 3899019871
+endif
+
+# Handle omni moongates
+if findtype 27754 'ground' -1 1 2 as 'omnimoongate'
+    # Confirm
+    dclick 'omnimoongate'
+    waitforgump 3773199800
+    gumpresponse 17 3773199800
+    waitforgump 3773199800
+    gumpresponse 2 3773199800
+    gumpclose 3773199800
 endif
 #script chainloop
