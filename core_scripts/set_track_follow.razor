@@ -1,0 +1,75 @@
+
+# Setup a timer for tracking skill cooldown
+if not timerexists tracking
+    createtimer tracking
+    settimer tracking 5001
+endif
+# Check if track gump is open, if not then open it.
+if not gumpexists 4267467659 and timer tracking >= 5000 and not targetexists any
+    hotkey 'Tracking'
+    waitforgump 4267467659
+    settimer tracking 0
+elseif targetexists any
+    overhead "[Holding Spell]" 33
+elseif not gumpexists 4267467659 and timer tracking < 5000 
+    overhead "[Track CD]" 33   
+endif
+# Check if the player tracking gump is open
+if ingump "Tiles" 4267467659
+    # Close the player tracking gump
+    gumpclose 4267467659
+    # If we can use track then refresh track gump
+    if timer tracking >= 5000 and not gumpexists 4267467659
+        hotkey 'Tracking'
+        waitforgump 4267467659
+        settimer tracking 0
+    elseif not gumpexists 4267467659 and timer tracking < 5000 
+        overhead "[Track CD]" 33       
+    endif
+endif
+
+# While the setting 'Follow Only Individual' isnt in the gump, iterate through options.
+while not ingump "Follow Only Individual" 4267467659
+    if not gumpexists 4267467659
+        //overhead "[Tracking Gump Doesnt Exist]" 33
+        break
+    endif
+    gumpresponse 10 4267467659
+    waitforgump 4267467659
+endwhile
+
+# While the setting 'Begin Hunting' isnt in the gump, iterate through options.
+while not ingump "Begin Hunting" 4267467659
+    if not gumpexists 4267467659
+        //overhead "[Tracking Gump Doesnt Exist]" 33
+        break
+    endif
+    gumpresponse 6 4267467659
+    waitforgump 4267467659
+endwhile
+    
+# While the setting 'Stop Hunting' isnt in the gump, iterate through options.
+while not ingump "Stop Hunting" 4267467659
+    if not gumpexists 4267467659
+        //overhead "[Tracking Gump Doesnt Exist]" 33
+        break
+    endif
+    gumpresponse 6 4267467659
+    waitforgump 4267467659
+endwhile
+
+if gumpexists 4267467659
+    # Check Settings
+    if ingump "Stop Hunting" 4267467659
+        overhead "[Tracking Active]" 68
+    else
+        overhead "[Tracking Stopped]" 33
+    endif
+
+    if ingump "Always Get Closest" 4267467659
+        overhead "[Always Get Closest]" 123
+    elseif ingump "Follow Only Individual" 4267467659
+        overhead "[Follow Individual]" 123
+    endif
+    //gumpclose 4267467659
+endif

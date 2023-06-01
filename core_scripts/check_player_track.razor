@@ -1,0 +1,33 @@
+# Setup a timer for tracking skill cooldown
+if not timerexists tracking
+    createtimer tracking
+    settimer tracking 5001
+endif
+# Check if track gump is open, if not then open it.
+if not gumpexists 4267467659 and timer tracking >= 5000 and not targetexists any
+    hotkey 'Tracking'
+    waitforgump 4267467659
+    settimer tracking 0
+elseif targetexists any
+    overhead "[Holding Spell]" 33
+elseif not gumpexists 4267467659 and timer tracking < 5000 
+    overhead "[Track CD]" 33     
+endif
+# Check if the player tracking gump is open
+if ingump "Tiles" 4267467659
+    # Close the player tracking gump
+    gumpclose 4267467659
+    # If we can use track then refresh track gump
+    if timer tracking >= 5000
+        hotkey 'Tracking'
+        waitforgump 4267467659
+        settimer tracking 0
+    elseif not gumpexists 4267467659 and timer tracking < 5000 
+        overhead "[Track CD]" 33   
+    endif
+endif
+# Click the Players button in track gump.
+if gumpexists 4267467659
+    gumpresponse 5 4267467659
+    waitforgump 4267467659
+endif
