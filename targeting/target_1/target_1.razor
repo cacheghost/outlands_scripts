@@ -1,11 +1,11 @@
 if not varexist 'target_1'
     overhead '[Select target 1]' 66
     @setvar! 'target_1'
-    script chainloop
+    script overhead_loop
 endif
 
 if varexist 'target_1'
     target 'target_1'
     wait 75
 endif
-script chainloop
+script overhead_loop

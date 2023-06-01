@@ -4,37 +4,36 @@
 #   Author: CacheGhost
 #   
 #   Sections:
-#   1. Overhead Messages and Global Timers
-#   2. Rope Timer
-#   3. Explosion Potion Timer
-#   4. Swing Timers
-#   5. Rearm from Disarm
-#   6. Bandage Routine
-#   7. Auto-pouch Routine
-#   8. Hidden Check
-#   9. Free Cure Pot Routine
-#   10. GHeal/GHeal Pot Routine
-#   11. You Died!
+#   1. Overhead Messages
+#   2. Rearm from Disarm
+#   3. Bandage Routine
+#   4. Auto-pouch Routine
+#   5. Hidden Check
+#   6. Free Cure Pot Routine
+#   7. GHeal/GHeal Pot Routine
+#   8. You Died!
 #
 ####################################################
 while not dead
 ########################################################
+
+    
     # Section 1: Overhead Messages and Global Timers
     #--------------------------------------------------#
-    # Free Cure Potion Alert
-    #--------------------------------------------------#
-    if not timerexists 'next free cure'
-        createtimer 'next free cure'
-        settimer 'next free cure' 60001
-    endif
-    if timer 'next free cure' > 30000
-        if timer 'next free cure' > 60000
-            # Leave this comment blank, this is needed.
+    
+    if insysmsg 'Where should I throw this potion'
+        if not timerexists explo_pot
+            createtimer explo_pot
+            settimer explo_pot 5001
+        endif
+        if timer explo_pot >= 5000
+            overhead '++ExplosionPotStart' 33
+            settimer explo_pot 0
         else
-            overhead '[Free Cure Ready]'
-            settimer 'next free cure' 60001
+            overhead '++ExplosionPotThrow' 33
         endif
     endif
+    
     #--------------------------------------------------#
     # World Save timer and warning
     #--------------------------------------------------#
@@ -43,12 +42,6 @@ while not dead
     endif
     if insysmsg 'world is saving, please wait'
         overhead '[World Save]' 33
-    endif
-    #--------------------------------------------------#
-    # Spell Detection
-    #--------------------------------------------------#
-    if insysmsg 'MagicResist skillgain'
-        overhead '[Spell Attack]' 33
     endif
     #--------------------------------------------------#
     # PVP Event Messages
@@ -60,48 +53,6 @@ while not dead
     endif
     if insysmsg 'kill points earned'
         overhead '[KP Earned]' 423
-    endif
-    #--------------------------------------------------#
-    # Control Ticks
-    #--------------------------------------------------#
-    if not timerexists 'cp timer'
-        createtimer 'cp timer'
-        settimer 'cp timer' 30000
-    endif
-    if insysmsg '10 control points earned'
-        overhead '[10 CP Earned]' 423
-        settimer 'cp timer' 0
-    elseif insysmsg '15 control points earned'
-        overhead '[15 CP Earned]' 423
-        settimer 'cp timer' 0
-    elseif insysmsg '20 control points earned'
-        overhead '[20 CP Earned]' 423
-        settimer 'cp timer' 0
-    endif
-    if not timerexists 'cp spam'
-        createtimer 'cp spam'
-        settimer 'cp spam' 5000
-    endif
-    if timer 'cp timer' >= 31000
-        # Leave this comment blank, this is needed.
-    elseif timer 'cp timer' >= 30000 and timer 'cp spam' >= 5000
-        overhead '[CP Tick Now]'
-        settimer 'cp spam' 0
-    elseif timer 'cp timer' >= 25000 and timer 'cp spam' >= 5000
-        overhead '[CP Tick 5 Sec]'
-        settimer 'cp spam' 0
-    elseif timer 'cp timer' >= 20000 and timer 'cp spam' >= 5000
-        overhead '[CP Tick 10 Sec]'
-        settimer 'cp spam' 0
-    elseif timer 'cp timer' >= 15000 and timer 'cp spam' >= 5000
-        overhead '[CP Tick 15 Sec]'
-        settimer 'cp spam' 0
-    elseif timer 'cp timer' >= 10000 and timer 'cp spam' >= 5000
-        overhead '[CP Tick 20 Sec]'
-        settimer 'cp spam' 0
-    elseif timer 'cp timer' >= 5000 and timer 'cp spam' >= 5000
-        overhead '[CP Tick 25 Sec]'
-        settimer 'cp spam' 0
     endif
     #--------------------------------------------------#
     # Hamstring
@@ -200,7 +151,6 @@ while not dead
     #--------------------------------------------------#
     if insysmsg 'You resist a bleed effect'
         overhead '[Resist Bleed]' 68
-        clearsysmsg
     endif
     #--------------------------------------------------#
     # Stealth Refresh
@@ -245,168 +195,26 @@ while not dead
         overhead '[Stop Meditating]' 33
     endif
     #--------------------------------------------------#
-    # Monitor for free cure pot
+    # Target Not Seen
     #--------------------------------------------------#
-    if insysmsg 'receive a free cure potion'
-        settimer 'next free cure' 0
+    if insysmsg 'Target cannot be seen'
+        overhead '[Target not seen]' 33
     endif
-########################################################
+    #--------------------------------------------------#
+    # Too far away
+    #--------------------------------------------------#
+    if insysmsg 'That is too far away'
+        overhead '[Too far away]' 33
+    endif
+    #--------------------------------------------------#
+    # Telek Blocked
+    #--------------------------------------------------#
+    if insysmsg 'You may only cast that spell on a player'
+        overhead '[Telek Blocked]' 33
+    endif
     
 ########################################################
-    # Section 2: Rope/Teleport Timer
-    #--------------------------------------------------#
-    if not timerexists 'rope_spam'
-        createtimer 'rope_spam'
-        settimer 'rope_spam' 200000
-    endif
-    if insysmsg 'rope_timer'
-        settimer 'rope_timer' 0
-    endif
-    if timerexists 'rope_timer'
-        if timer 'rope_timer' >= 250000 and timer 'rope_spam' > 5000
-            # Leave this comment blank, this is needed.
-        elseif timer 'rope_timer' >= 200000 and timer 'rope_spam' > 5000
-            overhead '[Rope Timer Ready]' 68
-            settimer 'rope_spam' 0
-        elseif timer 'rope_timer' >= 150000 and timer 'rope_spam' > 5000
-            overhead '[Rope Timer - 5 sec]' 55
-            settimer 'rope_spam' 0
-        elseif timer 'rope_timer' >= 20000 and timer 'rope_spam' > 5000
-            overhead '[Rope Timer - 10 sec]' 55
-            settimer 'rope_spam' 0
-        elseif timer 'rope_timer' >= 15000 and timer 'rope_spam' > 5000
-            overhead '[Rope Timer - 15 sec]' 55
-            settimer 'rope_spam' 0
-        elseif timer 'rope_timer' >= 10000 and timer 'rope_spam' > 5000
-            overhead '[Rope Timer - 20 sec]' 55
-            settimer 'rope_spam' 0
-        elseif timer 'rope_timer' >= 5000 and timer 'rope_spam' > 5000
-            overhead '[Rope Timer - 25 sec]' 55
-            settimer 'rope_spam' 0
-        endif
-    endif
-########################################################
-
-########################################################
-    # Section 3: Explosion Pot Timer
-    #--------------------------------------------------#
-    if not timerexists 'explo_pot_spam'
-        createtimer 'explo_pot_spam'
-        settimer 'explo_pot_spam' 20000
-    endif
-    if not timerexists 'explo_pot'
-        createtimer 'explo_pot'
-        settimer 'explo_pot' 20000
-    endif
-    if insysmsg 'next explosion potion thrown at that player'
-        settimer 'explo_pot' 0
-    endif
-    if timerexists 'explo_pot'
-        if timer 'explo_pot' >= 35000 and timer 'explo_pot_spam' > 5000
-            # Leave this comment blank, this is needed.
-        elseif timer 'explo_pot' >= 30000 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot Ready]' 68
-            settimer 'explo_pot_spam' 0
-        elseif timer 'explo_pot' >= 25000 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot - 5 sec]' 55
-            settimer 'explo_pot_spam' 0
-        elseif timer 'explo_pot' >= 20000 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot - 10 sec]' 55
-            settimer 'explo_pot_spam' 0
-        elseif timer 'explo_pot' >= 15000 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot - 15 sec]' 55
-            settimer 'explo_pot_spam' 0
-        elseif timer 'explo_pot' >= 10000 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot - 20 sec]' 55
-            settimer 'explo_pot_spam' 0
-        elseif timer 'explo_pot' >= 0 and timer 'explo_pot_spam' > 5000
-            overhead '[Explo Pot - 30 sec]' 55
-            settimer 'explo_pot_spam' 0
-        endif
-    endif
-########################################################
-    
-########################################################
-    # Section 4: Swing Timers
-    #
-    #   You need to have less than GM Arms Lore.
-    #   Additionally, you need to be max skills so you dont actually gain.
-    #   Uptick Arms Lore and turn on Skill Gain Chance announcements.
-    #--------------------------------------------------#
-    if not timerexists 'swing timer'
-        createtimer 'swing timer'
-        settimer 'swing timer' 20000
-    endif
-    if insysmsg 'ArmsLore skillgain:'
-        settimer 'swing timer' 0
-    endif
-    #--------------------------------------------------#
-    # Add a weapon spam timer here to avoid overhead spam.
-    #--------------------------------------------------#
-    if timerexists 'swing timer'
-        #--------------------------------------------------#
-        # Bow Overhead Spam
-        #--------------------------------------------------#
-        if not timerexists 'bow spam'
-            createtimer 'bow spam'
-            settimer 'bow spam' 20000
-        endif
-        #--------------------------------------------------#
-        # Crossbow Overhead Spam
-        #--------------------------------------------------#
-        if not timerexists 'xbow spam'
-            createtimer 'xbow spam'
-            settimer 'xbow spam' 20000
-        endif
-        #--------------------------------------------------#
-        # Hally Overhead Spam
-        #--------------------------------------------------#
-        if not timerexists 'hally spam'
-            createtimer 'hally spam'
-            settimer 'hally spam' 20000
-        endif
-        #--------------------------------------------------#
-        # Heavy Crossbow Overhead Spam
-        #--------------------------------------------------#
-        if not timerexists 'heavy xbow spam'
-            createtimer 'heavy xbow spam'
-            settimer 'heavy xbow spam' 20000
-        endif
-        #--------------------------------------------------#
-        # Swing timer check against swing speed of weapon.
-        #--------------------------------------------------#
-        if timer 'swing timer' >= 6500
-            # Leave this comment blank, this is needed.
-        #--------------------------------------------------#
-        # Heavy Crossbow Swing Timer
-        #--------------------------------------------------#
-        elseif timer 'swing timer' >= 6000 and timer 'heavy xbow spam' > 5000
-            overhead '[Heavy Xbow Ready]' 55
-            settimer 'heavy xbow spam' 0
-        #--------------------------------------------------#
-        # Hally Swing Timer
-        #--------------------------------------------------#
-        elseif timer 'swing timer' >= 4800 and timer 'hally spam' > 5000
-            #overhead '[Hally Ready]' 55
-            settimer 'hally spam' 0
-        #--------------------------------------------------#
-        # Crossbow Swing Timer
-        #--------------------------------------------------#
-        elseif timer 'swing timer' >= 4300 and timer 'xbow spam' > 5000
-            #overhead '[Xbow Ready]' 55
-            settimer 'xbow spam' 0
-        #--------------------------------------------------#
-        # Bow Swing Timer
-        #--------------------------------------------------#
-        elseif timer 'swing timer' >= 3520 and timer 'bow spam' > 5000
-            #overhead '[Bow Ready]' 55
-            settimer 'bow spam' 0
-        endif    
-    endif
-########################################################
-    
-########################################################
-    # Section 5: Rearm from Disarm
+    # Section 2: Rearm from Disarm
     #--------------------------------------------------#
     # Setup weapon to reequip
     if not varexist 'reequip_weapon_left'
@@ -480,7 +288,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 6: Bandage Survival
+    # Section 3: Bandage Survival
     #
     #   Dex = Time to Heal
     #   25 = 15
@@ -642,7 +450,7 @@ while not dead
 ########################################################
 
 ########################################################
-    # Section 7: Auto-pouch Routine (with delay)
+    # Section 4: Auto-pouch Routine (with delay)
     #--------------------------------------------------#
     if not timerexists 'pouch latency'
         createtimer 'pouch latency'
@@ -668,7 +476,7 @@ while not dead
 ########################################################
 
 ########################################################
-    # Section 7a: Auto-pouch Routine (no delay)
+    # Section 4a: Auto-pouch Routine (no delay)
     #--------------------------------------------------#
     # If paralyzed, attempt to pouch.
     #if not targetexists any
@@ -682,7 +490,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 8: Hidden Check
+    # Section 5: Hidden Check
     #--------------------------------------------------#
     if hidden
         continue
@@ -690,7 +498,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 9: Free Cure Pot Routine
+    # Section 6: Free Cure Pot Routine
     #--------------------------------------------------#
     if not timerexists 'next free cure'
         createtimer 'next free cure'
@@ -711,7 +519,7 @@ while not dead
 ########################################################
     
 ########################################################
-    # Section 10: GHeal/GHeal Pot Routine
+    # Section 7: GHeal/GHeal Pot Routine
     #--------------------------------------------------#    
     if not timerexists 'healpot recovery'
         createtimer 'healpot recovery'
@@ -740,7 +548,7 @@ while not dead
 endwhile
 
 ########################################################
-# Section 11: YOU DIED!
+# Section 8: YOU DIED!
 #--------------------------------------------------#
 if dead
     overhead 'You are dead! GJ NOOB!'

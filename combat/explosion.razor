@@ -1,0 +1,36 @@
+hotkey 'Explosion'
+overhead '++ExplosionCast' 33
+while not targetexists any
+    //overhead '[Casting]'
+    if insysmsg 'Where should I throw this potion'
+        if not timerexists explo_pot
+            createtimer explo_pot
+            settimer explo_pot 5001
+        endif
+        if timer explo_pot >= 5000
+            overhead '++ExplosionPotStart' 33
+            settimer explo_pot 0
+        else
+            overhead '++ExplosionPotThrow' 33
+        endif
+    endif
+    continue
+endwhile
+while targetexists any
+    //overhead '[Holding]'
+    if insysmsg 'Where should I throw this potion'
+        if not timerexists explo_pot
+            createtimer explo_pot
+            settimer explo_pot 5001
+        endif
+        if timer explo_pot >= 5000
+            overhead '++ExplosionPotStart' 33
+            settimer explo_pot 0
+        else
+            overhead '++ExplosionPotThrow' 33
+        endif
+    endif
+    continue
+endwhile
+overhead '++ExplosionDrop' 33
+script overhead_loop
