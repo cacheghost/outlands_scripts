@@ -1,77 +1,85 @@
-# If we havent set our weapon, set it.
+###########################
+# 
+# Equip Weapon X
+#   written by CacheGhost
+#
+###########################
+#
+# Prerequisite
+#
+# 1. Create a new Arm/Dress listing.
+# 2. The name of the listing must be named "weapon X". Without the quotes and where X is the number of the weapon, for example "weapon 1".
+# 3. Add a weapon type to this dress profile you wish to use, like bows/heavybow/etc.
+# 4. Add a hotkey to this script. 
+#       I bind this script to SHIFT + 1.
+# 5. [Optionally] Setup a separate script to unbind the variable used in this script. 
+#       If not then the variable will be reset upon logging out. 
+#       The unbind script is helpful to quickly change weapons if you want to. 
+#       I bind the unbind var script to ALT + SHIFT + 1.
+###########################
+#
+# Usage
+#
+# 1. When you use this hotkey and there isnt a variable set, it will ask you to select a weapon to remember. 
+#       Pick the weapon you want to use.
+# 2. When you use this hotkey and it has a variable set, it will use that variable.
+#       Equips the weapon remembered.
+#
+###########################
+# 1. Determine if a weapon variable has been set, if not ask to set one.
 if not varexist 'weapon_1'
     overhead '[Select Weapon 1]' 
     setvar! 'weapon_1'
 endif
-
-# Check if we are casting
+# 2. Determine if a weapon variable has been set, if not skip.
 if varexist 'weapon_1'
-    # Look for weapon to equip
+    # 3. Determine if the weapon we set is in our backpack.
     if find 'weapon_1' 'backpack'
-        # Weapon found in backpack.
+        # 4.a. Check the left hand.
         if findlayer self lefthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
-                # Weapon we are wearing isnt our weapon, change that.
+                # We had a weapon equipped that wasnt the one we want.
                 overhead '[Equip Weapon 1]' 55
                 if targetexists any
-                    #lift 'myweapon'
-                    #drop 'backpack'
-                    #lift 'weapon_1'
-                    #drop self LeftHand
-                    #hotkey 'Undress Left Hand'
-                    #wait 500
+                    # If we are holding a spell, then use casting trick to avoid object delay.
                     cast 'Magic Arrow'
                     wait 200
+                    # Use dress to avoid using lift while holding our spell. Dclick will break spell holding.
                     dress 'weapon 1'
                 else
+                    # If we have no spell then just dclick the weapon we want to use.
                     dclick 'weapon_1'
                 endif
             endif
+        # 4.b. Check the right hand.
         elseif findlayer self righthand as 'myweapon'
             if 'myweapon' != 'weapon_1'
-                # Weapon we are wearing isnt our weapon, change that.
+            # We had a weapon equipped that wasnt the one we want.
                 overhead '[Equip Weapon 1]' 55
                 if targetexists any
-                    #lift 'myweapon'
-                    #drop 'backpack'
-                    #lift 'weapon_1'
-                    #drop self RightHand
-                    #hotkey 'Undress Right Hand'
-                    #wait 500
+                    # If we are holding a spell, then use casting trick to avoid object delay.
                     cast 'Magic Arrow'
                     wait 200
+                    # Use dress to avoid using lift while holding our spell. Dclick will break spell holding.
                     dress 'weapon 1'
                 else
+                    # If we have no spell then just dclick the weapon we want to use.
                     dclick 'weapon_1'
                 endif
             endif
         else
-            # Not wearing weapon, equip from backpack
+            # 4.c. No weapon swap needed, just equip the weapon.
             overhead '[Equip Weapon 1]' 55
             if targetexists any
-                #lift 'weapon_1'
-                #drop self LeftHand
+                # If we are holding a spell, then use dress to avoid using lift. No object delay needed, no swap is happening.
                 dress 'weapon 1'
             else
+                # If we have no spell then just dclick the weapon we want to use.
                 dclick 'weapon_1'
             endif
         endif
-    else
-        # We are not wearing the weapon, and its not in backpack. Unset variable
-        if findlayer self lefthand as 'myweapon'
-            if 'myweapon' != 'weapon_1'
-                #overhead '[Unset Weapon 1]' 33
-                #@unsetvar 'weapon_1'
-            endif
-        elseif findlayer self righthand as 'myweapon'
-            if 'myweapon' != 'weapon_1'
-                #overhead '[Unset Weapon 1]' 33
-                #@unsetvar 'weapon_1'
-            endif
-        else
-            #overhead '[Unset Weapon 1]' 33
-            #@unsetvar 'weapon_1'
-        endif
     endif
 endif
-script overhead_loop
+###########################
+# Uncomment if you want to chain script execution to something.
+#script overhead_loop
