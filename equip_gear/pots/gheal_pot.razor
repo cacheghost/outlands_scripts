@@ -1,0 +1,37 @@
+###########################
+# 
+# Drink Gheal Pot
+#   written by CacheGhost
+#
+###########################
+#
+# Prerequisite
+#
+###########################
+#
+# Usage
+#
+# 1. Set it to a hotkey and use it.
+#
+###########################
+# Check hands.
+if not timerexists 'gheal_potion'
+    createtimer 'gheal_potion'
+    settimer 'gheal_potion' 11001
+endif
+if hits < maxhits and timer 'gheal_potion' > 11000
+    if findlayer self lefthand
+        cast 'Unlock'
+        wait 250
+        hotkey 'Drink Heal'
+        cooldown 'Gheal Potion' 11000
+        settimer 'gheal_potion' 0
+    else
+        hotkey 'Drink Heal'
+        cooldown 'Gheal Potion' 11000
+        settimer 'gheal_potion' 0
+    endif
+endif
+###########################
+# Uncomment if you want to chain script execution to something.
+script overhead_loop

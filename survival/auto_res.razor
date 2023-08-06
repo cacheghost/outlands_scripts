@@ -1,14 +1,16 @@
+# Loop unless dead
 while not dead
+    # Setup awareness spam message timer
     if not timerexists 'awareness spam'
         createtimer 'awareness spam'
         settimer 'awareness spam' 30000
     endif
-    
     if timer 'awareness spam' >= 8000
         say '[Running Res Script]' 44
         settimer 'awareness spam' 0
     endif
     
+    # If we don't have food buff, eat food.
     if not findbuff 'Food Satification'
         if findtype 29773 'backpack'
             overhead '[Eating Food]' 68
@@ -17,12 +19,13 @@ while not dead
         endif
     endif
 
+    # If our mana is below 50, med.
     while mana <= 50
+        # If we can mushroom, do it.
         if not timerexists 'mushroom'
             createtimer 'mushroom'
             settimer 'mushroom' 60000
         endif
-
         if timer 'mushroom' >= 60000
             if findtype 29012 'backpack'
                 overhead '[Eat Mushroom]' 68
@@ -31,11 +34,11 @@ while not dead
             endif
         endif
         
+        # Attempt to meditation.
         if not timerexists 'meditation'
             createtimer 'meditation'
             settimer 'meditation' 13000
         endif
-        
         if timer 'meditation' >= 13000
             overhead '[Meditation]' 68
             say '[Meditating]' 44
@@ -45,21 +48,23 @@ while not dead
         endif
     endwhile
     
+    # Unset our last serial
     unsetvar 'lastserial'
+    # Cycle for a new serial
     hotkey 'Next Target'
-    pause 350
+    # pause 150
     if not insysmsg "No one matching that was found"
         setvar! 'lastserial' lasttarget
     
-        # If the target is in Rage guild, res and buff.
+        # If the target is dead, it's a ghost.
         if dead 'lastserial'
-                # If the target is orange, skip.
+            # If the target is orange, skip. Enemies from events/faction/war will be orange.
                 if noto 'lastserial' = enemy
                     overhead "Ignore Enemy" 33
                     continue
                 endif
                 
-                # If the target is grey, skip.
+                # If the target is grey, skip. Unfriended people will be grey in the house.
                 if noto 'lastserial' = criminal or noto 'lastserial' = hostile
                     overhead "Ignore Grey" 33
                     continue
@@ -71,66 +76,59 @@ while not dead
                     continue
                 endif
                 
-                # Setup a timeout timer for res
-                if not timerexists 'res timeout'
-                    createtimer 'res timeout'
-                endif
-                settimer 'res timeout' 0
-                
-                # Res Rage Player
-                overhead '[Res Player]' 68
-                
-                # Initialize timers
-                if not timerexists 'low mana'
-                    createtimer 'low mana'
-                endif
-                
-                if not timerexists 'castspell recovery'
-                    createtimer 'castspell recovery'
-                    settimer 'castspell recovery' 20000
-                endif
-                
-                hotkey 'Resurrection'
-                wait 5100
-                target 'lastserial'
-                wait 350
-                
-                if insysmsg 'That is too far away.'
-                    overhead '[Missed Res]' 33
-                    continue
-                endif
-                
-                # Precast GHeal
-                hotkey 'Greater Heal'
-                wait 1350
-                
-                # Wait till they accept Res
-                while dead 'lastserial'
-                    overhead '[Waiting for Res]' 33
-                    wait 500
-                    if timer 'res timeout' >= 15000
-                        break
+                # If the target is blue, green, or red then res them.
+                if noto 'lastserial' = friend or noto 'lastserial' = innocent or noto 'lastserial' = murderer
+                    # Setup a timeout timer for res
+                    if not timerexists 'res timeout'
+                        createtimer 'res timeout'
                     endif
-                endwhile
-                if timer 'res timeout' >= 15000
-                    overhead '[Player didnt res]' 33
-                    hotkey 'Cancel current target'
-                    continue
+                    settimer 'res timeout' 0
+                    
+                    # Res Player
+                    overhead '[Res Player]' 68
+                    
+                    hotkey 'Resurrection'
+                    wait 5100
+                    target 'lastserial'
+                    wait 350
+                    
+                    if insysmsg 'That is too far away.'
+                        overhead '[Missed Res]' 33
+                        continue
+                    endif
+                    
+                    # Precast GHeal
+                    hotkey 'Greater Heal'
+                    wait 1350
+                    
+                    # Wait till they accept Res
+                    while dead 'lastserial'
+                        overhead '[Waiting for Res]' 33
+                        wait 500
+                        if timer 'res timeout' >= 15000
+                            break
+                        endif
+                    endwhile
+                    if timer 'res timeout' >= 15000
+                        overhead '[Player didnt res]' 33
+                        hotkey 'Cancel current target'
+                        continue
+                    endif
+                    
+                    # Heal them up.
+                    target 'lastserial'
+                    wait 350
+                    hotkey 'Greater Heal'
+                    wait 1350
+                    target 'lastserial'
+                    wait 350
+                    
+                    # Heal them again.
+                    hotkey 'Greater Heal'
+                    wait 1350
+                    target 'lastserial'
+                    wait 350
                 endif
-                
-                # Heal them up.
-                target 'lastserial'
-                wait 350
-                hotkey 'Greater Heal'
-                wait 1350
-                target 'lastserial'
-                wait 350
-                
-                # Heal them again.
-                hotkey 'Greater Heal'
-                wait 1350
-                target 'lastserial'
-                wait 350
             endif
         endif
     endif

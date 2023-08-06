@@ -42,8 +42,8 @@ if varexist 'weapon_2'
                 overhead '[Equip Weapon 2]' 55
                 if targetexists any
                     # If we are holding a spell, then use casting trick to avoid object delay.
-                    cast 'Magic Arrow'
-                    wait 200
+                    cast 'Unlock'
+                    wait 150
                     # Use dress to avoid using lift while holding our spell. Dclick will break spell holding.
                     dress 'weapon 2'
                 else
@@ -58,8 +58,8 @@ if varexist 'weapon_2'
                 overhead '[Equip Weapon 2]' 55
                 if targetexists any
                     # If we are holding a spell, then use casting trick to avoid object delay.
-                    cast 'Magic Arrow'
-                    wait 200
+                    cast 'Unlock'
+                    wait 150
                     # Use dress to avoid using lift while holding our spell. Dclick will break spell holding.
                     dress 'weapon 2'
                 else
@@ -82,4 +82,4 @@ if varexist 'weapon_2'
 endif
 ###########################
 # Uncomment if you want to chain script execution to something.
-#script overhead_loop
+script overhead_loop
